@@ -1,671 +1,153 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembayaran - Pengurusan Jenazah Islam</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pembayaran - Pengurusan Jenazah Islam</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-
-        header {
-            background: #008000;
-            color: white;
-            padding: 1rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .back-link {
-            display: inline-block;
-            color: white;
-            text-decoration: none;
-            margin-top: 0.5rem;
-            transition: opacity 0.3s;
-        }
-
-        .back-link:hover {
-            opacity: 0.8;
-        }
-
-        .payment-container {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 2rem;
-            margin: 3rem auto;
-            max-width: 1200px;
-            padding: 0 20px;
-        }
-
-        .payment-form-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .order-summary {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-        }
-
-        h2 {
-            color: #008000;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #008000;
-        }
-
-        .firebase-setup {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-
-        .firebase-setup h4 {
-            color: #856404;
-            margin-bottom: 1rem;
-        }
-
-        .firebase-setup input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-
-        .firebase-setup button {
-            padding: 8px 20px;
-            background: #008000;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .firebase-status {
-            display: none;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 5px;
-        }
-
-        .firebase-status.connected {
-            display: block;
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .firebase-status.error {
-            display: block;
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #008000;
-        }
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .payment-method {
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .payment-method.active {
-            border-color: #008000;
-            background: #f0fff0;
-        }
-
-        .payment-method:hover {
-            border-color: #008000;
-        }
-
-        .payment-method-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .card-details {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-        }
-
-        .order-item {
-            border-bottom: 1px solid #eee;
-            padding: 1rem 0;
-        }
-
-        .order-item:last-child {
-            border-bottom: none;
-        }
-
-        .order-item-name {
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 0.25rem;
-        }
-
-        .order-item-category {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-
-        .order-item-price {
-            color: #008000;
-            font-weight: bold;
-        }
-
-        .order-total {
-            border-top: 2px solid #008000;
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
-
-        .total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #008000;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: #008000;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: transform 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-        }
-
-        .btn:hover {
-            background: #006400;
-        }
-
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 3rem;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 500px;
-            animation: slideIn 0.3s;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            color: #008000;
-            margin-bottom: 1rem;
-        }
-
-        .empty-cart {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .empty-cart-icon {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 968px) {
-            .payment-container {
-                grid-template-columns: 1fr;
-            }
-
-            .order-summary {
-                position: static;
-            }
-
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
-
-            .card-details {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<style>
+/* ===== DESIGN KEKAL (TAK SENTUH) ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333;background:#f5f5f5}
+header{background:#008000;color:white;padding:1rem 0;box-shadow:0 2px 5px rgba(0,0,0,.1)}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+.logo{font-size:1.5rem;font-weight:bold;text-align:center}
+.back-link{display:inline-block;color:white;text-decoration:none;margin-top:.5rem}
+.payment-container{display:grid;grid-template-columns:1fr 400px;gap:2rem;margin:3rem auto;max-width:1200px;padding:0 20px}
+.payment-form-section,.order-summary{background:white;padding:2rem;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+h2{color:#008000;margin-bottom:1.5rem;border-bottom:2px solid #008000;padding-bottom:.5rem}
+.form-group{margin-bottom:1.5rem}
+.form-group label{display:block;margin-bottom:.5rem;font-weight:500}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px;border:1px solid #ddd;border-radius:5px}
+.payment-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.payment-method{border:2px solid #ddd;padding:1rem;text-align:center;cursor:pointer;border-radius:5px}
+.payment-method.active{border-color:#008000;background:#f0fff0}
+.btn{padding:12px;background:#008000;color:white;border:none;border-radius:5px;font-weight:bold;width:100%;cursor:pointer}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
+.modal.active{display:flex}
+.modal-content{background:white;padding:3rem;border-radius:10px;text-align:center}
+</style>
 </head>
+
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">☪ Pengurusan Jenazah Islam</div>
-            <a href="index.html" class="back-link">← Kembali ke Katalog</a>
-        </div>
-    </header>
 
-    <div class="payment-container" id="payment-container">
-        <!-- Will be populated by JavaScript -->
-    </div>
+<header>
+<div class="container">
+<div class="logo">☪ Pengurusan Jenazah Islam</div>
+<a href="index.html" class="back-link">← Kembali ke Katalog</a>
+</div>
+</header>
 
-    <div class="modal" id="success-modal">
-        <div class="modal-content">
-            <div class="success-icon">✓</div>
-            <h2 style="color: #008000; margin-bottom: 1rem;">Pembayaran Berjaya!</h2>
-            <p>Terima kasih. Kami akan menghubungi anda tidak lama lagi untuk pengesahan dan pengaturan selanjutnya.</p>
-            <p style="margin-top: 1rem; color: #666;">Nombor rujukan: <strong id="ref-number"></strong></p>
-            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #008000;" id="firebase-save-status"></p>
-            <button class="btn" onclick="completeOrder()" style="margin-top: 1.5rem;">
-                Selesai
-            </button>
-        </div>
-    </div>
+<div class="payment-container" id="payment-container"></div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<div class="modal" id="success-modal">
+<div class="modal-content">
+<div style="font-size:4rem;color:#008000">✓</div>
+<h2>Pembayaran Berjaya!</h2>
+<p>Nombor rujukan: <strong id="ref-number"></strong></p>
+<p id="firebase-save-status" style="margin-top:1rem;color:#008000"></p>
+<button class="btn" onclick="completeOrder()">Selesai</button>
+</div>
+</div>
 
-    <script>
-        let cart = [];
-        let db = null;
-        let firebaseConnected = false;
-        let currentPaymentMethod = 'card';
+<!-- ===== FIREBASE (AUTO CONNECT) ===== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
 
-        // Load cart from localStorage
-        function loadCart() {
-            const savedCart = localStorage.getItem('jenazahCart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-            }
-            renderPage();
-        }
+/* 🔥 FIREBASE CONFIG KAU */
+const firebaseConfig = {
+  apiKey: "AIzaSyCg-PTA6OtwvCRk8BmykVZD90jWhaYZD_I",
+  authDomain: "assignment-b40bf.firebaseapp.com",
+  projectId: "assignment-b40bf",
+  storageBucket: "assignment-b40bf.firebasestorage.app",
+  messagingSenderId: "560597458410",
+  appId: "1:560597458410:web:60287c40fda7d6f6bae693"
+};
 
-        function renderPage() {
-            const container = document.getElementById('payment-container');
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-cart" style="grid-column: 1 / -1;">
-                        <div class="empty-cart-icon">🛒</div>
-                        <h2>Troli Anda Kosong</h2>
-                        <p style="margin: 1rem 0;">Sila pilih pakej terlebih dahulu</p>
-                        <a href="index.html" class="btn" style="display: inline-block; width: auto; margin-top: 1rem;">
-                            Kembali ke Katalog
-                        </a>
-                    </div>
-                `;
-                return;
-            }
+/* ===== APP LOGIC ===== */
+let cart = [];
+let currentPaymentMethod = "card";
 
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
+window.onload = () => {
+  const saved = localStorage.getItem("jenazahCart");
+  if(saved) cart = JSON.parse(saved);
+  renderPage();
+};
 
-            container.innerHTML = `
-                <div class="payment-form-section">
-                    <h2>Maklumat Pembayaran</h2>
+function renderPage(){
+  const container = document.getElementById("payment-container");
+  if(cart.length === 0){
+    container.innerHTML = "<h2>Troli Kosong</h2>";
+    return;
+  }
 
-                    <!-- Firebase Setup -->
-                    <div class="firebase-setup" id="firebase-setup">
-                        <h4>🔧 Setup Firebase (Optional - Untuk Simpan Data)</h4>
-                        <p style="font-size: 0.9rem; margin-bottom: 1rem;">
-                            Masukkan Firebase config untuk simpan data ke database. 
-                            <a href="https://console.firebase.google.com" target="_blank" style="color: #008000;">Setup Firebase</a>
-                        </p>
-                        <input type="text" id="apiKey" placeholder="API Key">
-                        <input type="text" id="projectId" placeholder="Project ID">
-                        <button onclick="connectFirebase()">Connect Firebase</button>
-                    </div>
+  const total = cart.reduce((a,b)=>a+b.price,0);
 
-                    <div class="firebase-status" id="firebase-status"></div>
+  container.innerHTML = `
+  <div class="payment-form-section">
+    <h2>Maklumat Pelanggan</h2>
+    <form onsubmit="processPayment(event)">
+      <div class="form-group">
+        <label>Nama</label>
+        <input id="fullname" required>
+      </div>
+      <div class="form-group">
+        <label>Telefon</label>
+        <input id="phone" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input id="email" type="email" required>
+      </div>
+      <div class="form-group">
+        <label>Alamat</label>
+        <textarea id="address" required></textarea>
+      </div>
+      <button class="btn">Bayar RM ${total}</button>
+    </form>
+  </div>
 
-                    <form id="payment-form" onsubmit="processPayment(event)">
-                        <h3 style="color: #008000; margin-bottom: 1rem;">Maklumat Pelanggan</h3>
-                        
-                        <div class="form-group">
-                            <label>Nama Penuh Waris *</label>
-                            <input type="text" id="fullname" required placeholder="Masukkan nama penuh">
-                        </div>
+  <div class="order-summary">
+    <h2>Ringkasan</h2>
+    ${cart.map(i=>`<p>${i.name} - RM ${i.price}</p>`).join("")}
+    <hr>
+    <strong>Jumlah: RM ${total}</strong>
+  </div>`;
+}
 
-                        <div class="form-group">
-                            <label>Nombor Telefon *</label>
-                            <input type="tel" id="phone" required placeholder="01X-XXX XXXX">
-                        </div>
+window.processPayment = async (e) => {
+  e.preventDefault();
 
-                        <div class="form-group">
-                            <label>Email *</label>
-                            <input type="email" id="email" required placeholder="email@contoh.com">
-                        </div>
+  const ref = "JNZ" + Date.now();
 
-                        <div class="form-group">
-                            <label>Alamat Lengkap *</label>
-                            <textarea rows="3" id="address" required placeholder="Masukkan alamat lengkap"></textarea>
-                        </div>
+  const data = {
+    reference: ref,
+    name: fullname.value,
+    phone: phone.value,
+    email: email.value,
+    address: address.value,
+    cart,
+    total: cart.reduce((a,b)=>a+b.price,0),
+    status: "Completed",
+    createdAt: new Date()
+  };
 
-                        <h3 style="color: #008000; margin: 2rem 0 1rem;">Kaedah Pembayaran</h3>
+  await addDoc(collection(db,"pembayaran"), data);
 
-                        <div class="payment-methods">
-                            <div class="payment-method active" onclick="selectPaymentMethod('card')">
-                                <div class="payment-method-icon">💳</div>
-                                <div>Kad Kredit/Debit</div>
-                            </div>
-                            <div class="payment-method" onclick="selectPaymentMethod('fpx')">
-                                <div class="payment-method-icon">🏦</div>
-                                <div>FPX</div>
-                            </div>
-                            <div class="payment-method" onclick="selectPaymentMethod('ewallet')">
-                                <div class="payment-method-icon">📱</div>
-                                <div>E-Wallet</div>
-                            </div>
-                        </div>
+  document.getElementById("ref-number").textContent = ref;
+  document.getElementById("firebase-save-status").textContent = "✓ Data berjaya disimpan ke Firestore";
+  document.getElementById("success-modal").classList.add("active");
+};
 
-                        <div id="card-section">
-                            <div class="form-group">
-                                <label>Nombor Kad</label>
-                                <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
-                            </div>
+window.completeOrder = () => {
+  localStorage.removeItem("jenazahCart");
+  window.location.href = "index.html";
+};
+</script>
 
-                            <div class="card-details">
-                                <div class="form-group">
-                                    <label>Tarikh Luput</label>
-                                    <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5">
-                                </div>
-                                <div class="form-group">
-                                    <label>CVV</label>
-                                    <input type="text" id="cardCvv" placeholder="123" maxlength="3">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="fpx-section" style="display:none;">
-                            <div class="form-group">
-                                <label>Pilih Bank</label>
-                                <select id="fpxBank">
-                                    <option>Maybank</option>
-                                    <option>CIMB Bank</option>
-                                    <option>Public Bank</option>
-                                    <option>RHB Bank</option>
-                                    <option>Hong Leong Bank</option>
-                                    <option>AmBank</option>
-                                    <option>Bank Islam</option>
-                                    <option>Bank Rakyat</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div id="ewallet-section" style="display:none;">
-                            <div class="form-group">
-                                <label>Pilih E-Wallet</label>
-                                <select id="ewallet">
-                                    <option>Touch 'n Go eWallet</option>
-                                    <option>GrabPay</option>
-                                    <option>Boost</option>
-                                    <option>ShopeePay</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn" style="margin-top: 2rem;">
-                            Bayar RM ${total.toLocaleString()}
-                        </button>
-                    </form>
-                </div>
-
-                <div class="order-summary">
-                    <h2>Ringkasan Pesanan</h2>
-                    <div id="order-items">
-                        ${cart.map(item => `
-                            <div class="order-item">
-                                <div class="order-item-name">${item.name}</div>
-                                <div class="order-item-category">${item.category}</div>
-                                <div class="order-item-price">RM ${item.price.toLocaleString()}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="order-total">
-                        <div class="total-row">
-                            <span>Jumlah:</span>
-                            <span>RM ${total.toLocaleString()}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function connectFirebase() {
-            const apiKey = document.getElementById('apiKey').value;
-            const projectId = document.getElementById('projectId').value;
-
-            if (!apiKey || !projectId) {
-                showFirebaseStatus('Sila masukkan API Key dan Project ID', 'error');
-                return;
-            }
-
-            const firebaseConfig = {
-                apiKey: apiKey,
-                authDomain: `${projectId}.firebaseapp.com`,
-                projectId: projectId,
-                storageBucket: `${projectId}.appspot.com`,
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abc123"
-            };
-
-            try {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
-                firebaseConnected = true;
-                document.getElementById('firebase-setup').style.display = 'none';
-                showFirebaseStatus('✓ Firebase connected! Data akan disimpan ke Firestore.', 'connected');
-            } catch (error) {
-                showFirebaseStatus('Error: ' + error.message, 'error');
-            }
-        }
-
-        function showFirebaseStatus(message, type) {
-            const status = document.getElementById('firebase-status');
-            status.textContent = message;
-            status.className = 'firebase-status ' + type;
-        }
-
-        function selectPaymentMethod(method) {
-            currentPaymentMethod = method;
-            
-            document.querySelectorAll('.payment-method').forEach(el => {
-                el.classList.remove('active');
-            });
-            event.target.closest('.payment-method').classList.add('active');
-
-            document.getElementById('card-section').style.display = method === 'card' ? 'block' : 'none';
-            document.getElementById('fpx-section').style.display = method === 'fpx' ? 'block' : 'none';
-            document.getElementById('ewallet-section').style.display = method === 'ewallet' ? 'block' : 'none';
-        }
-
-        async function processPayment(event) {
-            event.preventDefault();
-
-            const button = event.target.querySelector('button[type="submit"]');
-            button.textContent = 'Memproses Pembayaran...';
-            button.disabled = true;
-
-            // Generate reference number
-            const refNumber = 'JNZ' + Date.now().toString().slice(-8);
-            const timestamp = new Date().toISOString();
-
-            // Collect payment data
-            const paymentData = {
-                referenceNumber: refNumber,
-                timestamp: timestamp,
-                date: new Date().toLocaleDateString('ms-MY'),
-                customerInfo: {
-                    fullname: document.getElementById('fullname').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    address: document.getElementById('address').value
-                },
-                packages: cart,
-                totalAmount: cart.reduce((sum, item) => sum + item.price, 0),
-                paymentMethod: currentPaymentMethod,
-                paymentDetails: {},
-                status: 'completed'
-            };
-
-            // Add payment method details
-            if (currentPaymentMethod === 'card') {
-                const cardNum = document.getElementById('cardNumber').value;
-                paymentData.paymentDetails = {
-                    cardNumber: cardNum ? '****' + cardNum.slice(-4) : 'N/A',
-                    type: 'Credit/Debit Card'
-                };
-            } else if (currentPaymentMethod === 'fpx') {
-                paymentData.paymentDetails = {
-                    bank: document.getElementById('fpxBank').value,
-                    type: 'FPX'
-                };
-            } else if (currentPaymentMethod === 'ewallet') {
-                paymentData.paymentDetails = {
-                    wallet: document.getElementById('ewallet').value,
-                    type: 'E-Wallet'
-                };
-            }
-
-            // Save to Firebase if connected
-            let firebaseSaved = false;
-            if (firebaseConnected && db) {
-                try {
-                    await db.collection('pembayaran').add(paymentData);
-                    firebaseSaved = true;
-                    console.log('✓ Payment data saved to Firebase');
-                } catch (error) {
-                    console.error('✗ Error saving to Firebase:', error);
-                }
-            }
-
-            // Log to console
-            console.log('Payment Data:', JSON.stringify(paymentData, null, 2));
-
-            setTimeout(() => {
-                document.getElementById('ref-number').textContent = refNumber;
-                
-                if (firebaseSaved) {
-                    document.getElementById('firebase-save-status').textContent = '✓ Data disimpan ke Firebase Firestore';
-                } else if (!firebaseConnected) {
-                    document.getElementById('firebase-save-status').textContent = 'ℹ Firebase tidak disambung. Data logged ke console sahaja.';
-                } else {
-                    document.getElementById('firebase-save-status').textContent = '⚠ Error menyimpan ke Firebase. Sila semak console.';
-                }
-                
-                document.getElementById('success-modal').classList.add('active');
-                button.textContent = 'Bayar';
-                button.disabled = false;
-            }, 2000);
-        }
-
-        function completeOrder() {
-            // Clear cart
-            localStorage.removeItem('jenazahCart');
-            
-            // Redirect to home
-            window.location.href = 'index.html';
-        }
-
-        // Load cart on page load
-        loadCart();
-    </script>
 </body>
 </html>
