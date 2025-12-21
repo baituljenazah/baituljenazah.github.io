@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengurusan Jenazah Islam</title>
+    <title>Pengurusan Jenazah Islam - Katalog</title>
     <style>
         * {
             margin: 0;
@@ -48,6 +48,7 @@
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
@@ -58,6 +59,29 @@
 
         .nav-links a:hover {
             opacity: 0.8;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ff0000;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
 
         .hero {
@@ -74,30 +98,6 @@
 
         .hero p {
             font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background: white;
-            color: #008000;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: transform 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-primary {
-            background: #008000;
-            color: white;
         }
 
         section {
@@ -149,6 +149,7 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s;
             border-top: 4px solid #008000;
+            position: relative;
         }
 
         .service-card:hover {
@@ -189,6 +190,18 @@
             font-weight: bold;
         }
 
+        .in-cart-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #008000;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
         .emergency-card {
             background: linear-gradient(135deg, #008000 0%, #006400 100%);
             color: white;
@@ -210,143 +223,32 @@
             margin: 1rem 0;
         }
 
-        .payment-section {
-            background: #f5f5f5;
-        }
-
-        .payment-form {
-            max-width: 700px;
-            margin: 0 auto;
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
             background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
+            color: #008000;
+            text-decoration: none;
             border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s;
+            border: none;
+            cursor: pointer;
             font-size: 1rem;
         }
 
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: #008000;
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        .card-details {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 1rem;
-        }
-
-        .payment-methods {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .payment-method {
-            padding: 1rem;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .payment-method.active {
-            border-color: #008000;
-            background: #f0fff0;
-        }
-
-        .payment-method:hover {
-            border-color: #008000;
-        }
-
-        .summary {
-            background: #f9f9f9;
-            padding: 1.5rem;
-            border-radius: 5px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #008000;
-        }
-
-        .summary h3 {
-            color: #008000;
-            margin-bottom: 1rem;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            padding: 0.5rem 0;
-        }
-
-        .summary-total {
-            border-top: 2px solid #008000;
-            padding-top: 1rem;
-            margin-top: 1rem;
-            font-weight: bold;
-            font-size: 1.3rem;
-        }
-
-        .selected-items {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        footer {
+        .btn-primary {
             background: #008000;
             color: white;
-            text-align: center;
-            padding: 2rem 0;
         }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 3rem;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .success-icon {
-            font-size: 4rem;
-            color: #008000;
-            margin-bottom: 1rem;
+        .btn-secondary {
+            background: #666;
+            color: white;
         }
 
         .note-box {
@@ -361,25 +263,173 @@
             color: #008000;
         }
 
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+            transition: right 0.3s;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .cart-overlay.show {
+            display: block;
+        }
+
+        .cart-header {
+            background: #008000;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h2 {
+            margin: 0;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #ddd;
+            padding: 1rem 0;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item h4 {
+            color: #008000;
+            margin: 0;
+            flex: 1;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #d00;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0;
+            margin-left: 10px;
+        }
+
+        .cart-item-category {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #008000;
+            font-size: 1.1rem;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+
+        .cart-footer {
+            border-top: 2px solid #ddd;
+            padding: 1.5rem;
+            background: #f9f9f9;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #008000;
+            margin-bottom: 1rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: #008000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background: #006400;
+        }
+
+        .checkout-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        footer {
+            background: #008000;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                gap: 1rem;
             }
             
             .hero h1 {
                 font-size: 1.8rem;
             }
-            
-            .card-details {
-                grid-template-columns: 1fr;
-            }
-
-            .payment-methods {
-                grid-template-columns: 1fr;
-            }
 
             .services-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
             }
         }
     </style>
@@ -389,19 +439,21 @@
         <nav class="container">
             <div class="logo">☪ Pengurusan Jenazah Islam</div>
             <ul class="nav-links">
-                <li><a href="#home">Utama</a></li>
                 <li><a href="#services">Perkhidmatan</a></li>
-                <li><a href="#payment">Pembayaran</a></li>
-                <li><a href="#contact">Hubungi</a></li>
+                <li>
+                    <div class="cart-icon" onclick="toggleCart()">
+                        🛒
+                        <span class="cart-badge" id="cart-count">0</span>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <section class="hero" id="home">
+    <section class="hero">
         <div class="container">
             <h1>Perkhidmatan Pengurusan Jenazah Mengikut Syariat Islam</h1>
             <p>Membantu keluarga dengan penuh ihsan dan kasih sayang</p>
-            <a href="#services" class="btn">Lihat Perkhidmatan</a>
         </div>
     </section>
 
@@ -416,7 +468,7 @@
                 <p class="category-desc">Barang & peralatan sahaja – tanpa servis</p>
                 
                 <div class="services-grid">
-                    <div class="service-card">
+                    <div class="service-card" data-id="kafan-asas">
                         <h3>Set Kafankan Asas</h3>
                         <div class="price">RM 180</div>
                         <ul>
@@ -426,10 +478,12 @@
                             <li>Kapas</li>
                             <li>Tali kafan</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kafankan Asas', 180, 'Kategori 1')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kafan-asas', 'Set Kafankan Asas', 180, 'Kategori 1')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="kafan-lengkap">
                         <h3>Set Kafankan Lengkap</h3>
                         <div class="price">RM 280</div>
                         <ul>
@@ -441,10 +495,12 @@
                             <li>Air mawar</li>
                             <li>Alas jenazah</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kafankan Lengkap', 280, 'Kategori 1')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kafan-lengkap', 'Set Kafankan Lengkap', 280, 'Kategori 1')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="kafan-premium">
                         <h3>Set Kafankan Premium</h3>
                         <div class="price">RM 380</div>
                         <ul>
@@ -457,7 +513,9 @@
                             <li>Alas jenazah</li>
                             <li>Kit lengkap siap bungkus</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kafankan Premium', 380, 'Kategori 1')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kafan-premium', 'Set Kafankan Premium', 380, 'Kategori 1')">
+                            Tambah ke Troli
+                        </button>
                     </div>
                 </div>
             </div>
@@ -468,7 +526,7 @@
                 <p class="category-desc">Servis mengikut syariat Islam</p>
                 
                 <div class="services-grid">
-                    <div class="service-card">
+                    <div class="service-card" data-id="pengurusan-asas">
                         <h3>Pakej Pengurusan Asas</h3>
                         <div class="price">RM 800</div>
                         <ul>
@@ -476,10 +534,12 @@
                             <li>Mengkafankan jenazah</li>
                             <li>Bimbingan kepada waris</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Pakej Pengurusan Asas', 800, 'Kategori 2')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('pengurusan-asas', 'Pakej Pengurusan Asas', 800, 'Kategori 2')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="pengurusan-lengkap">
                         <h3>Pakej Pengurusan Lengkap</h3>
                         <div class="price">RM 1,500</div>
                         <ul>
@@ -490,10 +550,12 @@
                             <li>Pengangkutan jenazah (dalam kawasan)</li>
                             <li>Bimbingan & khidmat nasihat waris</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('pengurusan-lengkap', 'Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="pengurusan-premium">
                         <h3>Pakej Pengurusan Premium</h3>
                         <div class="price">RM 2,300</div>
                         <ul>
@@ -505,7 +567,9 @@
                             <li>Penyelarasan dengan masjid & tanah perkuburan</li>
                             <li>Sokongan penuh kepada waris</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Pakej Pengurusan Premium', 2300, 'Kategori 2')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('pengurusan-premium', 'Pakej Pengurusan Premium', 2300, 'Kategori 2')">
+                            Tambah ke Troli
+                        </button>
                     </div>
                 </div>
 
@@ -516,7 +580,9 @@
                         <li>✓ Respon segera 24 jam</li>
                         <li>✓ Pasukan pengurusan standby</li>
                     </ul>
-                    <button class="btn" onclick="selectPackage('Khidmat Kecemasan 24 Jam', 300, 'Kategori 2')">Pilih Khidmat</button>
+                    <button class="btn" onclick="addToCart('kecemasan', 'Khidmat Kecemasan 24 Jam', 300, 'Kategori 2')">
+                        Tambah ke Troli
+                    </button>
                 </div>
             </div>
 
@@ -526,7 +592,7 @@
                 <p class="category-desc">Struktur & pemasangan kubur</p>
                 
                 <div class="services-grid">
-                    <div class="service-card">
+                    <div class="service-card" data-id="kubur-asas">
                         <h3>Set Kubur Asas</h3>
                         <div class="price">RM 700</div>
                         <ul>
@@ -534,10 +600,12 @@
                             <li>Papan liang lahad</li>
                             <li>Penutup liang lahad</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kubur Asas', 700, 'Kategori 3')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kubur-asas', 'Set Kubur Asas', 700, 'Kategori 3')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="kubur-standard">
                         <h3>Set Kubur Standard</h3>
                         <div class="price">RM 1,200</div>
                         <ul>
@@ -546,10 +614,12 @@
                             <li>Penutup liang lahad</li>
                             <li>Batu tanda kepala</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kubur Standard', 1200, 'Kategori 3')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kubur-standard', 'Set Kubur Standard', 1200, 'Kategori 3')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="kubur-lengkap">
                         <h3>Set Kubur Lengkap</h3>
                         <div class="price">RM 1,800</div>
                         <ul>
@@ -558,10 +628,12 @@
                             <li>Batu tanda kepala & kaki</li>
                             <li>Pemasangan batu nisan</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Set Kubur Lengkap', 1800, 'Kategori 3')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('kubur-lengkap', 'Set Kubur Lengkap', 1800, 'Kategori 3')">
+                            Tambah ke Troli
+                        </button>
                     </div>
 
-                    <div class="service-card">
+                    <div class="service-card" data-id="servis-tambahan">
                         <h3>Servis Tambahan Kubur</h3>
                         <div class="price">RM 300</div>
                         <ul>
@@ -569,7 +641,9 @@
                             <li>Penambahan batu tanda</li>
                             <li>Penyelenggaraan asas kubur</li>
                         </ul>
-                        <button class="btn btn-primary" onclick="selectPackage('Servis Tambahan Kubur', 300, 'Kategori 3')">Pilih Pakej</button>
+                        <button class="btn btn-primary" onclick="addToCart('servis-tambahan', 'Servis Tambahan Kubur', 300, 'Kategori 3')">
+                            Tambah ke Troli
+                        </button>
                     </div>
                 </div>
             </div>
@@ -580,115 +654,7 @@
         </div>
     </section>
 
-    <section id="payment" class="payment-section">
-        <div class="container">
-            <h2 class="section-title">Pembayaran</h2>
-            
-            <div class="payment-form">
-                <div class="summary">
-                    <h3>Ringkasan Pesanan</h3>
-                    <div class="selected-items" id="selected-items">
-                        <p style="text-align: center; color: #666; padding: 2rem 0;">Tiada pakej dipilih. Sila pilih pakej di atas.</p>
-                    </div>
-                    <div class="summary-item summary-total">
-                        <span>Jumlah Keseluruhan:</span>
-                        <span id="total-price">RM 0</span>
-                    </div>
-                </div>
-
-                <form id="payment-form" onsubmit="processPayment(event)">
-                    <div class="form-group">
-                        <label>Nama Penuh Waris</label>
-                        <input type="text" required placeholder="Masukkan nama penuh">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Nombor Telefon</label>
-                        <input type="tel" required placeholder="01X-XXX XXXX">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" required placeholder="email@contoh.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Alamat Lengkap</label>
-                        <textarea rows="3" required placeholder="Masukkan alamat lengkap"></textarea>
-                    </div>
-
-                    <h3 style="color: #008000; margin: 2rem 0 1rem;">Kaedah Pembayaran</h3>
-
-                    <div class="payment-methods">
-                        <div class="payment-method active" onclick="selectPaymentMethod('card')">
-                            <div>💳</div>
-                            <div>Kad Kredit/Debit</div>
-                        </div>
-                        <div class="payment-method" onclick="selectPaymentMethod('fpx')">
-                            <div>🏦</div>
-                            <div>FPX</div>
-                        </div>
-                        <div class="payment-method" onclick="selectPaymentMethod('ewallet')">
-                            <div>📱</div>
-                            <div>E-Wallet</div>
-                        </div>
-                    </div>
-
-                    <div id="card-section">
-                        <div class="form-group">
-                            <label>Nombor Kad</label>
-                            <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
-                        </div>
-
-                        <div class="card-details">
-                            <div class="form-group">
-                                <label>Tarikh Luput</label>
-                                <input type="text" placeholder="MM/YY" maxlength="5">
-                            </div>
-                            <div class="form-group">
-                                <label>CVV</label>
-                                <input type="text" placeholder="123" maxlength="3">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="fpx-section" style="display:none;">
-                        <div class="form-group">
-                            <label>Pilih Bank</label>
-                            <select>
-                                <option>Maybank</option>
-                                <option>CIMB Bank</option>
-                                <option>Public Bank</option>
-                                <option>RHB Bank</option>
-                                <option>Hong Leong Bank</option>
-                                <option>AmBank</option>
-                                <option>Bank Islam</option>
-                                <option>Bank Rakyat</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="ewallet-section" style="display:none;">
-                        <div class="form-group">
-                            <label>Pilih E-Wallet</label>
-                            <select>
-                                <option>Touch 'n Go eWallet</option>
-                                <option>GrabPay</option>
-                                <option>Boost</option>
-                                <option>ShopeePay</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary" style="width:100%; margin-top:1rem;">
-                        Bayar Sekarang
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
+    <footer>
         <div class="container">
             <p>&copy; 2024 Pengurusan Jenazah Islam. Semua hak cipta terpelihara.</p>
             <p>Hubungi kami: 1-300-88-XXXX | info@jenazah.com</p>
@@ -696,112 +662,171 @@
         </div>
     </footer>
 
-    <div class="modal" id="success-modal">
-        <div class="modal-content">
-            <div class="success-icon">✓</div>
-            <h2 style="color: #008000; margin-bottom: 1rem;">Pembayaran Berjaya!</h2>
-            <p>Terima kasih. Kami akan menghubungi anda tidak lama lagi untuk pengesahan dan pengaturan selanjutnya.</p>
-            <p style="margin-top: 1rem; color: #666;">Nombor rujukan anda: <strong id="ref-number"></strong></p>
-            <button class="btn btn-primary" onclick="closeModal()" style="margin-top: 1.5rem;">Tutup</button>
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h2>Troli Anda</h2>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-body" id="cart-body">
+            <div class="cart-empty">
+                <p>Troli anda kosong</p>
+                <p style="font-size: 3rem; margin: 1rem 0;">🛒</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Jumlah:</span>
+                <span id="cart-total">RM 0</span>
+            </div>
+            <button class="checkout-btn" id="checkout-btn" onclick="proceedToPayment()" disabled>
+                Teruskan ke Pembayaran
+            </button>
         </div>
     </div>
 
     <script>
-        let selectedPackages = [];
-        let currentPaymentMethod = 'card';
+        let cart = [];
 
-        function selectPackage(packageName, price, category) {
-            // Check if package already selected
-            const existingIndex = selectedPackages.findIndex(p => p.name === packageName);
+        // Load cart from localStorage
+        function loadCart() {
+            const savedCart = localStorage.getItem('jenazahCart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                updateCartUI();
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            localStorage.setItem('jenazahCart', JSON.stringify(cart));
+        }
+
+        function addToCart(id, name, price, category) {
+            // Check if item already in cart
+            const existingItem = cart.find(item => item.id === id);
             
-            if (existingIndex > -1) {
-                alert('Pakej ini sudah dipilih');
+            if (existingItem) {
+                alert('Pakej ini sudah ada dalam troli');
                 return;
             }
 
-            selectedPackages.push({
-                name: packageName,
-                price: price,
-                category: category
-            });
+            // Add to cart
+            cart.push({ id, name, price, category });
+            saveCart();
+            updateCartUI();
+            
+            // Visual feedback
+            const card = document.querySelector(`[data-id="${id}"]`);
+            if (card && !card.querySelector('.in-cart-badge')) {
+                const badge = document.createElement('div');
+                badge.className = 'in-cart-badge';
+                badge.textContent = '✓ Dalam Troli';
+                card.appendChild(badge);
+            }
 
-            updateSummary();
-            document.getElementById('payment').scrollIntoView({ behavior: 'smooth' });
+            // Show cart briefly
+            toggleCart();
+            setTimeout(() => {
+                if (cart.length > 1) {
+                    // Don't auto-close if user might want to add more
+                }
+            }, 1000);
         }
 
-        function removePackage(index) {
-            selectedPackages.splice(index, 1);
-            updateSummary();
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            updateCartUI();
+
+            // Remove badge from card
+            const card = document.querySelector(`[data-id="${id}"]`);
+            if (card) {
+                const badge = card.querySelector('.in-cart-badge');
+                if (badge) badge.remove();
+            }
         }
 
-        function updateSummary() {
-            const itemsContainer = document.getElementById('selected-items');
-            const totalPrice = selectedPackages.reduce((sum, pkg) => sum + pkg.price, 0);
+        function updateCartUI() {
+            const cartCount = document.getElementById('cart-count');
+            const cartBody = document.getElementById('cart-body');
+            const cartTotal = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
 
-            if (selectedPackages.length === 0) {
-                itemsContainer.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem 0;">Tiada pakej dipilih. Sila pilih pakej di atas.</p>';
+            // Update count badge
+            cartCount.textContent = cart.length;
+
+            // Calculate total
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.textContent = 'RM ' + total.toLocaleString();
+
+            // Update cart items display
+            if (cart.length === 0) {
+                cartBody.innerHTML = `
+                    <div class="cart-empty">
+                        <p>Troli anda kosong</p>
+                        <p style="font-size: 3rem; margin: 1rem 0;">🛒</p>
+                    </div>
+                `;
+                checkoutBtn.disabled = true;
             } else {
-                itemsContainer.innerHTML = selectedPackages.map((pkg, index) => `
-                    <div class="summary-item">
-                        <div>
-                            <strong>${pkg.name}</strong><br>
-                            <small style="color: #666;">${pkg.category}</small>
+                cartBody.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-header">
+                            <h4>${item.name}</h4>
+                            <button class="remove-item" onclick="removeFromCart('${item.id}')" title="Buang">×</button>
                         </div>
-                        <div style="text-align: right;">
-                            <div>RM ${pkg.price.toLocaleString()}</div>
-                            <button onclick="removePackage(${index})" style="background: none; border: none; color: #d00; cursor: pointer; font-size: 0.9rem;">Buang</button>
-                        </div>
+                        <div class="cart-item-category">${item.category}</div>
+                        <div class="cart-item-price">RM ${item.price.toLocaleString()}</div>
                     </div>
                 `).join('');
+                checkoutBtn.disabled = false;
             }
 
-            document.getElementById('total-price').textContent = 'RM ' + totalPrice.toLocaleString();
-        }
-
-        function selectPaymentMethod(method) {
-            currentPaymentMethod = method;
-            
-            document.querySelectorAll('.payment-method').forEach(el => {
-                el.classList.remove('active');
+            // Update card badges
+            document.querySelectorAll('.service-card').forEach(card => {
+                const id = card.getAttribute('data-id');
+                const badge = card.querySelector('.in-cart-badge');
+                const inCart = cart.some(item => item.id === id);
+                
+                if (inCart && !badge) {
+                    const newBadge = document.createElement('div');
+                    newBadge.className = 'in-cart-badge';
+                    newBadge.textContent = '✓ Dalam Troli';
+                    card.appendChild(newBadge);
+                } else if (!inCart && badge) {
+                    badge.remove();
+                }
             });
-            event.target.closest('.payment-method').classList.add('active');
-
-            document.getElementById('card-section').style.display = method === 'card' ? 'block' : 'none';
-            document.getElementById('fpx-section').style.display = method === 'fpx' ? 'block' : 'none';
-            document.getElementById('ewallet-section').style.display = method === 'ewallet' ? 'block' : 'none';
         }
 
-        function processPayment(event) {
-            event.preventDefault();
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
             
-            if (selectedPackages.length === 0) {
-                alert('Sila pilih sekurang-kurangnya satu pakej');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function proceedToPayment() {
+            if (cart.length === 0) {
+                alert('Troli anda kosong');
                 return;
             }
 
-            const form = event.target;
-            const button = form.querySelector('button[type="submit"]');
-            button.textContent = 'Memproses Pembayaran...';
-            button.disabled = true;
-
-            // Generate reference number
-            const refNumber = 'JNZ' + Date.now().toString().slice(-8);
-
-            setTimeout(() => {
-                document.getElementById('ref-number').textContent = refNumber;
-                document.getElementById('success-modal').classList.add('active');
-                button.textContent = 'Bayar Sekarang';
-                button.disabled = false;
-            }, 2000);
+            // Save cart and redirect to payment page
+            saveCart();
+            
+            // Create payment.html file with the cart data
+            // For now, we'll open it in the same page
+            window.location.href = 'payment.html';
         }
 
-        function closeModal() {
-            document.getElementById('success-modal').classList.remove('active');
-            selectedPackages = [];
-            updateSummary();
-            document.getElementById('payment-form').reset();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // Load cart on page load
+        loadCart();
     </script>
 </body>
 </html>
