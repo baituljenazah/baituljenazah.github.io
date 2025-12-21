@@ -6,126 +6,125 @@
 <title>Pengurusan Jenazah Islam</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Segoe UI,Tahoma,sans-serif;background:#f4f6f8;color:#222}
-header{background:#0b3c5d;color:#fff;padding:20px;text-align:center}
-nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:500}
-section{padding:50px 20px;max-width:900px;margin:auto}
-h2{margin-bottom:15px;color:#0b3c5d}
-.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,.1);margin-bottom:20px}
-
-input,textarea{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:6px;
-  border:1px solid #ccc
-}
-button{
-  background:#0b3c5d;
-  color:#fff;
-  padding:12px 30px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer
-}
-button:hover{opacity:.9}
-
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.5);
-  justify-content:center;
-  align-items:center
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;color:#333}
+header{background:#008000;color:#fff;padding:1rem 0;position:sticky;top:0;z-index:100}
+.container{max-width:1200px;margin:auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:1.5rem;font-weight:bold}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:#fff;text-decoration:none}
+.hero{background:linear-gradient(135deg,#008000,#006400);color:#fff;padding:4rem 0;text-align:center}
+.btn{padding:12px 30px;border:none;border-radius:5px;cursor:pointer;font-weight:bold}
+.btn-primary{background:#008000;color:#fff}
+section{padding:4rem 0}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+.service-card{background:#fff;padding:2rem;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,.1);border-top:4px solid #008000}
+.price{font-size:1.6rem;font-weight:bold;color:#008000}
+.payment-section{background:#f5f5f5}
+.payment-form{background:#fff;padding:2rem;border-radius:10px;max-width:700px;margin:auto}
+.summary{background:#f9f9f9;padding:1rem;border-left:4px solid #008000;margin-bottom:1rem}
+.summary-item{display:flex;justify-content:space-between}
+footer{background:#008000;color:#fff;text-align:center;padding:2rem}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
 .modal.active{display:flex}
-.modal-box{
-  background:#fff;
-  padding:30px;
-  border-radius:10px;
-  text-align:center;
-  max-width:400px;
-  width:90%
-}
-footer{text-align:center;padding:20px;background:#ddd}
+.modal-content{background:#fff;padding:2rem;border-radius:10px;text-align:center}
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>Pengurusan Jenazah Islam</h1>
-<nav>
-<a href="#home">Home</a>
-<a href="#about">Tentang Kami</a>
-<a href="#services">Perkhidmatan</a>
-<a href="#payment">Pembayaran</a>
+<nav class="container">
+<div class="logo">☪ Pengurusan Jenazah Islam</div>
+<ul class="nav-links">
+<li><a href="#services">Perkhidmatan</a></li>
+<li><a href="#payment">Pembayaran</a></li>
+</ul>
 </nav>
 </header>
 
-<section id="home">
-<div class="card">
-<h2>Selamat Datang</h2>
-<p>Kami menyediakan perkhidmatan pengurusan jenazah Islam secara profesional dan beretika.</p>
-</div>
-</section>
-
-<section id="about">
-<div class="card">
-<h2>Tentang Kami</h2>
-<p>Berpengalaman dalam menguruskan jenazah mengikut syariat Islam dengan penuh amanah.</p>
+<section class="hero">
+<div class="container">
+<h1>Perkhidmatan Pengurusan Jenazah Islam</h1>
+<p>Mengikut syariat & penuh ihsan</p>
 </div>
 </section>
 
 <section id="services">
-<div class="card">
-<h2>Perkhidmatan</h2>
-<ul>
-<li>Memandikan Jenazah</li>
-<li>Mengkafankan</li>
-<li>Solat Jenazah</li>
-<li>Pengkebumian</li>
-</ul>
+<div class="container">
+<div class="services-grid">
+<div class="service-card">
+<h3>Set Kafankan Asas</h3>
+<div class="price">RM 180</div>
+<button class="btn btn-primary" onclick="selectPackage('Set Kafankan Asas',180)">Pilih</button>
+</div>
+
+<div class="service-card">
+<h3>Pakej Pengurusan Lengkap</h3>
+<div class="price">RM 1500</div>
+<button class="btn btn-primary" onclick="selectPackage('Pakej Pengurusan Lengkap',1500)">Pilih</button>
+</div>
+</div>
 </div>
 </section>
 
-<section id="payment">
-<div class="card">
-<h2>Pembayaran</h2>
+<section id="payment" class="payment-section">
+<div class="container">
+<div class="payment-form">
 
-<form id="payment-form">
-<input type="text" id="nama" placeholder="Nama Penuh" required>
-<input type="tel" id="telefon" placeholder="No Telefon" required>
-<input type="email" id="email" placeholder="Email" required>
-<textarea id="alamat" placeholder="Alamat" required></textarea>
-<button type="submit">Bayar Sekarang</button>
+<div class="summary">
+<h3>Ringkasan</h3>
+<div id="selected-items">Tiada pakej</div>
+<div class="summary-item"><strong>Jumlah:</strong><span id="total">RM 0</span></div>
+</div>
+
+<form onsubmit="processPayment(event)">
+<input required placeholder="Nama Penuh"><br><br>
+<input required placeholder="No Telefon"><br><br>
+<input required type="email" placeholder="Email"><br><br>
+<textarea required placeholder="Alamat"></textarea><br><br>
+<button class="btn btn-primary" type="submit" style="width:100%">Bayar Sekarang</button>
 </form>
 
 </div>
+</div>
 </section>
 
-<!-- MODAL -->
-<div class="modal" id="success-modal">
-<div class="modal-box">
-<h3>Pembayaran Berjaya</h3>
-<p>No Rujukan:</p>
-<h2 id="ref-number"></h2>
-<button onclick="closeModal()">Tutup</button>
-</div>
-</div>
-
 <footer>
-&copy; 2025 Pengurusan Jenazah Islam
+<p>&copy; 2024 Pengurusan Jenazah Islam</p>
 </footer>
 
-<!-- ================= FIREBASE ================= -->
+<div class="modal" id="success">
+<div class="modal-content">
+<h2>✓ Pembayaran Berjaya</h2>
+<p>No Rujukan: <strong id="ref"></strong></p>
+<button class="btn btn-primary" onclick="closeModal()">Tutup</button>
+</div>
+</div>
+
+<!-- ===== SCRIPT ===== -->
+<script>
+let selectedPackages=[];
+
+function selectPackage(name,price){
+selectedPackages.push({name,price});
+document.getElementById('selected-items').innerHTML=
+selectedPackages.map(p=>p.name+" - RM "+p.price).join("<br>");
+document.getElementById('total').textContent=
+"RM "+selectedPackages.reduce((s,p)=>s+p.price,0);
+}
+
+function closeModal(){
+document.getElementById('success').classList.remove('active');
+}
+</script>
+
+<!-- ===== FIREBASE  ===== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔥 TUKAR YANG NI */
 const firebaseConfig = {
   apiKey: "API_KEY_KAU",
   authDomain: "PROJECT_ID.firebaseapp.com",
@@ -138,35 +137,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-document.getElementById("payment-form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+window.processPayment = async function(e){
+e.preventDefault();
 
-  const data = {
-    nama: nama.value,
-    telefon: telefon.value,
-    email: email.value,
-    alamat: alamat.value,
-    status: "berjaya",
-    rujukan: "JNZ" + Date.now(),
-    masa: new Date()
-  };
-
-  try {
-    await addDoc(collection(db, "pembayaran"), data);
-    document.getElementById("ref-number").textContent = data.rujukan;
-    document.getElementById("success-modal").classList.add("active");
-    e.target.reset();
-  } catch (err) {
-    alert("Gagal simpan data 😭");
-    console.error(err);
-  }
+const ref="JNZ"+Date.now();
+await addDoc(collection(db,"pembayaran"),{
+pakej:selectedPackages,
+jumlah:selectedPackages.reduce((s,p)=>s+p.price,0),
+rujukan:ref,
+tarikh:new Date()
 });
 
-window.closeModal = () => {
-  document.getElementById("success-modal").classList.remove("active");
-};
+document.getElementById("ref").textContent=ref;
+document.getElementById("success").classList.add("active");
+}
 </script>
 
 </body>
 </html>
-
