@@ -1,19 +1,742 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Baitul Jannah</title>
-
-  <link rel="icon" href="media/profile photo.jpg" type="image/jpeg">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baitul Jenazah - Pengurusan Jenazah Patuh Syariah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="media/profile photo.jpg" type="image/jpeg">
+    <style>
+        /* Reset dan dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #88E788;
+            --secondary-color: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #f9f9f9;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            padding: 12px 28px;
+            border-radius: 4px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #78d178;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn i {
+            margin-left: 8px;
+        }
+        
+        /* Loading page */
+        .loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 30px;
+        }
+        
+        .arabic-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .translation-text {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            font-style: italic;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .loading-btn {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            padding: 14px 36px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--secondary-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .logo {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo span {
+            color: var(--text-dark);
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
+        
+        nav a {
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav a.active {
+            color: var(--primary-color);
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+        
+        /* Hero section */
+        .hero {
+            background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Main content */
+        .main-content {
+            padding: 80px 0;
+            background-color: var(--secondary-color);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+        
+        .about-text h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+        
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .card {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h3 i {
+            font-size: 1.2rem;
+        }
+        
+        .objectives {
+            margin-bottom: 60px;
+        }
+        
+        .objectives ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .objectives li {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--primary-color);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .core-values {
+            margin-bottom: 60px;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .value-item {
+            text-align: center;
+            padding: 25px 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .value-item:hover {
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+        }
+        
+        .value-item i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .value-item:hover i {
+            color: var(--text-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: var(--secondary-color);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .footer-links h3, .footer-contact h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-contact p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-contact i {
+            color: var(--primary-color);
+            margin-top: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsif */
+        @media (max-width: 992px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .mission-vision {
+                grid-template-columns: 1fr;
+            }
+            
+            .objectives ul {
+                grid-template-columns: 1fr;
+            }
+            
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .arabic-text {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary-color);
+                box-shadow: var(--shadow);
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .main-content {
+                padding: 60px 0;
+            }
+            
+            .arabic-text {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .arabic-text {
+                font-size: 1.3rem;
+            }
+            
+            .translation-text {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Page -->
+    <div class="loading-page" id="loadingPage">
+        <div class="loading-content">
+            <div class="arabic-text">
+                كُلُّ نَفْسٍۢ ذَآئِقَةُ ٱلْمَوْتِ ۗ وَإِنَّمَا تُوَفَّوْنَ أُجُورَكُمْ يَوْمَ ٱلْقِيَـٰمَةِ ۖ فَمَن زُحْزِحَ عَنِ ٱلنَّارِ وَأُدْخِلَ ٱلْجَنَّةَ فَقَدْ فَازَ ۗ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَـٰعُ ٱلْغُرُورِ ١٨٥
+            </div>
+            <div class="translation-text">
+                Tiap-tiap yang bernyawa akan merasai mati, dan bahawasanya pada hari kiamat sahajalah akan disempurnakan balasan kamu. Ketika itu sesiapa yang dijauhkan dari neraka dan dimasukkan ke syurga maka sesungguhnya ia telah berjaya. Dan (ingatlah bahawa) kehidupan di dunia ini (meliputi segala kemewahannya dan pangkat kebesarannya) tidak lain hanyalah kesenangan bagi orang-orang yang terpedaya.
+            </div>
+            <button class="btn loading-btn" id="continueBtn">
+                Teruskan <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
 
-  <div class="container">
-    <h2>Coming Soon</h2>
-    <p>Stay tuned.</p>
-  </div>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Baitul<span>Jenazah</span></div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">Tentang Kami</a></li>
+                    <li><a href="#services">Perkhidmatan</a></li>
+                    <li><a href="#contact">Hubungi</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Baitul Jenazah</h1>
+                <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
+                <a href="#about" class="btn">Ketahui Lebih Lanjut <i class="fas fa-info-circle"></i></a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="main-content" id="about">
+            <div class="container">
+                <h2 class="section-title">Tentang Baitul Jenazah</h2>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h2>Siapa Kami</h2>
+                        <p>Baitul Jenazah adalah sebuah organisasi yang menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris. Kami memahami bahawa saat kehilangan adalah waktu yang sukar, justeru setiap urusan dijalankan dengan penuh amanah, ihsan dan hormat terhadap si mati serta keluarga.</p>
+                        
+                        <h2>Kenapa Kami Ditubuhkan</h2>
+                        <p>Pengurusan jenazah sering berlaku dalam keadaan tergesa-gesa dan emosi yang tidak stabil. Ramai waris tidak tahu prosedur sebenar, kos yang terlibat serta pihak yang boleh dipercayai. Organisasi ini ditubuhkan untuk menjadi pusat rujukan dan sokongan agar urusan terakhir dapat disempurnakan dengan tenang dan teratur.</p>
+                    </div>
+                    
+                    <div class="about-image">
+                        <div class="card">
+                            <h3><i class="fas fa-hands-helping"></i> Komitmen Kami</h3>
+                            <p>Kami komited memastikan setiap pengurusan jenazah dilakukan dengan penuh hormat, ketelitian dan kesederhanaan tanpa mengambil kesempatan atas kesedihan waris. Kami percaya bahawa Baitul Jenazah bukan sekadar perkhidmatan tetapi amanah terakhir yang perlu disempurnakan dengan sebaiknya.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mission-vision">
+                    <div class="card">
+                        <h3><i class="fas fa-eye"></i> Visi</h3>
+                        <p>Menjadi penyedia pengurusan jenazah yang dipercayai komuniti melalui perkhidmatan yang telus, sistematik dan berlandaskan syariah.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-bullseye"></i> Misi</h3>
+                        <p>Menyediakan perkhidmatan pengurusan jenazah yang patuh syariah, tersusun dan berintegriti dengan memberi sokongan menyeluruh kepada waris, menyediakan maklumat yang jelas serta memanfaatkan teknologi bagi memastikan setiap urusan dapat dilaksanakan dengan tenang, telus dan penuh ihsan.</p>
+                    </div>
+                </div>
+                
+                <div class="objectives">
+                    <h2 class="section-title">Objektif</h2>
+                    <ul>
+                        <li>Menyediakan perkhidmatan pengurusan jenazah yang lengkap dan beretika.</li>
+                        <li>Membantu waris dengan maklumat yang jelas dan tersusun.</li>
+                        <li>Menghubungkan komuniti dengan masjid dan sukarelawan bertauliah.</li>
+                        <li>Memanfaatkan teknologi bagi memudahkan urusan dalam waktu kecemasan.</li>
+                    </ul>
+                </div>
+                
+                <div class="core-values">
+                    <h2 class="section-title">Nilai Teras Kami</h2>
+                    <div class="values-grid">
+                        <div class="value-item">
+                            <i class="fas fa-handshake"></i>
+                            <h3>Amanah</h3>
+                            <p>Setiap urusan dijalankan dengan tanggungjawab.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-heart"></i>
+                            <h3>Ihsan</h3>
+                            <p>Menjaga emosi dan kebajikan waris.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Profesional</h3>
+                            <p>Proses yang teratur dan sistematik.</p>
+                        </div>
+                        <div class="value-item">
+                            <i class="fas fa-mosque"></i>
+                            <h3>Patuh Syariah</h3>
+                            <p>Mengutamakan hukum dan adab Islam.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">BaitulJenazah</div>
+                    <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Pautan Pantas</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">Tentang Kami</a></li>
+                        <li><a href="#services">Perkhidmatan</a></li>
+                        <li><a href="#contact">Hubungi Kami</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
+                    <p><i class="fas fa-mobile-alt"></i> 012-345 6789</p>
+                    <p><i class="fas fa-envelope"></i> info@baituljenazah.my</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading page functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const loadingPage = document.getElementById('loadingPage');
+            const continueBtn = document.getElementById('continueBtn');
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            // Continue button - hide loading page
+            continueBtn.addEventListener('click', function() {
+                loadingPage.style.opacity = '0';
+                setTimeout(() => {
+                    loadingPage.style.display = 'none';
+                }, 800);
+                
+                // Smooth scroll to home section
+                document.querySelector('#home').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking on a link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Active navigation highlighting
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('nav a');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if(scrollY >= (sectionTop - 100)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Auto-hide loading page after 10 seconds
+            setTimeout(function() {
+                if(loadingPage.style.display !== 'none') {
+                    loadingPage.style.opacity = '0';
+                    setTimeout(() => {
+                        loadingPage.style.display = 'none';
+                    }, 800);
+                }
+            }, 10000);
+        });
+    </script>
 </body>
 </html>
