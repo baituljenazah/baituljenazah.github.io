@@ -267,8 +267,15 @@
             max-width: 100%;
             height: auto;
             border-radius: 8px;
-            transition: opacity 0.5s ease;
+            transition: all 0.3s ease;
             margin: 0 auto;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .org-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
         
         .org-image.active {
@@ -286,6 +293,59 @@
             font-style: italic;
             color: var(--text-light);
             font-size: 0.9rem;
+        }
+        
+        /* Click instruction */
+        .click-instruction {
+            text-align: center;
+            margin-top: 10px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .click-instruction i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+        
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--primary-color);
         }
         
         /* Contact Information */
@@ -462,7 +522,7 @@
             color: #aaa;
         }
         
-        /* Responsif - SAMA DENGAN HOMEPAGE */
+        /* Responsif */
         @media (max-width: 992px) {
             .contact-methods {
                 grid-template-columns: repeat(2, 1fr);
@@ -541,6 +601,10 @@
                 top: 5px;
                 right: 5px;
             }
+            
+            .modal-content {
+                max-width: 95%;
+            }
         }
         
         @media (max-width: 576px) {
@@ -561,11 +625,24 @@
                 height: 50px;
                 font-size: 1.3rem;
             }
+            
+            .close-modal {
+                top: -30px;
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Header - SAMA DENGAN HOMEPAGE -->
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <img src="" alt="" class="modal-image" id="modalImage">
+        </div>
+    </div>
+
+    <!-- Header -->
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
@@ -590,7 +667,7 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="container">
-                <h1>Directory Baitul Jenazah</h1>
+                <h1>Directori Baitul Jenazah</h1>
                 <p>Kenali struktur organisasi kami dan hubungi kami untuk sebarang pertanyaan atau kecemasan.</p>
                 <a href="#org-structure" class="btn">Struktur Organisasi <i class="fas fa-sitemap"></i></a>
             </div>
@@ -625,6 +702,7 @@
                                  id="orgImageEN">
                             
                             <p class="image-caption" id="imageCaption">Struktur organisasi Baitul Jenazah (Versi Bahasa Melayu)</p>
+                            <p class="click-instruction"><i class="fas fa-mouse-pointer"></i> Klik pada gambar untuk besarkan</p>
                         </div>
                     </div>
                     
@@ -664,6 +742,7 @@
                                 <h3>Alamat Pejabat</h3>
                                 <div class="contact-details">
                                     <p><i class="fas fa-building"></i> Baitul Jenazah Sdn Bhd, No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+                                    <p><i class="fas fa-map-pin"></i> No. 123, Jalan Kebajikan</p>
                                 </div>
                             </div>
                         </div>
@@ -674,19 +753,18 @@
                             <p>Dapatkan maklumat terkini tentang pengurusan jenazah mengikut syariah melalui media sosial kami.</p>
                             
                             <div class="social-media">
-                                <a href="#" class="social-icon facebook">
+                                <a href="facebook.com/baituljenazah" class="social-icon facebook">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="#" class="social-icon instagram">
+                                <a href="instagram.com/baituljenazah" class="social-icon instagram">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </div>
                         </div>
-                        
         </section>
     </main>
 
-    <!-- Footer - SAMA DENGAN HOMEPAGE -->
+    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -730,8 +808,11 @@
             const orgImageBM = document.getElementById('orgImageBM');
             const orgImageEN = document.getElementById('orgImageEN');
             const imageCaption = document.getElementById('imageCaption');
+            const imageModal = document.getElementById('imageModal');
+            const closeModal = document.getElementById('closeModal');
+            const modalImage = document.getElementById('modalImage');
             
-            // Mobile menu toggle - SAMA DENGAN HOMEPAGE
+            // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', function() {
                 mainNav.classList.toggle('active');
                 mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
@@ -739,7 +820,7 @@
                     : '<i class="fas fa-bars"></i>';
             });
             
-            // Close mobile menu when clicking on a link - SAMA DENGAN HOMEPAGE
+            // Close mobile menu when clicking on a link
             const navLinks = document.querySelectorAll('nav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
@@ -748,7 +829,7 @@
                 });
             });
             
-            // Smooth scrolling for anchor links - SAMA DENGAN HOMEPAGE
+            // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -766,7 +847,7 @@
                 });
             });
             
-            // Active navigation highlighting - FIXED VERSION
+            // Active navigation highlighting
             window.addEventListener('scroll', function() {
                 const sections = document.querySelectorAll('section');
                 const navLinks = document.querySelectorAll('nav a');
@@ -816,9 +897,44 @@
                 }
                 isEnglish = !isEnglish;
             });
+            
+            // Click to open image in modal
+            orgImageBM.addEventListener('click', function() {
+                modalImage.src = this.src;
+                modalImage.alt = this.alt;
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            orgImageEN.addEventListener('click', function() {
+                modalImage.src = this.src;
+                modalImage.alt = this.alt;
+                imageModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                imageModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Close modal when clicking outside the image
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && imageModal.style.display === 'flex') {
+                    imageModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
     </script>
 </body>
 </html>
-
-
