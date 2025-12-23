@@ -23,7 +23,6 @@
             --text-dark: #333333;
             --text-light: #666666;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --border-radius: 12px;
         }
         
         body {
@@ -172,15 +171,14 @@
         
         /* Main content */
         .main-content {
-            padding: 60px 0;
+            padding: 80px 0;
             background-color: var(--secondary-color);
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             position: relative;
-            font-size: 2.2rem;
         }
         
         .section-title::after {
@@ -198,26 +196,19 @@
         .directory-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 80px;
+            gap: 60px;
         }
         
         .directory-section {
             background-color: #f9f9f9;
             padding: 50px;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             box-shadow: var(--shadow);
-            position: relative;
+            transition: transform 0.3s ease;
         }
         
-        .directory-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background-color: var(--primary-color);
-            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        .directory-section:hover {
+            transform: translateY(-5px);
         }
         
         .directory-header {
@@ -227,7 +218,7 @@
         
         .directory-header h2 {
             color: var(--primary-color);
-            font-size: 2.2rem;
+            font-size: 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -242,51 +233,41 @@
             line-height: 1.7;
         }
         
-        /* Organisasi Struktur Image Container */
+        /* Organisasi Struktur Image Container - SIMPLE */
         .org-image-container {
             position: relative;
             text-align: center;
-            margin: 40px 0;
-            padding: 25px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            min-height: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin: 30px 0;
         }
         
         .language-toggle-btn {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background-color: var(--primary-color);
             color: var(--text-dark);
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 4px;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 10;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .language-toggle-btn:hover {
             background-color: #78d178;
             transform: translateY(-2px);
-            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
         
         .org-image {
-            max-width: 90%;
+            max-width: 100%;
             height: auto;
             border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: all 0.5s ease;
+            transition: opacity 0.5s ease;
             margin: 0 auto;
         }
         
@@ -301,91 +282,10 @@
         }
         
         .image-caption {
-            margin-top: 20px;
+            margin-top: 15px;
             font-style: italic;
             color: var(--text-light);
-            font-size: 1rem;
-            padding: 10px 20px;
-            background-color: #f0f0f0;
-            border-radius: 6px;
-            display: inline-block;
-        }
-        
-        /* Penerangan Staf */
-        .staff-description {
-            margin-top: 60px;
-        }
-        
-        .staff-description h3 {
-            text-align: center;
-            margin-bottom: 40px;
-            color: var(--primary-color);
-            font-size: 1.8rem;
-        }
-        
-        .staff-description > p {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 40px;
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: var(--text-light);
-        }
-        
-        .staff-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        .staff-card {
-            background-color: white;
-            padding: 30px 25px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .staff-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        
-        .staff-icon {
-            font-size: 2.8rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            background-color: rgba(136, 231, 136, 0.1);
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-        
-        .staff-card h4 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .staff-card p {
-            color: var(--text-light);
-            font-size: 1rem;
-            line-height: 1.6;
-            flex-grow: 1;
+            font-size: 0.9rem;
         }
         
         /* Contact Information */
@@ -393,91 +293,73 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
-            margin: 40px 0;
+            margin-top: 40px;
         }
         
         .contact-card {
             background-color: white;
-            padding: 35px 30px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 8px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            box-shadow: var(--shadow);
             transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         
         .contact-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
         .contact-icon {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: var(--primary-color);
-            margin-bottom: 25px;
-            background-color: rgba(136, 231, 136, 0.1);
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
+            margin-bottom: 20px;
         }
         
         .contact-card h3 {
             color: var(--text-dark);
-            margin-bottom: 20px;
-            font-size: 1.4rem;
+            margin-bottom: 15px;
         }
         
         .contact-details {
             margin-top: 15px;
-            width: 100%;
         }
         
         .contact-details p {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 1.05rem;
         }
         
         .contact-details i {
             color: var(--primary-color);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             min-width: 25px;
         }
         
         /* Social Media (2 sahaja) */
         .social-media-container {
             text-align: center;
-            margin: 60px 0 40px;
-            padding: 40px;
-            background-color: rgba(136, 231, 136, 0.05);
-            border-radius: 12px;
+            margin: 50px 0 30px;
         }
         
         .social-media-container h3 {
             margin-bottom: 20px;
             color: var(--primary-color);
-            font-size: 1.8rem;
         }
         
         .social-media-container > p {
             max-width: 600px;
             margin: 0 auto 30px;
-            font-size: 1.1rem;
             color: var(--text-light);
         }
         
         .social-media {
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 30px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
@@ -486,20 +368,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background-color: white;
+            background-color: #f0f0f0;
             color: var(--text-dark);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .social-icon:hover {
-            transform: translateY(-8px) scale(1.1);
+            transform: translateY(-5px);
             color: white;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
         }
         
         .social-icon.facebook:hover {
@@ -510,56 +390,20 @@
             background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45);
         }
         
-        .social-handles {
-            margin-top: 25px;
-            font-size: 1.1rem;
-            color: var(--text-light);
-        }
-        
         /* Emergency Contact */
         .emergency-contact {
-            background: linear-gradient(135deg, #fff8e1 0%, #ffeaa7 100%);
-            border-left: 6px solid #ff9800;
-            padding: 35px;
-            margin-top: 50px;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.15);
+            background-color: #fff8e1;
+            border-left: 5px solid #ff9800;
+            padding: 25px;
+            margin-top: 40px;
+            border-radius: 8px;
         }
         
         .emergency-contact h3 {
-            color: #e65100;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.7rem;
-            margin-bottom: 20px;
-        }
-        
-        .emergency-contact > p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
-        
-        .emergency-details {
-            background-color: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-        
-        .emergency-details h4 {
-            color: #e65100;
+            color: #ff9800;
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .emergency-details p {
-            font-size: 1.1rem;
-            line-height: 1.7;
         }
         
         /* Footer */
@@ -567,7 +411,6 @@
             background-color: #333;
             color: var(--secondary-color);
             padding: 60px 0 30px;
-            margin-top: 80px;
         }
         
         .footer-content {
@@ -619,24 +462,10 @@
             color: #aaa;
         }
         
-        /* Responsif */
-        @media (max-width: 1100px) {
-            .staff-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
+        /* Responsif - SAMA DENGAN HOMEPAGE */
+        @media (max-width: 992px) {
             .contact-methods {
                 grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .directory-section {
-                padding: 40px 30px;
-            }
-            
-            .org-image-container {
-                min-height: 400px;
             }
             
             .footer-content {
@@ -687,63 +516,30 @@
             }
             
             .hero h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
             
             .hero p {
-                font-size: 1.1rem;
-                padding: 0 20px;
+                font-size: 1rem;
             }
             
             .main-content {
-                padding: 40px 0;
-            }
-            
-            .directory-container {
-                gap: 60px;
-            }
-            
-            .directory-section {
-                padding: 35px 20px;
-            }
-            
-            .directory-header h2 {
-                font-size: 1.9rem;
-            }
-            
-            .section-title {
-                font-size: 1.9rem;
+                padding: 60px 0;
             }
             
             .contact-methods {
                 grid-template-columns: 1fr;
             }
             
-            .staff-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-            }
-            
-            .org-image-container {
-                min-height: 350px;
-                padding: 20px;
+            .directory-section {
+                padding: 30px 20px;
             }
             
             .language-toggle-btn {
-                padding: 8px 16px;
-                font-size: 0.85rem;
-                top: 15px;
-                right: 15px;
-            }
-            
-            .social-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.6rem;
-            }
-            
-            .social-media {
-                gap: 30px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+                top: 5px;
+                right: 5px;
             }
         }
         
@@ -754,41 +550,22 @@
             
             .btn {
                 width: 100%;
-                max-width: 300px;
             }
             
             .contact-card {
-                padding: 25px 20px;
-            }
-            
-            .staff-card {
-                padding: 25px 20px;
-            }
-            
-            .directory-header h2 {
-                font-size: 1.7rem;
-            }
-            
-            .section-title {
-                font-size: 1.7rem;
-            }
-            
-            .org-image-container {
-                min-height: 300px;
-            }
-            
-            .emergency-contact {
-                padding: 25px 20px;
-            }
-            
-            .emergency-details {
                 padding: 20px;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Header - SAMA DENGAN HOMEPAGE -->
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
@@ -827,9 +604,10 @@
                     <div class="directory-section" id="org-structure">
                         <div class="directory-header">
                             <h2><i class="fas fa-sitemap"></i> Struktur Organisasi</h2>
-                            <p>Struktur organisasi Baitul Jenazah direka untuk memastikan perkhidmatan pengurusan jenazah dilaksanakan dengan cekap, berintegriti dan penuh ihsan. Setiap ahli pasukan kami memainkan peranan penting dalam memastikan kelancaran operasi dan kualiti perkhidmatan yang terbaik.</p>
+                            <p>Struktur organisasi Baitul Jenazah direka untuk memastikan perkhidmatan pengurusan jenazah dilaksanakan dengan cekap, berintegriti dan penuh ihsan.</p>
                         </div>
                         
+                        <!-- Struktur Organisasi Image - SIMPLE VERSION -->
                         <div class="org-image-container">
                             <!-- Button untuk toggle bahasa -->
                             <button class="language-toggle-btn" id="languageToggleBtn">English</button>
@@ -847,68 +625,6 @@
                                  id="orgImageEN">
                             
                             <p class="image-caption" id="imageCaption">Struktur organisasi Baitul Jenazah (Versi Bahasa Melayu)</p>
-                            
-                            <!-- Nota: Gantikan placeholder dengan imej PNG anda -->
-                            <!-- Contoh: 
-                            <img src="media/org-structure-bm.png" alt="Struktur Organisasi" class="org-image active" id="orgImageBM">
-                            <img src="media/org-structure-en.png" alt="Organizational Structure" class="org-image hidden" id="orgImageEN">
-                            -->
-                        </div>
-                        
-                        <!-- Penerangan Staf (6 orang) -->
-                        <div class="staff-description">
-                            <h3><i class="fas fa-users"></i> Pasukan Pengurusan Baitul Jenazah</h3>
-                            <p>Pasukan pengurusan kami terdiri daripada individu yang berdedikasi dan berpengalaman dalam bidang pengurusan jenazah mengikut syariah. Setiap ahli mempunyai peranan khusus untuk memastikan organisasi berfungsi dengan lancar dan efisien.</p>
-                            
-                            <div class="staff-grid">
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                    <h4>Pengarah</h4>
-                                    <p>Bertanggungjawab ke atas halatuju strategik organisasi, memastikan semua operasi berjalan mengikut prinsip syariah dan memenuhi keperluan komuniti.</p>
-                                </div>
-                                
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-clipboard-list"></i>
-                                    </div>
-                                    <h4>Pegawai Pentadbiran</h4>
-                                    <p>Menguruskan operasi harian organisasi, dokumentasi, dan memastikan pematuhan terhadap prosedur operasi standard.</p>
-                                </div>
-                                
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-calculator"></i>
-                                    </div>
-                                    <h4>Pegawai Kewangan</h4>
-                                    <p>Mengurus kewangan organisasi, belanjawan, laporan kewangan dan memastikan ketelusan dalam semua urus niaga kewangan.</p>
-                                </div>
-                                
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-tasks"></i>
-                                    </div>
-                                    <h4>Pegawai Operasi</h4>
-                                    <p>Menyelia semua operasi pengurusan jenazah, melatih staf operasi, dan memastikan kualiti perkhidmatan yang konsisten.</p>
-                                </div>
-                                
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-laptop-code"></i>
-                                    </div>
-                                    <h4>Pegawai Teknologi Maklumat</h4>
-                                    <p>Membangun dan menyelenggara sistem teknologi organisasi, laman web, dan aplikasi untuk memudahkan urusan pelanggan.</p>
-                                </div>
-                                
-                                <div class="staff-card">
-                                    <div class="staff-icon">
-                                        <i class="fas fa-bullhorn"></i>
-                                    </div>
-                                    <h4>Eksekutif Pemasaran</h4>
-                                    <p>Mempromosikan perkhidmatan organisasi, mengurus hubungan masyarakat, dan membina rangkaian kerjasama dengan komuniti.</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     
@@ -916,7 +632,7 @@
                     <div class="directory-section" id="contact-info">
                         <div class="directory-header">
                             <h2><i class="fas fa-address-book"></i> Maklumat Hubungan</h2>
-                            <p>Hubungi kami melalui pelbagai saluran yang disediakan. Kami komited untuk memberikan respons yang pantas dan perkhidmatan yang berkualiti. Untuk kes kecemasan, pasukan kami sedia membantu 24 jam sehari, 7 hari seminggu.</p>
+                            <p>Hubungi kami melalui pelbagai saluran yang disediakan. Untuk kes kecemasan, pasukan kami sedia membantu 24 jam sehari, 7 hari seminggu.</p>
                         </div>
                         
                         <div class="contact-methods">
@@ -960,7 +676,7 @@
                         <!-- Social Media (2 sahaja) -->
                         <div class="social-media-container">
                             <h3><i class="fas fa-share-alt"></i> Ikuti Kami di Media Sosial</h3>
-                            <p>Dapatkan maklumat terkini, tip berguna, dan pengumuman penting tentang pengurusan jenazah mengikut syariah melalui media sosial kami.</p>
+                            <p>Dapatkan maklumat terkini tentang pengurusan jenazah mengikut syariah melalui media sosial kami.</p>
                             
                             <div class="social-media">
                                 <a href="#" class="social-icon facebook">
@@ -970,20 +686,15 @@
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </div>
-                            <div class="social-handles">
-                                <p><strong>Facebook:</strong> facebook.com/baituljenazah</p>
-                                <p><strong>Instagram:</strong> @baituljenazah.my</p>
-                            </div>
                         </div>
                         
                         <!-- Emergency Contact -->
                         <div class="emergency-contact">
                             <h3><i class="fas fa-exclamation-triangle"></i> Hubungi Kecemasan 24/7</h3>
-                            <p>Untuk kes kecemasan pengurusan jenazah, hubungi hotline kecemasan kami segera. Pasukan kami sedia bergerak 24 jam sehari, 7 hari seminggu tanpa mengira cuti atau waktu malam.</p>
-                            
-                            <div class="emergency-details">
+                            <p>Untuk kes kecemasan pengurusan jenazah, hubungi hotline kecemasan kami segera.</p>
+                            <div style="margin-top: 20px;">
                                 <h4><i class="fas fa-phone"></i> Hotline Kecemasan: 1-800-123-4567</h4>
-                                <p>Talian ini dikendalikan oleh petugas bertauliah yang terlatih untuk menangani situasi kecemasan. Kami akan memberikan respons segera dan menghantar pasukan ke lokasi dalam masa yang sesingkat mungkin.</p>
+                                <p>Talian ini dikendalikan oleh petugas bertauliah yang terlatih untuk menangani situasi kecemasan.</p>
                             </div>
                         </div>
                     </div>
@@ -992,7 +703,7 @@
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer - SAMA DENGAN HOMEPAGE -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -1037,7 +748,7 @@
             const orgImageEN = document.getElementById('orgImageEN');
             const imageCaption = document.getElementById('imageCaption');
             
-            // Mobile menu toggle
+            // Mobile menu toggle - SAMA DENGAN HOMEPAGE
             mobileMenuBtn.addEventListener('click', function() {
                 mainNav.classList.toggle('active');
                 mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
@@ -1045,7 +756,7 @@
                     : '<i class="fas fa-bars"></i>';
             });
             
-            // Close mobile menu when clicking on a link
+            // Close mobile menu when clicking on a link - SAMA DENGAN HOMEPAGE
             const navLinks = document.querySelectorAll('nav a');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
@@ -1054,7 +765,7 @@
                 });
             });
             
-            // Smooth scrolling for anchor links
+            // Smooth scrolling for anchor links - SAMA DENGAN HOMEPAGE
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -1071,6 +782,34 @@
                     }
                 });
             });
+            
+            // Active navigation highlighting - FIXED VERSION
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('nav a');
+                
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if(scrollY >= (sectionTop - 150)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    // Check for exact match
+                    const href = link.getAttribute('href');
+                    if(href.includes('directory.html')) {
+                        // Directory page is always active when on this page
+                        link.classList.add('active');
+                    }
+                });
+            });
+            
+            // Set directory nav as active on page load
+            document.querySelector('nav a[href*="directory.html"]').classList.add('active');
             
             // Toggle language for org structure image
             let isEnglish = false;
@@ -1094,52 +833,6 @@
                 }
                 isEnglish = !isEnglish;
             });
-            
-            // Active navigation highlighting
-            window.addEventListener('scroll', function() {
-                const sections = document.querySelectorAll('section');
-                const navLinks = document.querySelectorAll('nav a');
-                
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if(scrollY >= (sectionTop - 100)) {
-                        current = section.getAttribute('id');
-                    }
-                });
-                
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if(link.getAttribute('href').includes(current) && current !== '') {
-                        link.classList.add('active');
-                    }
-                });
-                
-                // Untuk halaman directory, set directory sebagai aktif
-                if(current === '' || current === 'home') {
-                    document.querySelector('nav a[href*="directory"]').classList.add('active');
-                }
-            });
-            
-            // Set directory nav as active on page load
-            document.querySelector('nav a[href*="directory"]').classList.add('active');
-            
-            // Adjust image container height for mobile
-            function adjustImageHeight() {
-                const orgImageContainer = document.querySelector('.org-image-container');
-                if (window.innerWidth <= 768) {
-                    orgImageContainer.style.minHeight = '350px';
-                } else if (window.innerWidth <= 992) {
-                    orgImageContainer.style.minHeight = '400px';
-                } else {
-                    orgImageContainer.style.minHeight = '450px';
-                }
-            }
-            
-            // Adjust on load and resize
-            adjustImageHeight();
-            window.addEventListener('resize', adjustImageHeight);
         });
     </script>
 </body>
