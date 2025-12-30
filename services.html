@@ -466,62 +466,6 @@
             min-height: 80px;
         }
         
-        .payment-methods {
-            display: grid;
-            gap: 15px;
-        }
-        
-        .payment-option {
-            border: 2px solid #ddd;
-            padding: 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .payment-option:hover {
-            border-color: var(--primary-color);
-        }
-        
-        .payment-option.selected {
-            border-color: var(--primary-color);
-            background-color: #f0fdf4;
-        }
-        
-        .payment-option input[type="radio"] {
-            width: 20px;
-            height: 20px;
-        }
-        
-        .payment-icon {
-            font-size: 2rem;
-        }
-        
-        .bank-list {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .bank-option {
-            border: 2px solid #ddd;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .bank-option:hover, .bank-option.selected {
-            border-color: var(--primary-color);
-            background-color: #f0fdf4;
-        }
-        
         .order-summary {
             background: #f9f9f9;
             padding: 20px;
@@ -668,10 +612,6 @@
                 grid-template-columns: 1fr;
             }
             
-            .bank-list {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
             .hero h1 {
                 font-size: 2rem;
             }
@@ -683,7 +623,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
@@ -706,7 +645,6 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="container">
             <h1>Pakej & Perkhidmatan</h1>
@@ -714,13 +652,11 @@
         </div>
     </section>
 
-    <!-- Services -->
     <section id="services">
         <div class="container">
             <h2 class="section-title">Pakej & Perkhidmatan Kami</h2>
             <p class="section-subtitle">Harga tetap dan telus mengikut syariat Islam</p>
 
-            <!-- KATEGORI 1 -->
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 1: SET KELENGKAPAN JENAZAH</h3>
                 <p class="category-desc">Barang & peralatan sahaja – tanpa servis</p>
@@ -778,7 +714,6 @@
                 </div>
             </div>
 
-            <!-- KATEGORI 2 -->
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 2: SET PENGURUSAN JENAZAH</h3>
                 <p class="category-desc">Servis mengikut syariat Islam</p>
@@ -844,7 +779,6 @@
                 </div>
             </div>
 
-            <!-- KATEGORI 3 -->
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 3: SET KUBUR & PERKUBURAN</h3>
                 <p class="category-desc">Struktur & pemasangan kubur</p>
@@ -912,7 +846,6 @@
         </div>
     </section>
 
-    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3>Troli Anda</h3>
@@ -923,448 +856,3 @@
         <div class="cart-items" id="cartItems">
             <div class="empty-cart">
                 <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
-                <p>Troli anda kosong</p>
-            </div>
-        </div>
-        <div class="cart-footer">
-            <div class="cart-total">
-                <span>Jumlah:</span>
-                <span id="cartTotal">RM 0.00</span>
-            </div>
-            <button class="btn" onclick="openCheckout()" id="checkoutBtn" disabled>
-                Teruskan ke Pembayaran
-            </button>
-        </div>
-    </div>
-
-    <!-- Checkout Modal -->
-    <div class="modal" id="checkoutModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Pembayaran</h3>
-                <button class="close-cart" onclick="closeCheckout()">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="checkout-steps">
-                    <div class="step active" id="step1">1. Maklumat</div>
-                    <div class="step" id="step2">2. Pembayaran</div>
-                    <div class="step" id="step3">3. Selesai</div>
-                </div>
-
-                <!-- Step 1: Customer Info -->
-                <div id="stepContent1">
-                    <h3>Maklumat Pembeli</h3>
-                    <div class="form-group">
-                        <label>Nama Penuh *</label>
-                        <input type="text" id="customerName" placeholder="Nama penuh anda" required>
-                    </div>
-                    <div class="form-group">
-                        <label>No. Telefon *</label>
-                        <input type="tel" id="customerPhone" placeholder="012-345 6789" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="email@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Alamat Lengkap *</label>
-                        <textarea id="customerAddress" placeholder="No rumah, jalan, taman, poskod, bandar, negeri" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Nota Tambahan (jika ada)</label>
-                        <textarea id="customerNotes" placeholder="Maklumat tambahan atau permintaan khas"></textarea>
-                    </div>
-
-                    <div class="order-summary">
-                        <h4>Ringkasan Pesanan</h4>
-                        <div id="orderSummaryItems"></div>
-                        <div class="summary-item summary-total">
-                            <span>Jumlah Keseluruhan:</span>
-                            <span id="summaryTotal">RM 0.00</span>
-                        </div>
-                    </div>
-
-                    <button class="btn" onclick="goToStep(2)">Teruskan ke Pembayaran</button>
-                </div>
-
-                <!-- Step 2: Payment Method -->
-                <div id="stepContent2" style="display: none;">
-                    <h3>Maklumat Kad Kredit/Debit</h3>
-                    <p style="color: #666; margin-bottom: 20px;">
-                        <i class="fas fa-lock"></i> Pembayaran selamat dan dilindungi
-                    </p>
-                    
-                    <!-- Card Details -->
-                    <div id="cardDetails">
-                        <div class="form-group">
-                            <label>Nombor Kad *</label>
-                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nama Pemegang Kad *</label>
-                            <input type="text" id="cardName" placeholder="Nama seperti di kad" required>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <div class="form-group">
-                                <label>Tarikh Luput *</label>
-                                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
-                            </div>
-                            <div class="form-group">
-                                <label>CVV *</label>
-                                <input type="text" id="cardCVV" placeholder="123" maxlength="3" required>
-                            </div>
-                        </div>
-                        
-                        <div style="background: #f0fdf4; border: 1px solid #88E788; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                            <p style="margin: 0; font-size: 0.9rem;">
-                                <i class="fas fa-shield-alt" style="color: #88E788;"></i> 
-                                Maklumat kad anda dilindungi dengan enkripsi SSL 256-bit
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="btn-group">
-                        <button class="btn btn-secondary" onclick="goToStep(1)">Kembali</button>
-                        <button class="btn" onclick="processPayment()" id="payBtn">Bayar Sekarang</button>
-                    </div>
-                </div>
-
-                <!-- Step 3: Success -->
-                <div id="stepContent3" style="display: none;">
-                    <div class="success-message">
-                        <div class="success-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <h3>Pembayaran Berjaya!</h3>
-                        <p>Terima kasih atas pembelian anda. Pasukan kami akan menghubungi anda tidak lama lagi.</p>
-                        
-                        <div class="transaction-details">
-                            <h4>Butiran Transaksi</h4>
-                            <p><strong>No. Rujukan:</strong> <span id="refNumber"></span></p>
-                            <p><strong>Tarikh & Masa:</strong> <span id="transDate"></span></p>
-                            <p><strong>Kaedah Bayaran:</strong> <span id="paymentMethod"></span></p>
-                            <p><strong>Kad:</strong> <span id="cardInfo"></span></p>
-                            <p><strong>Jumlah Dibayar:</strong> <span id="paidAmount"></span></p>
-                        </div>
-
-                        <div class="btn-group">
-                            <button class="btn" onclick="printReceipt()">
-                                <i class="fas fa-print"></i> Cetak Resit
-                            </button>
-                            <button class="btn btn-secondary" onclick="window.location.reload()">
-                                Tutup
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">BaitulJenazah</div>
-                    <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <h3>Pautan Pantas</h3>
-                    <ul>
-                        <li><a href="https://baituljenazah.github.io/">Home</a></li>
-                        <li><a href="https://baituljenazah.github.io/directory.html">Directory</a></li>
-                        <li><a href="https://baituljenazah.github.io/services.html">Services</a></li>
-                        <li><a href="https://baituljenazah.github.io/simulations.html">Simulations</a></li>
-                        <li><a href="https://baituljenazah.github.io/branch.html">Branch</a></li>
-                        <li><a href="https://baituljenazah.github.io/faq.html">FAQ</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-contact">
-                    <h3>Hubungi Kami</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
-                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
-                    <p><i class="fas fa-mobile-alt"></i> 012-345 6789</p>
-                    <p><i class="fas fa-envelope"></i> info@baituljenazah.my</p>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        let cart = [];
-
-        // Format card number with spaces
-        document.addEventListener('DOMContentLoaded', function() {
-            const cardNumberInput = document.getElementById('cardNumber');
-            const cardExpiryInput = document.getElementById('cardExpiry');
-            
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\s/g, '');
-                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
-                    e.target.value = formattedValue;
-                });
-            }
-            
-            if (cardExpiryInput) {
-                cardExpiryInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length >= 2) {
-                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
-                    }
-                    e.target.value = value;
-                });
-            }
-        });
-
-        function addToCart(id, name, price, category) {
-            const existingItem = cart.find(item => item.id === id);
-            
-            if (existingItem) {
-                alert('Item ini sudah ada dalam troli!');
-                return;
-            }
-
-            cart.push({ id, name, price, category });
-            updateCart();
-            
-            const cartIcon = document.querySelector('.cart-icon');
-            cartIcon.style.transform = 'scale(1.2)';
-            setTimeout(() => {
-                cartIcon.style.transform = 'scale(1)';
-            }, 300);
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCart();
-        }
-
-        function updateCart() {
-            const cartItems = document.getElementById('cartItems');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotal = document.getElementById('cartTotal');
-            const checkoutBtn = document.getElementById('checkoutBtn');
-            
-            cartCount.textContent = cart.length;
-            
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
-                        <p>Troli anda kosong</p>
-                    </div>
-                `;
-                checkoutBtn.disabled = true;
-            } else {
-                let total = 0;
-                cartItems.innerHTML = cart.map(item => {
-                    total += item.price;
-                    return `
-                        <div class="cart-item">
-                            <div class="cart-item-info">
-                                <h4>${item.name}</h4>
-                                <p>${item.category}</p>
-                            </div>
-                            <div>
-                                <span class="cart-item-price">RM ${item.price.toLocaleString()}</span>
-                                <button class="remove-item" onclick="removeFromCart('${item.id}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-                cartTotal.textContent = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-                checkoutBtn.disabled = false;
-            }
-        }
-
-        function toggleCart() {
-            const cartSidebar = document.getElementById('cartSidebar');
-            cartSidebar.classList.toggle('active');
-        }
-
-        function openCheckout() {
-            if (cart.length === 0) return;
-            
-            const modal = document.getElementById('checkoutModal');
-            modal.classList.add('active');
-            toggleCart();
-            updateOrderSummary();
-        }
-
-        function closeCheckout() {
-            const modal = document.getElementById('checkoutModal');
-            modal.classList.remove('active');
-            goToStep(1);
-        }
-
-        function updateOrderSummary() {
-            const summaryItems = document.getElementById('orderSummaryItems');
-            const summaryTotal = document.getElementById('summaryTotal');
-            
-            let total = 0;
-            summaryItems.innerHTML = cart.map(item => {
-                total += item.price;
-                return `
-                    <div class="summary-item">
-                        <span>${item.name}</span>
-                        <span>RM ${item.price.toLocaleString()}</span>
-                    </div>
-                `;
-            }).join('');
-            
-            summaryTotal.textContent = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-        }
-
-        function goToStep(step) {
-            document.getElementById('stepContent1').style.display = 'none';
-            document.getElementById('stepContent2').style.display = 'none';
-            document.getElementById('stepContent3').style.display = 'none';
-            
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step2').classList.remove('active');
-            document.getElementById('step3').classList.remove('active');
-            
-            document.getElementById('stepContent' + step).style.display = 'block';
-            document.getElementById('step' + step).classList.add('active');
-            
-            if (step === 2) {
-                const name = document.getElementById('customerName').value;
-                const phone = document.getElementById('customerPhone').value;
-                const address = document.getElementById('customerAddress').value;
-                
-                if (!name || !phone || !address) {
-                    alert('Sila lengkapkan maklumat yang diperlukan');
-                    goToStep(1);
-                    return;
-                }
-            }
-        }
-
-        async function processPayment() {
-            // Validate card details
-            const cardNumber = document.getElementById('cardNumber').value;
-            const cardName = document.getElementById('cardName').value;
-            const cardExpiry = document.getElementById('cardExpiry').value;
-            const cardCVV = document.getElementById('cardCVV').value;
-            
-            if (!cardNumber || !cardName || !cardExpiry || !cardCVV) {
-                alert('Sila lengkapkan maklumat kad');
-                return;
-            }
-            
-            // Show processing
-            document.getElementById('payBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-            document.getElementById('payBtn').disabled = true;
-            
-            // Simulate payment delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-            // Save transaction to storage
-            await saveTransaction();
-            
-            // Complete payment
-            completePayment();
-        }
-
-        async function saveTransaction() {
-            try {
-                const refNumber = 'BJ' + Date.now().toString().slice(-10);
-                const now = new Date();
-                
-                // Get customer info
-                const customerData = {
-                    name: document.getElementById('customerName').value,
-                    phone: document.getElementById('customerPhone').value,
-                    email: document.getElementById('customerEmail').value,
-                    address: document.getElementById('customerAddress').value,
-                    notes: document.getElementById('customerNotes').value
-                };
-                
-                // Get card info (last 4 digits only for security)
-                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-                const cardLast4 = cardNumber.slice(-4);
-                const cardName = document.getElementById('cardName').value;
-                
-                // Calculate total
-                const total = cart.reduce((sum, item) => sum + item.price, 0);
-                
-                // Create transaction object
-                const transaction = {
-                    refNumber: refNumber,
-                    timestamp: now.toISOString(),
-                    date: now.toLocaleDateString('ms-MY', { 
-                        day: '2-digit', 
-                        month: 'long', 
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    }),
-                    customer: customerData,
-                    items: cart,
-                    total: total,
-                    payment: {
-                        method: 'Credit/Debit Card',
-                        cardLast4: cardLast4,
-                        cardName: cardName
-                    },
-                    status: 'completed'
-                };
-                
-                // Save to storage with shared access (so admin can view)
-                await window.storage.set(`transaction:${refNumber}`, JSON.stringify(transaction), true);
-                
-                console.log('Transaction saved:', refNumber);
-                
-            } catch (error) {
-                console.error('Error saving transaction:', error);
-            }
-        }
-
-        function completePayment() {
-            const refNumber = 'BJ' + Date.now().toString().slice(-10);
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('ms-MY', { 
-                day: '2-digit', 
-                month: 'long', 
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-            
-            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-            const cardLast4 = cardNumber.slice(-4);
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            
-            document.getElementById('refNumber').textContent = refNumber;
-            document.getElementById('transDate').textContent = dateStr;
-            document.getElementById('paymentMethod').textContent = 'Credit/Debit Card';
-            document.getElementById('cardInfo').textContent = `**** **** **** ${cardLast4}`;
-            document.getElementById('paidAmount').textContent = `RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`;
-            
-            goToStep(3);
-            
-            cart = [];
-            updateCart();
-        }
-
-        function printReceipt() {
-            window.print();
-        }
-
-        updateCart();
-    </script>
-</body>
-</html>
