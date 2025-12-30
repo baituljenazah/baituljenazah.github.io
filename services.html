@@ -930,7 +930,6 @@
                         <label for="paymentMethod">Kaedah Pembayaran</label>
                         <select id="paymentMethod">
                             <option value="credit_card">Kad Kredit / Debit</option>
-                            <option value="online_transfer">Bank Transfer Online</option>
                         </select>
                     </div>
                     
@@ -985,9 +984,9 @@
                     </div>
                 </div>
 
-                <!-- Step 4: Success (dipopulate oleh JavaScript) -->
+                <!-- Step 4: Success -->
                 <div id="step4Content" class="checkout-step" style="display:none">
-                    <div id="modalBody"></div>
+                    <div id="successContent"></div>
                 </div>
             </div>
         </div>
@@ -1053,10 +1052,7 @@
             });
             saveCart();
             
-            // Show confirmation
             alert(name + ' telah ditambah ke troli.');
-            
-            // Open cart sidebar
             toggleCart();
         }
 
@@ -1072,17 +1068,14 @@
             const cartCount = document.getElementById('cartCount');
             const cartTotal = document.getElementById('cartTotal');
             
-            // Update cart count
             cartCount.textContent = cart.length;
             
-            // Update cart items
             if (cart.length === 0) {
                 cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i><p>Troli anda kosong</p></div>';
                 cartTotal.textContent = 'RM 0.00';
                 return;
             }
             
-            // Calculate total
             let total = 0;
             cartItems.innerHTML = '';
             
@@ -1179,76 +1172,59 @@
             if (step === 3) {
                 updateConfirmSections();
             }
-            
-            // Update button visibility
-            const backBtn = document.querySelector('.btn-secondary');
-            const nextBtn = document.querySelector('.btn-primary');
-            
-            if (step === 3) {
-                nextBtn.textContent = 'Selesaikan Pembayaran';
-                nextBtn.onclick = processPayment;
-            } else {
-                nextBtn.textContent = 'Seterusnya';
-                nextBtn.onclick = () => nextStep(step + 1);
-            }
         }
 
         // Update confirmation sections
         function updateConfirmSections() {
-            const customer = {
-                name: document.getElementById('customerName').value,
-                phone: document.getElementById('customerPhone').value,
-                email: document.getElementById('customerEmail').value,
-                address: document.getElementById('customerAddress').value,
-                notes: document.getElementById('customerNotes').value
-            };
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerNotes = document.getElementById('customerNotes').value;
             
-            const payment = {
-                method: document.getElementById('paymentMethod').value,
-                cardName: document.getElementById('cardName').value,
-                cardNumber: document.getElementById('cardNumber').value,
-                cardExpiry: document.getElementById('cardExpiry').value
-            };
+            const cardName = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value;
             
             // Update customer info
             document.getElementById('confirmCustomer').innerHTML = `
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Nama:</span>
-                    <span>${customer.name}</span>
+                    <span>${customerName}</span>
                 </div>
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Telefon:</span>
-                    <span>${customer.phone}</span>
+                    <span>${customerPhone}</span>
                 </div>
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Email:</span>
-                    <span>${customer.email || '-'}</span>
+                    <span>${customerEmail || '-'}</span>
                 </div>
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Alamat:</span>
-                    <span>${customer.address}</span>
+                    <span>${customerAddress}</span>
                 </div>
-                ${customer.notes ? `
-                <div class="detail-row">
+                ${customerNotes ? `
+                <div class="summary-item">
                     <span>Nota:</span>
-                    <span>${customer.notes}</span>
+                    <span>${customerNotes}</span>
                 </div>
                 ` : ''}
             `;
             
             // Update payment info
             document.getElementById('confirmPayment').innerHTML = `
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Kaedah:</span>
-                    <span>${payment.method === 'credit_card' ? 'Kad Kredit/Debit' : 'Bank Transfer Online'}</span>
+                    <span>Kad Kredit/Debit</span>
                 </div>
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Nama Kad:</span>
-                    <span>${payment.cardName}</span>
+                    <span>${cardName}</span>
                 </div>
-                <div class="detail-row">
+                <div class="summary-item">
                     <span>Nombor Kad:</span>
-                    <span>**** **** **** ${payment.cardNumber.slice(-4)}</span>
+                    <span>**** **** **** ${cardNumber.slice(-4)}</span>
                 </div>
             `;
             
@@ -1287,7 +1263,7 @@
             }
             
             if (!/^\d{10,11}$/.test(phone.replace(/\D/g, ''))) {
-                alert('Sila masukkan nombor telefon yang sah.');
+                alert('Sila masukkan nombor telefon yang sah (10-11 digit).');
                 return false;
             }
             
@@ -1299,14 +1275,15 @@
             const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
             const expiry = document.getElementById('cardExpiry').value;
             const cvv = document.getElementById('cardCVV').value;
+            const cardName = document.getElementById('cardName').value;
             
-            if (!cardNumber || !expiry || !cvv) {
+            if (!cardName || !cardNumber || !expiry || !cvv) {
                 alert('Sila isi semua maklumat kad pembayaran.');
                 return false;
             }
             
             if (!/^\d{16}$/.test(cardNumber)) {
-                alert('Sila masukkan nombor kad yang sah (16 digit).');
+                alert('Sila masukkan nombor kad yang sah (16 digit tanpa ruang).');
                 return false;
             }
             
@@ -1315,14 +1292,9 @@
                 return false;
             }
             
-            // Validate expiry date
-            const [month, year] = expiry.split('/');
-            const currentYear = new Date().getFullYear() % 100;
-            const currentMonth = new Date().getMonth() + 1;
-            
-            if (parseInt(year) < currentYear || 
-                (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
-                alert('Kad telah tamat tempoh.');
+            // Validate expiry date format
+            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                alert('Format tarikh luput tidak sah. Gunakan format MM/YY.');
                 return false;
             }
             
@@ -1330,14 +1302,15 @@
         }
 
         // Process payment and save transaction
-        async function processPayment() {
+        function processPayment() {
             // Show loading
             const payBtn = document.querySelector('.btn-primary');
             const originalText = payBtn.innerHTML;
             payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             payBtn.disabled = true;
 
-            try {
+            // Simulate API call delay
+            setTimeout(() => {
                 // Generate reference number
                 const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
                 
@@ -1351,7 +1324,7 @@
                 };
                 
                 const payment = {
-                    method: document.getElementById('paymentMethod').value,
+                    method: 'credit_card',
                     cardName: document.getElementById('cardName').value,
                     cardNumber: document.getElementById('cardNumber').value,
                     cardLast4: document.getElementById('cardNumber').value.slice(-4),
@@ -1374,21 +1347,16 @@
                     status: 'Selesai'
                 };
                 
-                // Simulate API call delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
                 // Save to localStorage
                 saveTransaction(transaction);
                 
                 // Show success message
                 showSuccess(transaction);
                 
-            } catch (error) {
-                console.error('Payment error:', error);
-                alert('Ralat semasa memproses pembayaran. Sila cuba lagi.');
+                // Reset button
                 payBtn.innerHTML = originalText;
                 payBtn.disabled = false;
-            }
+            }, 1500);
         }
 
         // Save transaction to storage
@@ -1405,9 +1373,14 @@
 
         // Show success message
         function showSuccess(transaction) {
-            const modalBody = document.getElementById('modalBody');
+            // Hide all steps and show success
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.checkout-step').forEach(s => s.style.display = 'none');
             
-            modalBody.innerHTML = `
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step4Content').style.display = 'block';
+            
+            document.getElementById('successContent').innerHTML = `
                 <div class="success-message">
                     <div class="success-icon">
                         <i class="fas fa-check-circle"></i>
@@ -1432,23 +1405,17 @@
                             <i class="fas fa-print"></i> Cetak Resit
                         </button>
                         <button class="btn btn-secondary" onclick="completeOrder()" style="width: auto; padding: 12px 30px; margin-left: 10px;">
-                            <i class="fas fa-home"></i> Kembali ke Laman Utama
+                            <i class="fas fa-home"></i> Selesai
                         </button>
                     </div>
                 </div>
             `;
-            
-            // Move to step 4
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.checkout-step').forEach(s => s.style.display = 'none');
-            document.getElementById('step4').classList.add('active');
-            document.getElementById('step4Content').style.display = 'block';
         }
 
         // Complete order
         function completeOrder() {
             closeCheckout();
-            toggleCart(); // Close cart sidebar
+            toggleCart();
             alert('Terima kasih! Pesanan anda telah direkodkan.');
         }
 
