@@ -3,100 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cawangan - Baitul Jenazah</title>
-    
-    <link rel="stylesheet" href="style.css">
-    
+    <title>Branch - Baitul Jenazah</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
-        /* CSS tambahan khusus untuk page Branch supaya nampak kemas */
-        .search-section {
-            padding: 40px 0;
-            text-align: center;
+        /* Menggunakan CSS yang sama dengan Directory/Services */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        .search-box {
+        
+        :root {
+            --primary-color: #88E788;
+            --secondary-color: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: #f9f9f9;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Lora', serif;
+            font-weight: 600;
+        }
+        
+        .container {
             width: 100%;
-            max-width: 600px;
-            padding: 15px 25px;
-            border-radius: 30px;
-            border: 2px solid var(--primary-color);
-            font-size: 1rem;
-            outline: none;
-            box-shadow: var(--shadow);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
+        
+        /* Header */
+        header {
+            background-color: var(--secondary-color);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .logo {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .logo span { color: var(--text-dark); }
+        
+        nav ul { display: flex; gap: 30px; list-style: none; }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover, nav a.active { color: var(--primary-color); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            text-align: center;
+            color: var(--text-dark);
+        }
+        
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+
+        /* Branch Content */
+        .branch-section { padding: 80px 0; }
 
         .branch-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            padding-bottom: 60px;
+            gap: 30px;
+            margin-top: 40px;
         }
 
         .branch-card {
             background: white;
-            border-radius: 10px;
-            padding: 25px;
+            padding: 30px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
-            border-top: 6px solid var(--primary-color);
+            border-top: 5px solid var(--primary-color);
             transition: transform 0.3s ease;
         }
 
-        .branch-card:hover {
-            transform: translateY(-5px);
-        }
+        .branch-card:hover { transform: translateY(-5px); }
 
         .branch-card h3 {
+            color: var(--primary-color);
             margin-bottom: 15px;
-            color: var(--text-dark);
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .branch-card h3 i {
-            color: var(--primary-color);
-        }
+        .branch-card ul { list-style: none; }
 
-        .branch-list {
-            list-style: none;
-        }
-
-        .branch-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid #f5f5f5;
+        .branch-card ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
-            align-items: center;
         }
 
-        .branch-list li:last-child {
-            border-bottom: none;
-        }
+        .branch-card ul li:last-child { border-bottom: none; }
 
-        .location-tag {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .phone-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            background: #f0fff0;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .phone-link:hover {
-            background: var(--primary-color);
+        /* Footer */
+        footer {
+            background-color: #333;
             color: white;
+            padding: 60px 0 30px;
+            text-align: center;
+            margin-top: 50px;
         }
     </style>
 </head>
@@ -105,113 +147,69 @@
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
-            <div class="nav-cart-wrapper">
-                <nav>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="directory.html">Directory</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="simulations.html">Simulations</a></li>
-                        <li><a href="branch.html" class="active">Branch</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="admin.html">Admin</a></li>
-                    </ul>
-                </nav>
-            </div>
+            <nav>
+                <ul>
+                    <li><a href="https://baituljenazah.github.io/">Home</a></li>
+                    <li><a href="https://baituljenazah.github.io/directory.html">Directory</a></li>
+                    <li><a href="https://baituljenazah.github.io/services.html">Services</a></li>
+                    <li><a href="https://baituljenazah.github.io/simulations.html">Simulations</a></li>
+                    <li><a href="https://baituljenazah.github.io/branch.html" class="active">Branch</a></li>
+                    <li><a href="https://baituljenazah.github.io/faq.html">FAQ</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <h1>Cawangan Baitul Jenazah</h1>
-            <p>Kami mempunyai wakil pengurusan jenazah bertauliah di setiap negeri bagi memudahkan urusan anda.</p>
+            <h1>Cawangan Kami</h1>
+            <p>Kami mempunyai wakil di setiap negeri untuk memudahkan urusan anda dengan segera.</p>
         </div>
     </section>
 
-    <div class="container">
-        <div class="search-section">
-            <input type="text" id="branchSearch" class="search-box" placeholder="Cari negeri atau bandar (cth: Perak, Ipoh, Shah Alam)..." onkeyup="searchBranch()">
-        </div>
-
-        <div class="branch-grid" id="branchGrid">
-            
+    <main class="container branch-section">
+        <div class="branch-grid">
             <div class="branch-card">
                 <h3><i class="fas fa-map-marker-alt"></i> PERAK</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Ipoh (HQ)</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Taiping</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Teluk Intan</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
+                <ul>
+                    <li><span>Ipoh (Pusat)</span> <strong>05-123 4567</strong></li>
+                    <li><span>Taiping</span> <strong>05-789 1011</strong></li>
+                    <li><span>Manjung</span> <strong>05-222 3333</strong></li>
                 </ul>
             </div>
 
             <div class="branch-card">
                 <h3><i class="fas fa-map-marker-alt"></i> SELANGOR</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Shah Alam</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Gombak</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Kajang</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
+                <ul>
+                    <li><span>Shah Alam</span> <strong>03-5511 2233</strong></li>
+                    <li><span>Gombak</span> <strong>03-6188 4455</strong></li>
+                    <li><span>Klang</span> <strong>03-3344 5566</strong></li>
                 </ul>
             </div>
 
             <div class="branch-card">
                 <h3><i class="fas fa-map-marker-alt"></i> JOHOR</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Johor Bahru</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Batu Pahat</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Muar</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
+                <ul>
+                    <li><span>Johor Bahru</span> <strong>07-223 4455</strong></li>
+                    <li><span>Batu Pahat</span> <strong>07-431 6677</strong></li>
                 </ul>
             </div>
 
             <div class="branch-card">
                 <h3><i class="fas fa-map-marker-alt"></i> KEDAH</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Alor Setar</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Sungai Petani</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Langkawi</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
+                <ul>
+                    <li><span>Alor Setar</span> <strong>04-733 8899</strong></li>
+                    <li><span>Sungai Petani</span> <strong>04-421 0011</strong></li>
                 </ul>
             </div>
-
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> PULAU PINANG</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Georgetown</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Butterworth</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                </ul>
-            </div>
-
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> KELANTAN</h3>
-                <ul class="branch-list">
-                    <li><span class="location-tag">Kota Bharu</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                    <li><span class="location-tag">Pasir Mas</span> <a href="tel:0123456789" class="phone-link">Hubungi</a></li>
-                </ul>
-            </div>
-
         </div>
-    </div>
+    </main>
 
     <footer>
         <div class="container">
-            <div class="footer-logo">Baitul<span>Jenazah</span></div>
-            <p>&copy; 2024 Baitul Jenazah. Semua hak terpelihara.</p>
+            <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
         </div>
     </footer>
 
-    <script>
-        // Fungsi untuk mencari cawangan secara real-time
-        function searchBranch() {
-            let input = document.getElementById('branchSearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('branch-card');
-
-            for (let i = 0; i < cards.length; i++) {
-                let text = cards[i].innerText.toLowerCase();
-                if (text.includes(input)) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
-            }
-        }
-    </script>
 </body>
 </html>
