@@ -3,622 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perkhidmatan & Pembayaran - Baitul Jenazah</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Services - Baitul Jenazah</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary-color: #88E788;
-            --secondary-color: #FFFFFF;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --danger: #e74c3c;
-            --success: #27ae60;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: #f9f9f9;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Lora', serif;
-            font-weight: 600;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header */
-        header {
-            background-color: var(--secondary-color);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .nav-cart-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-        
-        .logo {
-            font-family: 'Lora', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .logo span {
-            color: var(--text-dark);
-        }
-        
-        nav ul {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-        
-        nav a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav a:hover, nav a.active {
-            color: var(--primary-color);
-        }
-        
-        .cart-icon {
-            position: relative;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-dark);
-        }
-        
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background-color: var(--danger);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-        
-        /* Hero */
-        .hero {
-            background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            padding: 80px 0;
-            text-align: center;
-            color: var(--text-dark);
-        }
-        
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        /* Services Section */
-        #services {
-            padding: 80px 0;
-            background-color: var(--secondary-color);
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-light);
-            font-size: 1.1rem;
-            margin-bottom: 50px;
-        }
-        
-        .category-section {
-            margin-bottom: 60px;
-        }
-        
-        .category-title {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            border-left: 5px solid var(--primary-color);
-            padding-left: 15px;
-        }
-        
-        .category-desc {
-            color: var(--text-light);
-            margin-bottom: 30px;
-            padding-left: 20px;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .service-card {
-            background: #f9f9f9;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: var(--text-dark);
-        }
-        
-        .price {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-        
-        .service-card ul {
-            list-style: none;
-            margin-bottom: 25px;
-        }
-        
-        .service-card ul li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-        }
-        
-        .service-card ul li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: var(--text-dark);
-            padding: 12px 28px;
-            border-radius: 4px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            background-color: #78d178;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-        
-        .emergency-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-        
-        .emergency-card h3 {
-            color: white;
-            margin-bottom: 15px;
-        }
-        
-        .emergency-card .price {
-            color: white;
-        }
-        
-        .emergency-card .btn {
-            background-color: white;
-            color: #667eea;
-        }
-        
-        .note-box {
-            background-color: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 20px;
-            margin-top: 40px;
-            border-radius: 4px;
-        }
-        
-        /* Cart Sidebar */
-        .cart-sidebar {
-            position: fixed;
-            right: -400px;
-            top: 0;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-            transition: right 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .cart-sidebar.active {
-            right: 0;
-        }
-        
-        .cart-header {
-            padding: 20px;
-            background-color: var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .cart-header h3 {
-            margin: 0;
-            color: var(--text-dark);
-        }
-        
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-dark);
-        }
-        
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        
-        .cart-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-        }
-        
-        .cart-item-info h4 {
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        
-        .cart-item-info p {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            margin: 0;
-        }
-        
-        .cart-item-price {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .remove-item {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        
-        .cart-footer {
-            padding: 20px;
-            border-top: 2px solid #eee;
-        }
-        
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-        
-        .empty-cart {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-light);
-        }
-        
-        /* Checkout Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 2000;
-            overflow-y: auto;
-        }
-        
-        .modal.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            background: white;
-            width: 90%;
-            max-width: 600px;
-            border-radius: 8px;
-            margin: 20px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .modal-header {
-            padding: 20px;
-            background-color: var(--primary-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .modal-header h3 {
-            margin: 0;
-        }
-        
-        .modal-body {
-            padding: 30px;
-        }
-        
-        .checkout-steps {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
-        }
-        
-        .step {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            background: #f9f9f9;
-            margin: 0 5px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        
-        .step.active {
-            background: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .order-summary {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .summary-total {
-            border-top: 2px solid #ddd;
-            padding-top: 10px;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-secondary {
-            background-color: #6c757d;
-            color: white;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #5a6268;
-        }
-        
-        /* Success Message */
-        .success-message {
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .success-icon {
-            font-size: 4rem;
-            color: var(--success);
-            margin-bottom: 20px;
-        }
-        
-        .success-message h3 {
-            color: var(--success);
-            margin-bottom: 15px;
-        }
-        
-        .transaction-details {
-            background: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            text-align: left;
-        }
-        
-        .transaction-details p {
-            margin: 10px 0;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #333;
-            color: var(--secondary-color);
-            padding: 60px 0 30px;
-            margin-top: 80px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-logo {
-            font-family: 'Lora', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-        
-        .footer-links h3, .footer-contact h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-        
-        .footer-links ul {
-            list-style: none;
-        }
-        
-        .footer-links ul li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links ul li a {
-            color: var(--secondary-color);
-            transition: color 0.3s;
-        }
-        
-        .footer-links ul li a:hover {
-            color: var(--primary-color);
-        }
-        
-        .footer-contact p {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: var(--secondary-color);
-        }
-        
-        .footer-contact i {
-            color: var(--primary-color);
-            margin-top: 5px;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid #444;
-            font-size: 0.9rem;
-            color: #aaa;
-        }
-        
-        /* Responsive */
+            --primary: #88E788; --secondary: #FFF; --dark: #333; --light: #666;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08); --danger: #e74c3c; --success: #27ae60;
+        }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--dark); background: #f9f9f9; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Lora', serif; font-weight: 600; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { background: var(--secondary); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+        .logo { font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 700; color: var(--primary); }
+        .logo span { color: var(--dark); }
+        nav ul { display: flex; gap: 30px; list-style: none; }
+        nav a { text-decoration: none; color: var(--dark); font-weight: 500; transition: color 0.3s; }
+        nav a:hover, nav a.active { color: var(--primary); }
+        .cart-icon { position: relative; font-size: 1.5rem; cursor: pointer; color: var(--dark); }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; }
+        .hero { background: linear-gradient(rgba(136,231,136,0.9), rgba(136,231,136,0.8)); padding: 80px 0; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; max-width: 800px; margin: 0 auto; }
+        #services { padding: 80px 0; background: var(--secondary); }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
+        .section-subtitle { text-align: center; color: var(--light); font-size: 1.1rem; margin-bottom: 50px; }
+        .category-section { margin-bottom: 60px; }
+        .category-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; border-left: 5px solid var(--primary); padding-left: 15px; }
+        .category-desc { color: var(--light); margin-bottom: 30px; padding-left: 20px; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 30px; }
+        .service-card { background: #f9f9f9; padding: 30px; border-radius: 8px; box-shadow: var(--shadow); transition: transform 0.3s; }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .price { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
+        .service-card ul { list-style: none; margin-bottom: 25px; }
+        .service-card ul li { padding: 8px 0; padding-left: 25px; position: relative; }
+        .service-card ul li:before { content: "✓"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+        .btn { display: inline-block; background: var(--primary); color: var(--dark); padding: 12px 28px; border-radius: 4px; font-weight: 500; border: none; cursor: pointer; transition: all 0.3s; font-size: 1rem; width: 100%; }
+        .btn:hover { background: #78d178; transform: translateY(-2px); box-shadow: var(--shadow); }
+        .btn:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .emergency-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; box-shadow: var(--shadow); text-align: center; }
+        .emergency-card h3, .emergency-card .price { color: white; }
+        .emergency-card .btn { background: white; color: #667eea; }
+        .note-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 20px; margin-top: 40px; border-radius: 4px; }
+        .cart-sidebar { position: fixed; right: -400px; top: 0; width: 400px; height: 100vh; background: white; box-shadow: -2px 0 10px rgba(0,0,0,0.1); transition: right 0.3s; z-index: 1000; display: flex; flex-direction: column; }
+        .cart-sidebar.active { right: 0; }
+        .cart-header { padding: 20px; background: var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .cart-header h3 { margin: 0; }
+        .close-cart { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .cart-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .cart-item { padding: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: start; }
+        .cart-item-info h4 { font-size: 1rem; margin-bottom: 5px; }
+        .cart-item-info p { color: var(--light); font-size: 0.9rem; margin: 0; }
+        .cart-item-price { font-weight: 700; color: var(--primary); }
+        .remove-item { background: none; border: none; color: var(--danger); cursor: pointer; margin-left: 10px; }
+        .cart-footer { padding: 20px; border-top: 2px solid #eee; }
+        .cart-total { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; }
+        .empty-cart { text-align: center; padding: 40px 20px; color: var(--light); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; overflow-y: auto; }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; width: 90%; max-width: 600px; border-radius: 8px; margin: 20px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { padding: 20px; background: var(--primary); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .modal-body { padding: 30px; }
+        .checkout-steps { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .step { flex: 1; text-align: center; padding: 10px; background: #f9f9f9; margin: 0 5px; border-radius: 4px; font-size: 0.9rem; }
+        .step.active { background: var(--primary); font-weight: 600; }
+        .checkout-step { display: none; }
+        .checkout-step.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; font-family: 'Inter', sans-serif; }
+        .form-group textarea { resize: vertical; min-height: 80px; }
+        .order-summary { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+        .summary-item { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .summary-total { border-top: 2px solid #ddd; padding-top: 10px; font-weight: 700; font-size: 1.2rem; }
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .success-message { text-align: center; padding: 40px; }
+        .success-icon { font-size: 4rem; color: var(--success); margin-bottom: 20px; }
+        .success-message h3 { color: var(--success); margin-bottom: 15px; }
+        .transaction-details { background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: left; }
+        .transaction-details p { margin: 10px 0; }
+        footer { background: #333; color: var(--secondary); padding: 60px 0 30px; margin-top: 80px; }
+        .footer-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 40px; }
+        .footer-logo { font-family: 'Lora', serif; font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 20px; }
+        .footer-links h3, .footer-contact h3 { font-size: 1.3rem; margin-bottom: 20px; color: var(--primary); }
+        .footer-links ul { list-style: none; }
+        .footer-links ul li { margin-bottom: 12px; }
+        .footer-links ul li a { color: var(--secondary); text-decoration: none; transition: color 0.3s; }
+        .footer-links ul li a:hover { color: var(--primary); }
+        .footer-contact p { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 15px; }
+        .footer-contact i { color: var(--primary); margin-top: 5px; }
+        .copyright { text-align: center; padding-top: 30px; border-top: 1px solid #444; font-size: 0.9rem; color: #aaa; }
         @media (max-width: 768px) {
-            .nav-cart-wrapper {
-                gap: 20px;
-            }
-            
-            .cart-sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
+            nav ul { gap: 15px; font-size: 0.9rem; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .services-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+            .footer-content { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -626,16 +113,14 @@
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
-            <div class="nav-cart-wrapper">
+            <div style="display: flex; align-items: center; gap: 40px;">
                 <nav>
                     <ul>
-                        <li><a href="https://baituljenazah.github.io/">Home</a></li>
-                        <li><a href="https://baituljenazah.github.io/directory.html">Directory</a></li>
-                        <li><a href="https://baituljenazah.github.io/services.html" class="active">Services</a></li>
-                        <li><a href="https://baituljenazah.github.io/simulations.html">Simulations</a></li>
-                        <li><a href="https://baituljenazah.github.io/branch.html">Branch</a></li>
-                        <li><a href="https://baituljenazah.github.io/faq.html">FAQ</a></li>
-                        <li><a href="https://baituljenazah.github.io/admin.html">Admin</a></li>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Directory</a></li>
+                        <li><a href="#" class="active">Services</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Admin</a></li>
                     </ul>
                 </nav>
                 <div class="cart-icon" onclick="toggleCart()">
@@ -661,56 +146,24 @@
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 1: SET KELENGKAPAN JENAZAH</h3>
                 <p class="category-desc">Barang & peralatan sahaja – tanpa servis</p>
-                
                 <div class="services-grid">
                     <div class="service-card">
                         <h3>Set Kafankan Asas</h3>
                         <div class="price">RM 180</div>
-                        <ul>
-                            <li>Kain kafan standard</li>
-                            <li>Kapur barus</li>
-                            <li>Sabun mandian jenazah</li>
-                            <li>Kapas</li>
-                            <li>Tali kafan</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kafan-asas', 'Set Kafankan Asas', 180, 'Kategori 1')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kain kafan standard</li><li>Kapur barus</li><li>Sabun mandian jenazah</li><li>Kapas</li><li>Tali kafan</li></ul>
+                        <button class="btn" onclick="addToCart('kafan-asas', 'Set Kafankan Asas', 180, 'Kategori 1')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Set Kafankan Lengkap</h3>
                         <div class="price">RM 280</div>
-                        <ul>
-                            <li>Kain kafan berkualiti</li>
-                            <li>Kapur barus & wangian jenazah</li>
-                            <li>Sabun khas mandian jenazah</li>
-                            <li>Kapas & bahan pembersihan</li>
-                            <li>Tali kafan</li>
-                            <li>Air mawar</li>
-                            <li>Alas jenazah</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kafan-lengkap', 'Set Kafankan Lengkap', 280, 'Kategori 1')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kain kafan berkualiti</li><li>Kapur barus & wangian</li><li>Sabun khas</li><li>Kapas & bahan pembersihan</li><li>Tali kafan</li><li>Air mawar</li><li>Alas jenazah</li></ul>
+                        <button class="btn" onclick="addToCart('kafan-lengkap', 'Set Kafankan Lengkap', 280, 'Kategori 1')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Set Kafankan Premium</h3>
                         <div class="price">RM 380</div>
-                        <ul>
-                            <li>Kain kafan premium</li>
-                            <li>Kapur barus & wangian eksklusif</li>
-                            <li>Sabun khas jenazah</li>
-                            <li>Kapas & tuala</li>
-                            <li>Tali kafan</li>
-                            <li>Air mawar & minyak atar</li>
-                            <li>Alas jenazah</li>
-                            <li>Kit lengkap siap bungkus</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kafan-premium', 'Set Kafankan Premium', 380, 'Kategori 1')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kain kafan premium</li><li>Kapur barus eksklusif</li><li>Sabun khas jenazah</li><li>Kapas & tuala</li><li>Tali kafan</li><li>Air mawar & minyak atar</li><li>Alas jenazah</li><li>Kit lengkap siap bungkus</li></ul>
+                        <button class="btn" onclick="addToCart('kafan-premium', 'Set Kafankan Premium', 380, 'Kategori 1')">Tambah ke Troli</button>
                     </div>
                 </div>
             </div>
@@ -718,274 +171,180 @@
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 2: SET PENGURUSAN JENAZAH</h3>
                 <p class="category-desc">Servis mengikut syariat Islam</p>
-                
                 <div class="services-grid">
                     <div class="service-card">
                         <h3>Pakej Pengurusan Asas</h3>
                         <div class="price">RM 800</div>
-                        <ul>
-                            <li>Memandikan jenazah</li>
-                            <li>Mengkafankan jenazah</li>
-                            <li>Bimbingan kepada waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-asas', 'Pakej Pengurusan Asas', 800, 'Kategori 2')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Memandikan jenazah</li><li>Mengkafankan jenazah</li><li>Bimbingan kepada waris</li></ul>
+                        <button class="btn" onclick="addToCart('pengurusan-asas', 'Pakej Pengurusan Asas', 800, 'Kategori 2')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Pakej Pengurusan Lengkap</h3>
                         <div class="price">RM 1,500</div>
-                        <ul>
-                            <li>Memandikan jenazah</li>
-                            <li>Mengkafankan jenazah</li>
-                            <li>Pengurusan solat jenazah</li>
-                            <li>Pengurusan pengkebumian</li>
-                            <li>Pengangkutan jenazah (dalam kawasan)</li>
-                            <li>Bimbingan & khidmat nasihat waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-lengkap', 'Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Memandikan jenazah</li><li>Mengkafankan jenazah</li><li>Solat jenazah</li><li>Pengkebumian</li><li>Pengangkutan</li><li>Bimbingan waris</li></ul>
+                        <button class="btn" onclick="addToCart('pengurusan-lengkap', 'Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Pakej Pengurusan Premium</h3>
                         <div class="price">RM 2,300</div>
-                        <ul>
-                            <li>Memandikan & mengkafankan jenazah</li>
-                            <li>Pengurusan solat jenazah</li>
-                            <li>Pengurusan pengebumian penuh</li>
-                            <li>Pengangkutan jenazah</li>
-                            <li>Pengurusan dokumen kematian</li>
-                            <li>Penyelarasan dengan masjid & tanah perkuburan</li>
-                            <li>Sokongan penuh kepada waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-premium', 'Pakej Pengurusan Premium', 2300, 'Kategori 2')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Memandikan & mengkafankan</li><li>Solat jenazah</li><li>Pengebumian penuh</li><li>Pengangkutan</li><li>Dokumen kematian</li><li>Penyelarasan masjid</li><li>Sokongan penuh waris</li></ul>
+                        <button class="btn" onclick="addToCart('pengurusan-premium', 'Pakej Pengurusan Premium', 2300, 'Kategori 2')">Tambah ke Troli</button>
                     </div>
                 </div>
-
                 <div class="emergency-card">
                     <h3>⚡ Khidmat Kecemasan 24 Jam</h3>
                     <div class="price">RM 300</div>
-                    <ul style="list-style: none; padding: 0;">
-                        <li>✓ Respon segera 24 jam</li>
-                        <li>✓ Pasukan pengurusan standby</li>
-                    </ul>
-                    <button class="btn" onclick="addToCart('kecemasan', 'Khidmat Kecemasan 24 Jam', 300, 'Kategori 2')">
-                        Tambah ke Troli
-                    </button>
+                    <ul style="list-style:none;padding:0"><li>✓ Respon segera 24 jam</li><li>✓ Pasukan standby</li></ul>
+                    <button class="btn" onclick="addToCart('kecemasan', 'Khidmat Kecemasan 24 Jam', 300, 'Kategori 2')">Tambah ke Troli</button>
                 </div>
             </div>
 
             <div class="category-section">
                 <h3 class="category-title">KATEGORI 3: SET KUBUR & PERKUBURAN</h3>
                 <p class="category-desc">Struktur & pemasangan kubur</p>
-                
                 <div class="services-grid">
                     <div class="service-card">
                         <h3>Set Kubur Asas</h3>
                         <div class="price">RM 700</div>
-                        <ul>
-                            <li>Kepuk kubur tanah</li>
-                            <li>Papan liang lahad</li>
-                            <li>Penutup liang lahad</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-asas', 'Set Kubur Asas', 700, 'Kategori 3')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kepuk kubur tanah</li><li>Papan liang lahad</li><li>Penutup liang lahad</li></ul>
+                        <button class="btn" onclick="addToCart('kubur-asas', 'Set Kubur Asas', 700, 'Kategori 3')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Set Kubur Standard</h3>
                         <div class="price">RM 1,200</div>
-                        <ul>
-                            <li>Kepuk kubur konkrit</li>
-                            <li>Papan liang lahad</li>
-                            <li>Penutup liang lahad</li>
-                            <li>Batu tanda kepala</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-standard', 'Set Kubur Standard', 1200, 'Kategori 3')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kepuk kubur konkrit</li><li>Papan liang lahad</li><li>Penutup liang lahad</li><li>Batu tanda kepala</li></ul>
+                        <button class="btn" onclick="addToCart('kubur-standard', 'Set Kubur Standard', 1200, 'Kategori 3')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Set Kubur Lengkap</h3>
                         <div class="price">RM 1,800</div>
-                        <ul>
-                            <li>Kepuk kubur konkrit</li>
-                            <li>Batu nisan (lelaki / perempuan)</li>
-                            <li>Batu tanda kepala & kaki</li>
-                            <li>Pemasangan batu nisan</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-lengkap', 'Set Kubur Lengkap', 1800, 'Kategori 3')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Kepuk kubur konkrit</li><li>Batu nisan</li><li>Batu tanda kepala & kaki</li><li>Pemasangan batu nisan</li></ul>
+                        <button class="btn" onclick="addToCart('kubur-lengkap', 'Set Kubur Lengkap', 1800, 'Kategori 3')">Tambah ke Troli</button>
                     </div>
-
                     <div class="service-card">
                         <h3>Servis Tambahan Kubur</h3>
                         <div class="price">RM 300</div>
-                        <ul>
-                            <li>Naik taraf struktur kubur</li>
-                            <li>Penambahan batu tanda</li>
-                            <li>Penyelenggaraan asas kubur</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('servis-tambahan', 'Servis Tambahan Kubur', 300, 'Kategori 3')">
-                            Tambah ke Troli
-                        </button>
+                        <ul><li>Naik taraf struktur kubur</li><li>Penambahan batu tanda</li><li>Penyelenggaraan asas</li></ul>
+                        <button class="btn" onclick="addToCart('servis-tambahan', 'Servis Tambahan Kubur', 300, 'Kategori 3')">Tambah ke Troli</button>
                     </div>
                 </div>
             </div>
 
-            <div class="note-box">
-                <strong>Nota Penting:</strong> Semua harga adalah harga tetap dan telus. Perkhidmatan disediakan mengikut syariat Islam.
-            </div>
+            <div class="note-box"><strong>Nota Penting:</strong> Semua harga adalah harga tetap dan telus. Perkhidmatan disediakan mengikut syariat Islam.</div>
         </div>
     </section>
 
-    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3>Troli Anda</h3>
-            <button class="close-cart" onclick="toggleCart()">
-                <i class="fas fa-times"></i>
-            </button>
+            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-items" id="cartItems">
-            <div class="empty-cart">
-                <i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i>
-                <p>Troli anda kosong</p>
-            </div>
+            <div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>
         </div>
         <div class="cart-footer">
-            <div class="cart-total">
-                <span>JUMLAH</span>
-                <span id="cartTotal">RM 0.00</span>
-            </div>
-            <button class="btn" onclick="openCheckout()" style="margin-top: 10px;">
-                <i class="fas fa-shopping-cart"></i> Teruskan ke Pembayaran
-            </button>
+            <div class="cart-total"><span>JUMLAH</span><span id="cartTotal">RM 0.00</span></div>
+            <button class="btn" onclick="openCheckout()"><i class="fas fa-shopping-cart"></i> Teruskan ke Pembayaran</button>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
     <div class="modal" id="checkoutModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Butiran Pembayaran</h3>
-                <button class="close-modal" onclick="closeCheckout()">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="close-modal" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
                 <div class="checkout-steps">
-                    <div id="step1" class="step active">1. Maklumat Pelanggan</div>
+                    <div id="step1" class="step active">1. Maklumat</div>
                     <div id="step2" class="step">2. Pembayaran</div>
                     <div id="step3" class="step">3. Pengesahan</div>
                     <div id="step4" class="step" style="display:none">4. Selesai</div>
                 </div>
 
-                <!-- Step 1: Customer Info -->
-                <div id="step1Content" class="checkout-step">
+                <div id="step1Content" class="checkout-step active">
                     <div class="form-group">
-                        <label for="customerName">Nama Penuh *</label>
+                        <label>Nama Penuh *</label>
                         <input type="text" id="customerName" placeholder="Nama penuh anda">
                     </div>
                     <div class="form-group">
-                        <label for="customerPhone">Nombor Telefon *</label>
-                        <input type="tel" id="customerPhone" placeholder="Contoh: 0123456789">
+                        <label>Nombor Telefon *</label>
+                        <input type="tel" id="customerPhone" placeholder="0123456789">
                     </div>
                     <div class="form-group">
-                        <label for="customerEmail">Email</label>
+                        <label>Email</label>
                         <input type="email" id="customerEmail" placeholder="email@contoh.com">
                     </div>
                     <div class="form-group">
-                        <label for="customerAddress">Alamat Penuh *</label>
-                        <textarea id="customerAddress" placeholder="Alamat lengkap untuk tujuan pengangkutan"></textarea>
+                        <label>Alamat Penuh *</label>
+                        <textarea id="customerAddress" placeholder="Alamat lengkap"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="customerNotes">Nota Tambahan (Jika ada)</label>
-                        <textarea id="customerNotes" placeholder="Nota khas atau arahan tambahan..."></textarea>
+                        <label>Nota Tambahan</label>
+                        <textarea id="customerNotes" placeholder="Nota khas..."></textarea>
                     </div>
-                    
                     <div class="order-summary">
                         <h4>Ringkasan Pesanan</h4>
                         <div id="orderItems"></div>
                         <div id="orderTotal"></div>
                     </div>
-                    
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="closeCheckout()">Batal</button>
                         <button class="btn" onclick="nextStep(2)">Seterusnya</button>
                     </div>
                 </div>
 
-                <!-- Step 2: Payment -->
-                <div id="step2Content" class="checkout-step" style="display:none">
+                <div id="step2Content" class="checkout-step">
                     <div class="form-group">
-                        <label for="paymentMethod">Kaedah Pembayaran</label>
+                        <label>Kaedah Pembayaran</label>
                         <select id="paymentMethod">
                             <option value="credit_card">Kad Kredit / Debit</option>
                         </select>
                     </div>
-                    
                     <div class="form-group">
-                        <label for="cardName">Nama pada Kad *</label>
+                        <label>Nama pada Kad *</label>
                         <input type="text" id="cardName" placeholder="Nama seperti pada kad">
                     </div>
-                    
                     <div class="form-group">
-                        <label for="cardNumber">Nombor Kad *</label>
+                        <label>Nombor Kad *</label>
                         <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
                     </div>
-                    
                     <div class="form-group">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
                             <div>
-                                <label for="cardExpiry">Tarikh Luput *</label>
+                                <label>Tarikh Luput *</label>
                                 <input type="text" id="cardExpiry" placeholder="MM/YY">
                             </div>
                             <div>
-                                <label for="cardCVV">CVV *</label>
+                                <label>CVV *</label>
                                 <input type="password" id="cardCVV" placeholder="123" maxlength="4">
                             </div>
                         </div>
                     </div>
-                    
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="nextStep(1)">Kembali</button>
                         <button class="btn" onclick="nextStep(3)">Seterusnya</button>
                     </div>
                 </div>
 
-                <!-- Step 3: Confirmation -->
-                <div id="step3Content" class="checkout-step" style="display:none">
+                <div id="step3Content" class="checkout-step">
                     <h3>Sahkan Pesanan Anda</h3>
                     <p>Sila semak maklumat di bawah sebelum membuat pembayaran:</p>
-                    
                     <div class="order-summary">
                         <h4>Maklumat Pelanggan</h4>
                         <div id="confirmCustomer"></div>
-                        
-                        <h4 style="margin-top: 20px;">Ringkasan Pesanan</h4>
+                        <h4 style="margin-top:20px">Ringkasan Pesanan</h4>
                         <div id="confirmItems"></div>
-                        
-                        <h4 style="margin-top: 20px;">Maklumat Pembayaran</h4>
+                        <h4 style="margin-top:20px">Maklumat Pembayaran</h4>
                         <div id="confirmPayment"></div>
                     </div>
-                    
                     <div class="btn-group">
                         <button class="btn btn-secondary" onclick="nextStep(2)">Kembali</button>
-                        <button class="btn" onclick="processPayment()">Selesaikan Pembayaran</button>
+                        <button class="btn" id="payBtn" onclick="processPayment()">Selesaikan Pembayaran</button>
                     </div>
                 </div>
 
-                <!-- Step 4: Success -->
-                <div id="step4Content" class="checkout-step" style="display:none">
+                <div id="step4Content" class="checkout-step">
                     <div id="successContent"></div>
                 </div>
             </div>
@@ -995,74 +354,54 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
+                <div>
                     <div class="footer-logo">Baitul<span>Jenazah</span></div>
-                    <p>Perkhidmatan pengurusan jenazah yang komprehensif dan mengikut syariat Islam dengan penuh hormat dan prihatin.</p>
+                    <p>Perkhidmatan pengurusan jenazah mengikut syariat Islam dengan penuh hormat dan prihatin.</p>
                 </div>
                 <div class="footer-links">
                     <h3>Pautan Pantas</h3>
-                    <ul>
-                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
-                        <li><a href="https://baituljenazah.github.io/services.html">Perkhidmatan</a></li>
-                        <li><a href="https://baituljenazah.github.io/branch.html">Cawangan</a></li>
-                        <li><a href="https://baituljenazah.github.io/faq.html">FAQ</a></li>
-                    </ul>
+                    <ul><li><a href="#">Laman Utama</a></li><li><a href="#">Perkhidmatan</a></li><li><a href="#">Cawangan</a></li><li><a href="#">FAQ</a></li></ul>
                 </div>
                 <div class="footer-contact">
                     <h3>Hubungi Kami</h3>
                     <p><i class="fas fa-phone"></i> 03-1234 5678</p>
                     <p><i class="fas fa-envelope"></i> info@baituljenazah.com</p>
-                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Utama, Kuala Lumpur</p>
-                    <p><i class="fas fa-clock"></i> 24 Jam (Khidmat Kecemasan)</p>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Utama, KL</p>
+                    <p><i class="fas fa-clock"></i> 24 Jam (Kecemasan)</p>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2024 Baitul Jenazah. Hak Cipta Terpelihara.</p>
-            </div>
+            <div class="copyright"><p>&copy; 2024 Baitul Jenazah. Hak Cipta Terpelihara.</p></div>
         </div>
     </footer>
 
     <script>
         let cart = [];
-        let currentStep = 1;
 
-        // Load cart from localStorage
         function loadCart() {
-            const savedCart = localStorage.getItem('baituljenazah_cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
+            const saved = localStorage.getItem('baituljenazah_cart');
+            if (saved) {
+                cart = JSON.parse(saved);
                 updateCartDisplay();
             }
         }
 
-        // Save cart to localStorage
         function saveCart() {
             localStorage.setItem('baituljenazah_cart', JSON.stringify(cart));
             updateCartDisplay();
         }
 
-        // Add item to cart
         function addToCart(id, name, price, category) {
-            cart.push({
-                id: id,
-                name: name,
-                price: price,
-                category: category,
-                quantity: 1
-            });
+            cart.push({id, name, price, category, quantity: 1});
             saveCart();
-            
             alert(name + ' telah ditambah ke troli.');
             toggleCart();
         }
 
-        // Remove item from cart
         function removeFromCart(index) {
             cart.splice(index, 1);
             saveCart();
         }
 
-        // Update cart display
         function updateCartDisplay() {
             const cartItems = document.getElementById('cartItems');
             const cartCount = document.getElementById('cartCount');
@@ -1071,7 +410,7 @@
             cartCount.textContent = cart.length;
             
             if (cart.length === 0) {
-                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size: 3rem; color: #ddd; margin-bottom: 15px;"></i><p>Troli anda kosong</p></div>';
+                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>';
                 cartTotal.textContent = 'RM 0.00';
                 return;
             }
@@ -1087,11 +426,9 @@
                             <h4>${item.name}</h4>
                             <p>${item.category}</p>
                         </div>
-                        <div style="display: flex; align-items: center;">
+                        <div style="display:flex;align-items:center">
                             <div class="cart-item-price">RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
-                            <button class="remove-item" onclick="removeFromCart(${index})">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <button class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
                         </div>
                     </div>
                 `;
@@ -1100,12 +437,10 @@
             cartTotal.textContent = 'RM ' + total.toLocaleString('en-MY', {minimumFractionDigits: 2});
         }
 
-        // Toggle cart sidebar
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('active');
         }
 
-        // Open checkout modal
         function openCheckout() {
             if (cart.length === 0) {
                 alert('Sila tambah sekurang-kurangnya satu item ke troli.');
@@ -1114,15 +449,14 @@
             document.getElementById('checkoutModal').classList.add('active');
             document.body.style.overflow = 'hidden';
             updateOrderSummary();
+            nextStep(1);
         }
 
-        // Close checkout modal
         function closeCheckout() {
             document.getElementById('checkoutModal').classList.remove('active');
             document.body.style.overflow = 'auto';
         }
 
-        // Update order summary in checkout
         function updateOrderSummary() {
             const orderItems = document.getElementById('orderItems');
             const orderTotal = document.getElementById('orderTotal');
@@ -1130,7 +464,7 @@
             let total = 0;
             orderItems.innerHTML = '';
             
-            cart.forEach((item, index) => {
+            cart.forEach(item => {
                 total += item.price;
                 orderItems.innerHTML += `
                     <div class="summary-item">
@@ -1148,33 +482,19 @@
             `;
         }
 
-        // Navigate checkout steps
         function nextStep(step) {
-            // Validate current step
-            if (step === 2 && !validateStep1()) {
-                return;
-            }
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
             
-            if (step === 3 && !validateStep2()) {
-                return;
-            }
-            
-            // Hide all steps
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.checkout-step').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
             
-            // Show selected step
             document.getElementById('step' + step).classList.add('active');
-            document.getElementById('step' + step + 'Content').style.display = 'block';
-            currentStep = step;
+            document.getElementById('step' + step + 'Content').classList.add('active');
             
-            // Update confirm sections for step 3
-            if (step === 3) {
-                updateConfirmSections();
-            }
+            if (step === 3) updateConfirmSections();
         }
 
-        // Update confirmation sections
         function updateConfirmSections() {
             const customerName = document.getElementById('customerName').value;
             const customerPhone = document.getElementById('customerPhone').value;
@@ -1184,51 +504,21 @@
             
             const cardName = document.getElementById('cardName').value;
             const cardNumber = document.getElementById('cardNumber').value;
-            const cardExpiry = document.getElementById('cardExpiry').value;
             
-            // Update customer info
             document.getElementById('confirmCustomer').innerHTML = `
-                <div class="summary-item">
-                    <span>Nama:</span>
-                    <span>${customerName}</span>
-                </div>
-                <div class="summary-item">
-                    <span>Telefon:</span>
-                    <span>${customerPhone}</span>
-                </div>
-                <div class="summary-item">
-                    <span>Email:</span>
-                    <span>${customerEmail || '-'}</span>
-                </div>
-                <div class="summary-item">
-                    <span>Alamat:</span>
-                    <span>${customerAddress}</span>
-                </div>
-                ${customerNotes ? `
-                <div class="summary-item">
-                    <span>Nota:</span>
-                    <span>${customerNotes}</span>
-                </div>
-                ` : ''}
+                <div class="summary-item"><span>Nama:</span><span>${customerName}</span></div>
+                <div class="summary-item"><span>Telefon:</span><span>${customerPhone}</span></div>
+                <div class="summary-item"><span>Email:</span><span>${customerEmail || '-'}</span></div>
+                <div class="summary-item"><span>Alamat:</span><span>${customerAddress}</span></div>
+                ${customerNotes ? `<div class="summary-item"><span>Nota:</span><span>${customerNotes}</span></div>` : ''}
             `;
             
-            // Update payment info
             document.getElementById('confirmPayment').innerHTML = `
-                <div class="summary-item">
-                    <span>Kaedah:</span>
-                    <span>Kad Kredit/Debit</span>
-                </div>
-                <div class="summary-item">
-                    <span>Nama Kad:</span>
-                    <span>${cardName}</span>
-                </div>
-                <div class="summary-item">
-                    <span>Nombor Kad:</span>
-                    <span>**** **** **** ${cardNumber.slice(-4)}</span>
-                </div>
+                <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
+                <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
+                <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.slice(-4)}</span></div>
             `;
             
-            // Update items
             let total = 0;
             let itemsHTML = '';
             cart.forEach(item => {
@@ -1251,14 +541,13 @@
             document.getElementById('confirmItems').innerHTML = itemsHTML;
         }
 
-        // Validate step 1 (customer info)
         function validateStep1() {
             const name = document.getElementById('customerName').value;
             const phone = document.getElementById('customerPhone').value;
             const address = document.getElementById('customerAddress').value;
             
             if (!name || !phone || !address) {
-                alert('Sila isi semua maklumat peribadi.');
+                alert('Sila isi semua maklumat yang diperlukan.');
                 return false;
             }
             
@@ -1270,7 +559,6 @@
             return true;
         }
 
-        // Validate step 2 (payment info)
         function validateStep2() {
             const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
             const expiry = document.getElementById('cardExpiry').value;
@@ -1283,7 +571,7 @@
             }
             
             if (!/^\d{16}$/.test(cardNumber)) {
-                alert('Sila masukkan nombor kad yang sah (16 digit tanpa ruang).');
+                alert('Sila masukkan nombor kad yang sah (16 digit).');
                 return false;
             }
             
@@ -1292,7 +580,6 @@
                 return false;
             }
             
-            // Validate expiry date format
             if (!/^\d{2}\/\d{2}$/.test(expiry)) {
                 alert('Format tarikh luput tidak sah. Gunakan format MM/YY.');
                 return false;
@@ -1301,20 +588,14 @@
             return true;
         }
 
-        // Process payment and save transaction
         function processPayment() {
-            // Show loading
-            const payBtn = document.querySelector('.btn-primary');
-            const originalText = payBtn.innerHTML;
+            const payBtn = document.getElementById('payBtn');
             payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             payBtn.disabled = true;
 
-            // Simulate API call delay
             setTimeout(() => {
-                // Generate reference number
                 const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
                 
-                // Get form data
                 const customer = {
                     name: document.getElementById('customerName').value,
                     phone: document.getElementById('customerPhone').value,
@@ -1328,14 +609,11 @@
                     cardName: document.getElementById('cardName').value,
                     cardNumber: document.getElementById('cardNumber').value,
                     cardLast4: document.getElementById('cardNumber').value.slice(-4),
-                    cardExpiry: document.getElementById('cardExpiry').value,
-                    cardCVV: document.getElementById('cardCVV').value
+                    cardExpiry: document.getElementById('cardExpiry').value
                 };
                 
-                // Calculate total
                 const total = cart.reduce((sum, item) => sum + item.price, 0);
                 
-                // Create transaction object
                 const transaction = {
                     refNumber: refNumber,
                     date: new Date().toLocaleString('ms-MY'),
@@ -1347,44 +625,40 @@
                     status: 'Selesai'
                 };
                 
-                // Save to localStorage
                 saveTransaction(transaction);
-                
-                // Show success message
                 showSuccess(transaction);
                 
-                // Reset button
-                payBtn.innerHTML = originalText;
+                payBtn.innerHTML = 'Selesaikan Pembayaran';
                 payBtn.disabled = false;
             }, 1500);
         }
 
-        // Save transaction to storage
         function saveTransaction(transaction) {
-            // Save to localStorage
-            const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
-            transactions.push(transaction);
-            localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
-            
-            // Clear cart
-            cart = [];
-            saveCart();
+            try {
+                console.log('Saving transaction:', transaction);
+                const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+                transactions.push(transaction);
+                localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
+                console.log('Transaction saved successfully!');
+                
+                cart = [];
+                saveCart();
+            } catch (error) {
+                console.error('Error saving transaction:', error);
+            }
         }
 
-        // Show success message
         function showSuccess(transaction) {
-            // Hide all steps and show success
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.checkout-step').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
             
+            document.getElementById('step4').style.display = 'block';
             document.getElementById('step4').classList.add('active');
-            document.getElementById('step4Content').style.display = 'block';
+            document.getElementById('step4Content').classList.add('active');
             
             document.getElementById('successContent').innerHTML = `
                 <div class="success-message">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
                     <h3>Pembayaran Berjaya!</h3>
                     <p>Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
                     
@@ -1393,18 +667,18 @@
                         <p><strong>Tarikh:</strong> ${transaction.date}</p>
                         <p><strong>Nama:</strong> ${transaction.customer.name}</p>
                         <p><strong>Jumlah Bayaran:</strong> RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</p>
-                        <p><strong>Status:</strong> <span style="color: #27ae60;">${transaction.status}</span></p>
+                        <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
                     </div>
                     
-                    <p style="margin-top: 20px; font-size: 0.9rem; color: #666;">
+                    <p style="margin-top:20px;font-size:0.9rem;color:#666">
                         Resit akan dihantar ke email anda (jika diberikan).
                     </p>
                     
-                    <div style="margin-top: 30px;">
-                        <button class="btn" onclick="window.print()" style="width: auto; padding: 12px 30px;">
+                    <div style="margin-top:30px">
+                        <button class="btn" onclick="window.print()" style="width:auto;padding:12px 30px">
                             <i class="fas fa-print"></i> Cetak Resit
                         </button>
-                        <button class="btn btn-secondary" onclick="completeOrder()" style="width: auto; padding: 12px 30px; margin-left: 10px;">
+                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
                             <i class="fas fa-home"></i> Selesai
                         </button>
                     </div>
@@ -1412,39 +686,13 @@
             `;
         }
 
-        // Complete order
         function completeOrder() {
             closeCheckout();
             toggleCart();
             alert('Terima kasih! Pesanan anda telah direkodkan.');
         }
 
-        // Initialize page
-        function init() {
-            loadCart();
-            
-            // Setup event listeners
-            document.querySelectorAll('.close-cart, .close-modal').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.cart-sidebar, .modal').forEach(el => {
-                        el.classList.remove('active');
-                    });
-                    document.body.style.overflow = 'auto';
-                });
-            });
-            
-            // Close modal when clicking outside
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        closeCheckout();
-                    }
-                });
-            });
-        }
-
-        // Call init when page loads
-        window.onload = init;
+        window.onload = loadCart;
     </script>
 </body>
 </html>
