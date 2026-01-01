@@ -83,51 +83,211 @@
             margin-left: 8px;
         }
         
-        /* Loading page */
+        /* ============================================
+           UPDATED LOADING PAGE LAYOUT
+           ============================================ */
         .loading-page {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, #2c7744 0%, var(--primary-color) 100%);
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease, visibility 1s ease;
+            overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease;
+        }
+        
+        .loading-page.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        /* REDUCED WIDTH container */
+        .loading-container {
+            width: 90%;
+            max-width: 800px; /* Reduced from 800px */
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
         }
         
         .loading-content {
-            text-align: center;
-            max-width: 800px;
-            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .verse-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         .arabic-text {
-            font-size: 2.2rem;
+            font-size: 1.8rem; /* Slightly reduced */
             font-weight: 700;
-            color: var(--secondary-color);
-            text-align: right;
+            color: white;
+            text-align: justify;
             direction: rtl;
-            margin-bottom: 30px;
             line-height: 1.8;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.5s forwards;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
         }
         
         .translation-text {
-            font-size: 1.2rem;
-            color: var(--text-dark);
+            font-size: 1rem; /* Slightly reduced */
+            color: white;
             font-style: italic;
-            margin-bottom: 40px;
             line-height: 1.6;
+            text-align: justify;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .verse-reference {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            font-style: normal;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.2s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
         
         .loading-btn {
+            font-size: 1.1rem; /* Slightly reduced */
+            padding: 14px 35px; /* Slightly reduced */
+            color: #2c7744;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .loading-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: #f8fff8;
+            color: #2c7744;
+        }
+        
+        .loading-hint {
+            font-size: 0.85rem; /* Slightly reduced */
+            color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.8s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Decorative elements */
+        .decoration {
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .leaf-1 {
+            top: -30px;
+            left: -30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+        
+        .leaf-2 {
+            bottom: -60px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            background: rgba(44, 119, 68, 0.1);
+            border-radius: 50%;
+        }
+        
+        .islamic-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(136, 231, 136, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(44, 119, 68, 0.08) 0%, transparent 20%);
+            z-index: 1;
+        }
+        
+        /* Loading animation */
+        .loading-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
             margin-top: 20px;
-            font-size: 1.1rem;
-            padding: 14px 36px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.3s forwards;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 2px;
+            animation: loadingProgress 10s linear forwards;
+        }
+        
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes loadingProgress {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
         }
         
         /* Header */
@@ -137,6 +297,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: all 0.3s ease;
         }
         
         .header-container {
@@ -166,14 +327,17 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            padding: 5px 0;
         }
         
         nav a:hover {
             color: var(--primary-color);
         }
         
+        /* FIXED ISSUE #3: Nav active style stays when scrolling to about section */
         nav a.active {
             color: var(--primary-color);
+            font-weight: 600;
         }
         
         nav a.active::after {
@@ -184,6 +348,16 @@
             width: 100%;
             height: 2px;
             background-color: var(--primary-color);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
         }
         
         .mobile-menu-btn {
@@ -193,6 +367,23 @@
             border: none;
             color: var(--text-dark);
             cursor: pointer;
+            z-index: 101;
+        }
+        
+        /* Mobile menu overlay */
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block;
         }
         
         /* Hero section */
@@ -244,6 +435,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 50px;
             margin-bottom: 60px;
+            text-align: justify;
         }
         
         .about-text h2 {
@@ -256,6 +448,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 40px;
             margin-bottom: 60px;
+            text-align: justify;
         }
         
         .card {
@@ -303,6 +496,7 @@
             margin-bottom: 60px;
         }
         
+        /* FIXED ISSUE #2: Mobile layout for core values - 2 boxes per row on mobile */
         .values-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -388,7 +582,94 @@
             color: #aaa;
         }
         
-        /* Responsif */
+        /* Responsif untuk Loading Page */
+        @media (max-width: 768px) {
+            .loading-container {
+                padding: 25px;
+                width: 95%;
+                max-width: 500px; /* Reduced for mobile */
+            }
+            
+            .arabic-text {
+                font-size: 1.5rem; /* Reduced for mobile */
+                line-height: 1.6;
+            }
+            
+            .translation-text {
+                font-size: 0.9rem; /* Reduced for mobile */
+            }
+            
+            .loading-btn {
+                font-size: 1rem; /* Reduced for mobile */
+                padding: 12px 25px; /* Reduced for mobile */
+            }
+            
+            .verse-container {
+                padding: 20px;
+            }
+            
+            /* Mobile layout for core values - 2 boxes per row */
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .loading-container {
+                padding: 20px;
+                max-width: 450px; /* Reduced for small screens */
+            }
+            
+            .arabic-text {
+                font-size: 1.3rem; /* Reduced for small screens */
+            }
+            
+            .translation-text {
+                font-size: 0.85rem; /* Reduced for small screens */
+            }
+            
+            .loading-btn {
+                font-size: 0.95rem; /* Reduced for small screens */
+                padding: 10px 20px; /* Reduced for small screens */
+            }
+            
+            .verse-container {
+                padding: 15px;
+            }
+            
+            /* Mobile layout for core values */
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .loading-container {
+                padding: 15px;
+                max-width: 380px; /* Further reduced for very small screens */
+            }
+            
+            .arabic-text {
+                font-size: 1.1rem; /* Further reduced */
+            }
+            
+            .translation-text {
+                font-size: 0.8rem; /* Further reduced */
+            }
+            
+            .loading-btn {
+                font-size: 0.9rem; /* Further reduced */
+                padding: 8px 16px; /* Further reduced */
+            }
+            
+            /* Single column for very small screens */
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Responsif untuk main content */
         @media (max-width: 992px) {
             .about-content {
                 grid-template-columns: 1fr;
@@ -411,11 +692,11 @@
             }
             
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
             }
             
-            .arabic-text {
-                font-size: 1.8rem;
+            .hero p {
+                font-size: 1rem;
             }
         }
         
@@ -436,6 +717,7 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
+                z-index: 100;
             }
             
             nav.active {
@@ -458,25 +740,60 @@
             }
             
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             
             .hero p {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             
             .main-content {
                 padding: 60px 0;
             }
             
-            .arabic-text {
+            .card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .card p {
+                font-size: 0.85rem;
+            }
+            
+            .value-item h3 {
+                font-size: 1rem;
+            }
+            
+            .value-item p {
+                font-size: 0.8rem;
+            }
+            
+            .about-text h2 {
+                font-size: 1.4rem;
+            }
+            
+            .about-text p {
+                font-size: 0.85rem;
+            }
+            
+            .objectives li {
+                font-size: 0.85rem;
+                padding: 12px;
+            }
+            
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .section-title {
                 font-size: 1.5rem;
             }
         }
         
         @media (max-width: 576px) {
             .values-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
             }
             
             .footer-content {
@@ -485,33 +802,103 @@
             
             .btn {
                 width: 100%;
+                max-width: 300px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
             
-            .arabic-text {
+            .hero .btn {
+                width: auto;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
                 font-size: 1.3rem;
             }
             
-            .translation-text {
+            .card {
+                padding: 20px;
+            }
+            
+            .card h3 {
                 font-size: 1rem;
+            }
+            
+            .card p {
+                font-size: 0.8rem;
+            }
+            
+            .value-item {
+                padding: 15px 10px;
+            }
+            
+            .value-item h3 {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+            }
+            
+            .value-item p {
+                font-size: 0.75rem;
+                margin-bottom: 0;
+            }
+            
+            .value-item i {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+            
+            .about-text h2 {
+                font-size: 1.2rem;
+            }
+            
+            .about-text p {
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Loading Page -->
+    <!-- Updated Loading Page Layout -->
     <div class="loading-page" id="loadingPage">
-        <div class="loading-content">
-            <div class="arabic-text">
-                كُلُّ نَفْسٍۢ ذَآئِقَةُ ٱلْمَوْتِ ۗ وَإِنَّمَا تُوَفَّوْنَ أُجُورَكُمْ يَوْمَ ٱلْقِيَـٰمَةِ ۖ فَمَن زُحْزِحَ عَنِ ٱلنَّارِ وَأُدْخِلَ ٱلْجَنَّةَ فَقَدْ فَازَ ۗ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَـٰعُ ٱلْغُرُورِ ١٨٥
+        <div class="islamic-pattern"></div>
+        <div class="decoration leaf-1"></div>
+        <div class="decoration leaf-2"></div>
+        
+        <div class="loading-container">
+            <div class="loading-content">
+                <div class="verse-container">
+                    <div class="arabic-text">
+                        كُلُّ نَفْسٍۢ ذَآئِقَةُ ٱلْمَوْتِ ۗ وَإِنَّمَا تُوَفَّوْنَ أُجُورَكُمْ يَوْمَ ٱلْقِيَـٰمَةِ ۖ فَمَن زُحْزِحَ عَنِ ٱلنَّارِ وَأُدْخِلَ ٱلْجَنَّةَ فَقَدْ فَازَ ۗ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَـٰعُ ٱلْغُرُورِ ١٨٥
+                    </div>
+                    <div class="translation-text">
+                        Tiap-tiap yang bernyawa akan merasai mati, dan bahawasanya pada hari kiamat sahajalah akan disempurnakan balasan kamu. Ketika itu sesiapa yang dijauhkan dari neraka dan dimasukkan ke syurga maka sesungguhnya ia telah berjaya. Dan (ingatlah bahawa) kehidupan di dunia ini (meliputi segala kemewahannya dan pangkat kebesarannya) tidak lain hanyalah kesenangan bagi orang-orang yang terpedaya.
+                    </div>
+                    <div class="verse-reference">(Surah Ali 'Imran: 185)</div>
+                </div>
             </div>
-            <div class="translation-text">
-                Tiap-tiap yang bernyawa akan merasai mati, dan bahawasanya pada hari kiamat sahajalah akan disempurnakan balasan kamu. Ketika itu sesiapa yang dijauhkan dari neraka dan dimasukkan ke syurga maka sesungguhnya ia telah berjaya. Dan (ingatlah bahawa) kehidupan di dunia ini (meliputi segala kemewahannya dan pangkat kebesarannya) tidak lain hanyalah kesenangan bagi orang-orang yang terpedaya.
+            
+            <div class="loading-actions">
+                <button class="loading-btn" id="continueBtn">
+                    Masuk ke Laman Utama <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="loading-hint">Laman akan dimuatkan secara automatik dalam 10 saat</div>
             </div>
-            <button class="btn loading-btn" id="continueBtn">
-                Teruskan <i class="fas fa-arrow-right"></i>
-            </button>
+            
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
         </div>
     </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Header -->
     <header>
@@ -590,6 +977,7 @@
                 
                 <div class="core-values">
                     <h2 class="section-title">Nilai Teras Kami</h2>
+                    <!-- FIXED ISSUE #2: Now displays as 2 boxes per row on mobile -->
                     <div class="values-grid">
                         <div class="value-item">
                             <i class="fas fa-handshake"></i>
@@ -654,32 +1042,67 @@
     </footer>
 
     <script>
-        // Loading page functionality
         document.addEventListener('DOMContentLoaded', function() {
             const loadingPage = document.getElementById('loadingPage');
             const continueBtn = document.getElementById('continueBtn');
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mainNav = document.getElementById('mainNav');
+            const body = document.body;
             
-            // Continue button - hide loading page
-            continueBtn.addEventListener('click', function() {
-                loadingPage.style.opacity = '0';
+            // Flag to track if loading page has been hidden
+            let loadingPageHidden = false;
+            
+            // Function to hide loading page
+            function hideLoadingPage() {
+                if (loadingPageHidden) return;
+                
+                loadingPageHidden = true;
+                // Add fade-out class to trigger CSS transition
+                loadingPage.classList.add('fade-out');
+                
+                // Restore body scrolling after fade out
                 setTimeout(() => {
                     loadingPage.style.display = 'none';
-                }, 800);
-                
-                // Smooth scroll to home section
-                document.querySelector('#home').scrollIntoView({
-                    behavior: 'smooth'
-                });
+                    body.style.overflow = 'auto';
+                }, 1000);
+            }
+            
+            // Prevent scrolling when loading page is visible initially
+            body.style.overflow = 'hidden';
+            
+            // Continue button - hide loading page with fade out
+            continueBtn.addEventListener('click', function() {
+                hideLoadingPage();
             });
             
             // Mobile menu toggle
-            mobileMenuBtn.addEventListener('click', function() {
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 mainNav.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
                 mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
                     ? '<i class="fas fa-times"></i>' 
                     : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking on overlay
+            mobileMenuOverlay.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
+                    // If click is not on nav or menu button
+                    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
             });
             
             // Close mobile menu when clicking on a link
@@ -687,12 +1110,16 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
                     mainNav.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
                     mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
                 });
             });
             
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                // Skip for links in loading page
+                if (anchor.closest('.loading-page')) return;
+                
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     
@@ -709,37 +1136,46 @@
                 });
             });
             
-            // Active navigation highlighting
+            // Active navigation highlighting - keeps active style
             window.addEventListener('scroll', function() {
-                const sections = document.querySelectorAll('section');
+                const homeSection = document.getElementById('home');
+                const aboutSection = document.getElementById('about');
+                const contactSection = document.getElementById('contact');
                 const navLinks = document.querySelectorAll('nav a');
+                const homeLink = document.querySelector('nav a[href="https://baituljenazah.github.io/"]');
                 
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
-                    if(scrollY >= (sectionTop - 100)) {
-                        current = section.getAttribute('id');
-                    }
-                });
+                const scrollPosition = window.scrollY;
+                const aboutTop = aboutSection.offsetTop;
                 
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if(link.getAttribute('href') === '#' + current) {
-                        link.classList.add('active');
-                    }
-                });
+                // Remove active class from all nav links initially
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // Keep home link active when in home section
+                // When scrolling to about section through footer, home link remains active
+                if (scrollPosition < aboutTop - 100) {
+                    // We're in the home section
+                    if (homeLink) homeLink.classList.add('active');
+                } else {
+                    // We're in about section or footer - still keep home active
+                    if (homeLink) homeLink.classList.add('active');
+                }
             });
             
             // Auto-hide loading page after 10 seconds
             setTimeout(function() {
-                if(loadingPage.style.display !== 'none') {
-                    loadingPage.style.opacity = '0';
-                    setTimeout(() => {
-                        loadingPage.style.display = 'none';
-                    }, 800);
-                }
+                hideLoadingPage();
             }, 10000);
+            
+            // Initialize active state for home page
+            const homeLink = document.querySelector('nav a[href="https://baituljenazah.github.io/"]');
+            if (homeLink) {
+                homeLink.classList.add('active');
+            }
+            
+            // Trigger scroll event on load to set initial active state
+            setTimeout(function() {
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
         });
     </script>
 </body>
