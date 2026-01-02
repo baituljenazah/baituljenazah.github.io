@@ -64,9 +64,9 @@
             background-color: var(--primary-color);
             color: var(--text-dark);
             padding: 12px 28px;
-            border-radius: 4px;
+            border-radius: 2px;
             font-weight: 500;
-            border: none;
+            border: solid;
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 1rem;
@@ -83,13 +83,107 @@
             margin-left: 8px;
         }
         
-        /* Header */
+        /* ============================================
+           ALTERNATIVE ANIMATIONS - SMOOTH & ELEGANT
+           ============================================ */
+        @keyframes smoothFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gentleScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes subtleSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        @keyframes gentlePulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-5deg) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+        
+        /* Header - TIDAK DIUBAH */
         header {
             background-color: var(--secondary-color);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 100;
+            animation: smoothFadeIn 0.8s ease;
         }
         
         .header-container {
@@ -104,6 +198,7 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            animation: slideFromLeft 0.8s ease;
         }
         
         .logo span {
@@ -137,6 +232,7 @@
             width: 100%;
             height: 2px;
             background-color: var(--primary-color);
+            animation: slideFromRight 0.3s ease;
         }
         
         .mobile-menu-btn {
@@ -150,28 +246,55 @@
         
         /* Hero section */
         .hero {
-            background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            padding: 80px 0;
+            background-color: var(--primary-color);
+            padding: 60px 0;
             text-align: center;
             color: var(--text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            animation: gradientShift 8s ease infinite;
+            background-size: 200% 200%;
+        }
+        
+        .hero .container {
+            position: relative;
+            z-index: 2;
         }
         
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            animation: gentleScale 0.8s ease 0.2s both;
         }
         
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 800px;
-            margin: 0 auto 30px;
+            margin: 0 auto 20px;
+            animation: smoothFadeIn 0.8s ease 0.4s both;
+        }
+        
+        .hero .btn {
+            animation: smoothFadeIn 0.8s ease 0.6s both;
+        }
+        
+        .hero .btn:hover {
+            animation: gentlePulse 1s infinite;
         }
         
         /* Main content */
         .main-content {
-            padding: 80px 0;
+            padding: 60px 0;
             background-color: var(--secondary-color);
         }
         
@@ -179,6 +302,7 @@
             text-align: center;
             margin-bottom: 50px;
             position: relative;
+            animation: subtleSlideUp 0.8s ease both;
         }
         
         .section-title::after {
@@ -189,10 +313,11 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background-color: var(--primary-color);
+            background: linear-gradient(90deg, var(--primary-color), #78d178);
+            animation: slideFromRight 0.5s ease 0.5s both;
         }
         
-        /* Directory specific styles */
+        /* Directory specific styles dengan animasi smooth */
         .directory-container {
             display: grid;
             grid-template-columns: 1fr;
@@ -201,14 +326,42 @@
         
         .directory-section {
             background-color: #f9f9f9;
-            padding: 50px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            transition: transform 0.3s ease;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s ease;
+            animation: rotateIn 0.8s ease both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .directory-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary-color), #78d178);
+            transform: translateY(100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .directory-section:hover::before {
+            transform: translateY(0);
+        }
+        
+        .directory-section:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+        
+        .directory-section:nth-child(2) {
+            animation-delay: 0.4s;
         }
         
         .directory-section:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
         }
         
         .directory-header {
@@ -223,6 +376,7 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
+            animation: slideFromLeft 0.8s ease 0.2s both;
         }
         
         .directory-header p {
@@ -231,56 +385,81 @@
             color: var(--text-light);
             font-size: 1.1rem;
             line-height: 1.7;
+            animation: slideFromRight 0.8s ease 0.3s both;
         }
         
-        /* Organisasi Struktur Image Container - SIMPLE */
+        /* Organisasi Struktur Image Container */
         .org-image-container {
             position: relative;
             text-align: center;
             margin: 30px 0;
+            animation: gentleScale 0.8s ease 0.3s both;
         }
         
+        /* Toggle button - SAME STYLE DESKTOP & MOBILE, just smaller on mobile */
         .language-toggle-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--primary-color);
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, var(--primary-color), #78d178);
             color: var(--text-dark);
             border: none;
             padding: 8px 16px;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            animation: smoothFadeIn 0.5s ease 0.8s both;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
         }
         
         .language-toggle-btn:hover {
-            background-color: #78d178;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: linear-gradient(45deg, #78d178, var(--primary-color));
+        }
+        
+        .org-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            max-width: 700px;
+            margin: 0 auto;
+            border: 1px solid rgba(136, 231, 136, 0.2);
+        }
+        
+        .org-image-wrapper:hover {
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border-color: rgba(136, 231, 136, 0.4);
         }
         
         .org-image {
-            max-width: 100%;
+            width: 100%;
+            max-width: 700px;
             height: auto;
             border-radius: 8px;
-            transition: all 0.3s ease;
-            margin: 0 auto;
+            transition: all 0.4s ease;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: block;
+            margin: 0 auto;
         }
         
         .org-image:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            transform: scale(1.01);
         }
         
         .org-image.active {
             display: block;
             opacity: 1;
+            animation: smoothFadeIn 0.5s ease;
         }
         
         .org-image.hidden {
@@ -293,19 +472,22 @@
             font-style: italic;
             color: var(--text-light);
             font-size: 0.9rem;
+            animation: smoothFadeIn 0.5s ease 0.5s both;
         }
         
         /* Click instruction */
         .click-instruction {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 12px;
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            animation: smoothFadeIn 0.5s ease 0.6s both;
         }
         
         .click-instruction i {
             color: var(--primary-color);
             margin-right: 5px;
+            animation: gentlePulse 2s infinite;
         }
         
         /* Image Modal */
@@ -316,36 +498,55 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.92);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            animation: gentleScale 0.3s ease forwards;
+        }
+        
+        .image-modal.active {
+            display: flex;
         }
         
         .modal-content {
             max-width: 90%;
             max-height: 90%;
             position: relative;
+            animation: rotateIn 0.5s ease 0.1s both;
         }
         
         .modal-image {
             max-width: 100%;
             max-height: 90vh;
             border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
         
+        /* CLOSE BUTTON */
         .close-modal {
             position: absolute;
-            top: -40px;
-            right: 0;
+            top: 15px;
+            right: 15px;
             color: white;
             font-size: 2rem;
             cursor: pointer;
-            transition: color 0.3s;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            animation: smoothFadeIn 0.3s ease 0.3s both;
         }
         
         .close-modal:hover {
             color: var(--primary-color);
+            transform: rotate(90deg);
+            background: rgba(0, 0, 0, 0.7);
         }
         
         /* Contact Information */
@@ -357,23 +558,61 @@
         }
         
         .contact-card {
-            background-color: white;
+            background: linear-gradient(135deg, white, #f9f9f9);
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: var(--shadow);
-            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.4s ease;
+            animation: smoothFadeIn 0.6s ease both;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(136, 231, 136, 0.1);
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), #78d178);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+        
+        .contact-card:hover::before {
+            transform: translateX(0);
+        }
+        
+        .contact-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .contact-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .contact-card:nth-child(3) {
+            animation-delay: 0.3s;
         }
         
         .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: rgba(136, 231, 136, 0.3);
         }
         
         .contact-icon {
             font-size: 2.5rem;
             color: var(--primary-color);
             margin-bottom: 20px;
+            transition: transform 0.5s ease;
+        }
+        
+        .contact-card:hover .contact-icon {
+            transform: rotateY(180deg);
         }
         
         .contact-card h3 {
@@ -399,21 +638,24 @@
             min-width: 25px;
         }
         
-        /* Social Media (2 sahaja) */
+        /* Social Media */
         .social-media-container {
             text-align: center;
             margin: 50px 0 30px;
+            animation: subtleSlideUp 0.8s ease 0.4s both;
         }
         
         .social-media-container h3 {
             margin-bottom: 20px;
             color: var(--primary-color);
+            animation: slideFromLeft 0.8s ease 0.2s both;
         }
         
         .social-media-container > p {
             max-width: 600px;
             margin: 0 auto 30px;
             color: var(--text-light);
+            animation: slideFromRight 0.8s ease 0.3s both;
         }
         
         .social-media {
@@ -431,42 +673,37 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #f0f0f0, white);
             color: var(--text-dark);
             font-size: 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            animation: smoothFadeIn 0.5s ease both;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .social-icon:nth-child(1) {
+            animation-delay: 0.5s;
+        }
+        
+        .social-icon:nth-child(2) {
+            animation-delay: 0.6s;
         }
         
         .social-icon:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) rotate(5deg);
             color: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
         
-        .social-icon.facebook:hover {
-            background-color: #1877F2;
+        .social-icon.tiktok:hover {
+            background: linear-gradient(135deg, #000000, #333333);
         }
         
         .social-icon.instagram:hover {
-            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45);
+            background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040);
         }
         
-        /* Emergency Contact */
-        .emergency-contact {
-            background-color: #fff8e1;
-            border-left: 5px solid #ff9800;
-            padding: 25px;
-            margin-top: 40px;
-            border-radius: 8px;
-        }
-        
-        .emergency-contact h3 {
-            color: #ff9800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        /* Footer */
+        /* Footer - TIDAK DIUBAH */
         footer {
             background-color: #333;
             color: var(--secondary-color);
@@ -522,18 +759,42 @@
             color: #aaa;
         }
         
-        /* Responsif */
+        /* ============================================
+           RESPONSIVE DESIGN - TOGGLE BUTTON SAME STYLE
+           ============================================ */
+        @media (max-width: 1200px) {
+            .org-image-wrapper {
+                max-width: 650px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .contact-methods {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
             }
             
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
             }
             
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+            }
+            
+            .org-image-wrapper {
+                max-width: 550px;
+            }
+            
+            .directory-section {
+                padding: 35px;
+            }
+            
+            /* Toggle button tetap sama, cuma saiz lebih kecil */
+            .language-toggle-btn {
+                font-size: 0.8rem;
+                padding: 7px 14px;
             }
         }
         
@@ -549,11 +810,11 @@
                 width: 100%;
                 background-color: var(--secondary-color);
                 box-shadow: var(--shadow);
-                padding: 20px;
+                padding: 25px;
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.3s ease;
+                transition: all 0.4s ease;
             }
             
             nav.active {
@@ -564,7 +825,7 @@
             
             nav ul {
                 flex-direction: column;
-                gap: 15px;
+                gap: 20px;
             }
             
             .mobile-menu-btn {
@@ -572,52 +833,123 @@
             }
             
             .hero {
-                padding: 60px 0;
+                padding: 40px 0;
             }
             
             .hero h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                padding: 0 10px;
             }
             
             .hero p {
                 font-size: 1rem;
+                padding: 0 15px;
             }
             
             .main-content {
-                padding: 60px 0;
+                padding: 40px 0;
             }
             
             .contact-methods {
                 grid-template-columns: 1fr;
+                gap: 20px;
             }
             
             .directory-section {
-                padding: 30px 20px;
+                padding: 25px 20px;
+                margin: 0 10px;
             }
             
+            .directory-header h2 {
+                font-size: 1.6rem;
+            }
+            
+            .directory-header p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            /* TOGGLE BUTTON SAMA STYLE DENGAN DESKTOP, CUMA LEBIH KECIL */
             .language-toggle-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
                 padding: 6px 12px;
-                font-size: 0.8rem;
-                top: 5px;
-                right: 5px;
+                font-size: 0.75rem;
+                border-radius: 15px;
+                /* Tetap sama style dengan desktop */
+                background: linear-gradient(45deg, var(--primary-color), #78d178);
+                color: var(--text-dark);
+                font-weight: 600;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+            
+            .org-image-wrapper {
+                max-width: 100%;
+                margin: 0;
+            }
+            
+            .org-image {
+                max-width: 100%;
             }
             
             .modal-content {
                 max-width: 95%;
+                max-height: 80%;
+            }
+            
+            .close-modal {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 1.5rem;
+            }
+            
+            .social-media {
+                gap: 20px;
+            }
+            
+            .social-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.4rem;
+            }
+            
+            .contact-card {
+                padding: 25px 20px;
+            }
+            
+            .contact-icon {
+                font-size: 2.2rem;
             }
         }
         
         @media (max-width: 576px) {
             .footer-content {
                 grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
             }
             
             .btn {
                 width: 100%;
+                max-width: 280px;
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+            
+            .hero .btn {
+                width: 90%;
+                margin: 0 auto;
             }
             
             .contact-card {
-                padding: 20px;
+                padding: 20px 15px;
+                margin: 0 5px;
             }
             
             .social-icon {
@@ -626,9 +958,135 @@
                 font-size: 1.3rem;
             }
             
+            .directory-header h2 {
+                font-size: 1.4rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .directory-header p {
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+            
+            .image-caption {
+                font-size: 0.85rem;
+                padding: 0 10px;
+            }
+            
+            .click-instruction {
+                font-size: 0.85rem;
+                padding: 0 10px;
+            }
+            
+            /* Toggle button lebih kecil untuk mobile kecil */
+            .language-toggle-btn {
+                padding: 5px 10px;
+                font-size: 0.7rem;
+                border-radius: 12px;
+                top: 8px;
+                right: 8px;
+            }
+            
+            .modal-content {
+                max-width: 98%;
+                max-height: 75%;
+            }
+            
             .close-modal {
-                top: -30px;
+                top: 5px;
+                right: 5px;
+                width: 30px;
+                height: 30px;
+                font-size: 1.3rem;
+            }
+            
+            .footer-logo {
                 font-size: 1.5rem;
+            }
+            
+            .footer-links h3, .footer-contact h3 {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+            }
+            
+            .directory-section {
+                padding: 20px 15px;
+                margin: 0 5px;
+            }
+            
+            .contact-methods {
+                gap: 15px;
+            }
+            
+            .social-media {
+                gap: 15px;
+            }
+            
+            .social-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            
+            /* Toggle button untuk sangat kecil */
+            .language-toggle-btn {
+                padding: 4px 8px;
+                font-size: 0.65rem;
+                border-radius: 10px;
+                top: 6px;
+                right: 6px;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:hover, 
+            .contact-card:hover, 
+            .social-icon:hover,
+            .directory-section:hover,
+            .language-toggle-btn:hover,
+            .org-image-wrapper:hover,
+            .org-image:hover,
+            .close-modal:hover {
+                transform: none !important;
+            }
+            
+            .btn:active, 
+            .contact-card:active, 
+            .social-icon:active,
+            .directory-section:active,
+            .language-toggle-btn:active {
+                transform: scale(0.98) !important;
+                transition: transform 0.1s ease !important;
+            }
+            
+            .org-image:active {
+                transform: scale(1.02) !important;
+            }
+            
+            .close-modal:active {
+                transform: rotate(90deg) !important;
+            }
+        }
+        
+        /* Reduced motion preference */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -637,12 +1095,12 @@
     <!-- Image Modal -->
     <div class="image-modal" id="imageModal">
         <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
+            <button class="close-modal" id="closeModal">&times;</button>
             <img src="" alt="" class="modal-image" id="modalImage">
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Header - SAMA DENGAN SEBELUM -->
     <header>
         <div class="container header-container">
             <div class="logo">Baitul<span>Jenazah</span></div>
@@ -667,8 +1125,8 @@
         <!-- Hero Section -->
         <section class="hero" id="home">
             <div class="container">
-                <h1>Direktori Baitul Jenazah</h1>
-                <p>Kenali struktur organisasi kami dan hubungi kami untuk sebarang pertanyaan atau kecemasan.</p>
+                <h1>Direktori</h1>
+                <p>Kenali struktur organisasi kami dan hubungi kami untuk sebarang pertanyaan.</p>
                 <a href="#org-structure" class="btn">Struktur Organisasi <i class="fas fa-sitemap"></i></a>
             </div>
         </section>
@@ -684,24 +1142,32 @@
                             <p>Struktur organisasi Baitul Jenazah direka untuk memastikan perkhidmatan pengurusan jenazah dilaksanakan dengan cekap, berintegriti dan penuh ihsan.</p>
                         </div>
                         
-                        <!-- Struktur Organisasi Image - SIMPLE VERSION -->
+                        <!-- Struktur Organisasi Image -->
                         <div class="org-image-container">
-                            <!-- Button untuk toggle bahasa -->
-                            <button class="language-toggle-btn" id="languageToggleBtn">English</button>
+                            <div class="org-image-wrapper">
+                                <!-- TOGGLE BUTTON - SAME STYLE DESKTOP & MOBILE -->
+                                <button class="language-toggle-btn" id="languageToggleBtn">
+                                    <i class="fas fa-language"></i> English
+                                </button>
+                                
+                                <!-- Imej struktur organisasi (BM versi) -->
+                                <img src="media/strukturorganisasi.png" 
+                                     alt="Struktur Organisasi BaitulJenazah (Bahasa Melayu)" 
+                                     class="org-image active" 
+                                     id="orgImageBM">
+                                
+                                <!-- Imej struktur organisasi (English versi) -->
+                                <img src="media/organizationalstructure.png" 
+                                     alt="BaitulJenazah Organizational Structure (English)" 
+                                     class="org-image hidden" 
+                                     id="orgImageEN">
+                            </div>
                             
-                            <!-- Imej struktur organisasi (BM versi) -->
-                            <img src="media/Struktur Organisasi.png" 
-                                 alt="Struktur Organisasi Baitul Jenazah (Bahasa Melayu)" 
-                                 class="org-image active" 
-                                 id="orgImageBM">
+                            <p class="image-caption" id="imageCaption">Struktur organisasi BaitulJenazah (Versi Bahasa Melayu)</p>
                             
-                            <!-- Imej struktur organisasi (English versi) -->
-                            <img src="media/Organizational Structure.png" 
-                                 alt="Baitul Jenazah Organizational Structure (English)" 
-                                 class="org-image hidden" 
-                                 id="orgImageEN">
-                            
-                            <p class="image-caption" id="imageCaption">Struktur organisasi Baitul Jenazah (Versi Bahasa Melayu)</p>
+                            <div class="click-instruction">
+                                <i class="fas fa-search-plus"></i> Klik pada gambar untuk melihat saiz penuh
+                            </div>
                         </div>
                     </div>
                     
@@ -745,24 +1211,27 @@
                             </div>
                         </div>
                         
-                        <!-- Social Media (2 sahaja) -->
+                        <!-- Social Media -->
                         <div class="social-media-container">
                             <h3><i class="fas fa-share-alt"></i> Ikuti Kami di Media Sosial</h3>
                             <p>Dapatkan maklumat terkini tentang pengurusan jenazah mengikut syariah melalui media sosial kami.</p>
                             
                             <div class="social-media">
-                                <a href="https://facebook.com/baituljenazah" class="social-icon tiktok">
+                                <a href="https://www.tiktok.com/@baituljenazah" target="_blank" class="social-icon tiktok">
                                     <i class="fab fa-tiktok"></i>
                                 </a>
-                                <a href="https://www.instagram.com/baituljenazah?igsh=NXNlZzR3amNkNDI4" class="social-icon instagram">
+                                <a href="https://www.instagram.com/baituljenazah?igsh=NXNlZzR3amNkNDI4" target="_blank" class="social-icon instagram">
                                     <i class="fab fa-instagram"></i>
                                 </a>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer - SAMA DENGAN SEBELUM -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -774,12 +1243,12 @@
                 <div class="footer-links">
                     <h3>Pautan Pantas</h3>
                     <ul>
-                        <li><a href="https://baituljenazah.github.io/">Home</a></li>
-                        <li><a href="https://baituljenazah.github.io/directory.html" class="active">Directory</a></li>
-                        <li><a href="https://baituljenazah.github.io/services.html">Services</a></li>
-                        <li><a href="https://baituljenazah.github.io/simulations.html">Simulations</a></li>
-                        <li><a href="https://baituljenazah.github.io/branch.html">Branch</a></li>
-                        <li><a href="https://baituljenazah.github.io/faq.html">FAQ</a></li>
+                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                        <li><a href="https://baituljenazah.github.io/direktori.html" class="active">Direktori</a></li>
+                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
                     </ul>
                 </div>
                 
@@ -800,6 +1269,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mainNav = document.getElementById('mainNav');
             const languageToggleBtn = document.getElementById('languageToggleBtn');
@@ -809,6 +1279,9 @@
             const imageModal = document.getElementById('imageModal');
             const closeModal = document.getElementById('closeModal');
             const modalImage = document.getElementById('modalImage');
+            
+            // State
+            let isEnglish = false;
             
             // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', function() {
@@ -863,7 +1336,7 @@
                     link.classList.remove('active');
                     // Check for exact match
                     const href = link.getAttribute('href');
-                    if(href.includes('directory.html')) {
+                    if(href.includes('direktori.html')) {
                         // Directory page is always active when on this page
                         link.classList.add('active');
                     }
@@ -871,10 +1344,9 @@
             });
             
             // Set directory nav as active on page load
-            document.querySelector('nav a[href*="directory.html"]').classList.add('active');
+            document.querySelector('nav a[href*="direktori.html"]').classList.add('active');
             
             // Toggle language for org structure image
-            let isEnglish = false;
             languageToggleBtn.addEventListener('click', function() {
                 if (isEnglish) {
                     // Tukar ke Bahasa Melayu
@@ -882,65 +1354,95 @@
                     orgImageBM.classList.add('active');
                     orgImageEN.classList.remove('active');
                     orgImageEN.classList.add('hidden');
-                    imageCaption.textContent = 'Struktur organisasi Baitul Jenazah (Versi Bahasa Melayu)';
-                    languageToggleBtn.textContent = 'English';
+                    imageCaption.textContent = 'Struktur organisasi BaitulJenazah (Versi Bahasa Melayu)';
+                    languageToggleBtn.innerHTML = '<i class="fas fa-language"></i> English';
                 } else {
                     // Tukar ke English
                     orgImageEN.classList.remove('hidden');
                     orgImageEN.classList.add('active');
                     orgImageBM.classList.remove('active');
                     orgImageBM.classList.add('hidden');
-                    imageCaption.textContent = 'Baitul Jenazah Organizational Structure (English Version)';
-                    languageToggleBtn.textContent = 'Bahasa Melayu';
+                    imageCaption.textContent = 'BaitulJenazah Organizational Structure (English Version)';
+                    languageToggleBtn.innerHTML = '<i class="fas fa-language"></i> Bahasa Melayu';
                 }
                 isEnglish = !isEnglish;
             });
             
             // Click to open image in modal
-            orgImageBM.addEventListener('click', function() {
-                modalImage.src = this.src;
-                modalImage.alt = this.alt;
-                imageModal.style.display = 'flex';
+            function openImageModal(imageSrc, imageAlt) {
+                modalImage.src = imageSrc;
+                modalImage.alt = imageAlt;
+                imageModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
+            }
+            
+            orgImageBM.addEventListener('click', function() {
+                openImageModal(this.src, this.alt);
             });
             
             orgImageEN.addEventListener('click', function() {
-                modalImage.src = this.src;
-                modalImage.alt = this.alt;
-                imageModal.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+                openImageModal(this.src, this.alt);
+            });
+            
+            // Also make the image wrapper clickable
+            document.querySelector('.org-image-wrapper').addEventListener('click', function(e) {
+                if (e.target !== languageToggleBtn) {
+                    const activeImage = document.querySelector('.org-image.active');
+                    openImageModal(activeImage.src, activeImage.alt);
+                }
             });
             
             // Close modal
             closeModal.addEventListener('click', function() {
-                imageModal.style.display = 'none';
+                imageModal.classList.remove('active');
                 document.body.style.overflow = 'auto';
             });
             
             // Close modal when clicking outside the image
             imageModal.addEventListener('click', function(e) {
                 if (e.target === imageModal) {
-                    imageModal.style.display = 'none';
+                    imageModal.classList.remove('active');
                     document.body.style.overflow = 'auto';
                 }
             });
             
             // Close modal with Escape key
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && imageModal.style.display === 'flex') {
-                    imageModal.style.display = 'none';
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    imageModal.classList.remove('active');
                     document.body.style.overflow = 'auto';
                 }
             });
+            
+            // Initialize animations on scroll
+            const animatedElements = document.querySelectorAll('.directory-section, .section-title, .contact-card, .social-media-container, .directory-header h2, .directory-header p');
+            
+            function checkAnimation() {
+                animatedElements.forEach((element, index) => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        // Add staggered animation delay
+                        const delay = index * 0.1;
+                        element.style.animationDelay = `${delay}s`;
+                        element.style.animationPlayState = 'running';
+                    }
+                });
+            }
+            
+            // Run check on load and scroll
+            window.addEventListener('load', checkAnimation);
+            window.addEventListener('scroll', checkAnimation);
+            
+            // Initial check
+            checkAnimation();
+            
+            // Trigger scroll event to set initial active state
+            setTimeout(function() {
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
