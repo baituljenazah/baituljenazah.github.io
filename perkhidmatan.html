@@ -175,16 +175,51 @@
         
         .service-card { 
             background: #f9f9f9; 
-            padding: 30px; 
+            padding: 0;
             border-radius: 8px; 
             box-shadow: var(--shadow); 
             transition: transform 0.3s;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Card tanpa gambar (untuk Kategori 2) */
+        .service-card .service-content:first-child {
+            padding: 30px;
         }
         
         .service-card:hover { 
             transform: translateY(-5px); 
+        }
+
+        .service-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #88E788 0%, #6bc96b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-image-placeholder {
+            font-size: 4rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .service-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
         
         .service-card h3 { 
@@ -685,37 +720,50 @@
                 <p class="category-desc">Barang & peralatan sahaja (tanpa servis)</p>
                 <div class="services-grid">
                     <div class="service-card">
-                        <h3>Set Kafan Asas</h3>
-                        <div class="price">RM 180</div>
-                        <ul>
-                            <li>Kain kafan standard (Lelaki & Perempuan Dewasa)</li>
-                            <li>Kapur barus (3 biji)</li>
-                            <li>Sabun mandian jenazah</li>
-                            <li>Kapas</li>
-                            <li>Tali kain kafan (5 helai)</li>
-                            <li>Air Mawar (1 botol)</li>
-                            <li>Serbuk Cendana</li>
-                            <li>Cawat</li>
-                            <li>Kain Meruam (2 keping)</li>
-                            <li>Minyak atar (1 botol)</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kafan-asas', 'Set Kafan Asas', 180, 'Kategori 1')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- Letak URL gambar kat sini -->
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kafan Asas"> -->
+                            <i class="fas fa-box service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Kafan Asas</h3>
+                            <div class="price">RM 180</div>
+                            <ul>
+                                <li>Kain kafan standard (Lelaki & Perempuan Dewasa)</li>
+                                <li>Kapur barus (3 biji)</li>
+                                <li>Sabun mandian jenazah</li>
+                                <li>Kapas</li>
+                                <li>Tali kain kafan (5 helai)</li>
+                                <li>Air Mawar (1 botol)</li>
+                                <li>Serbuk Cendana</li>
+                                <li>Cawat</li>
+                                <li>Kain Meruam (2 keping)</li>
+                                <li>Minyak atar (1 botol)</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kafan-asas', 'Set Kafan Asas', 180, 'Kategori 1')">Tambah ke Troli</button>
+                        </div>
                     </div>
                     <div class="service-card">
-                        <h3>Set Kafan Lengkap</h3>
-                        <div class="price">RM 280</div>
-                        <ul>
-                            <li>Kain kafan berkualiti</li>
-                            <li>Kapur barus & minyak atar (2 botol)</li>
-                            <li>Pencungkil gigi, putik kapas dan sarung tangan 2 set</li>
-                            <li>Kapas 600g (2 bungkus, 300g setiap bungkus)</li>
-                            <li>Tali kain kafan (5 helai)</li>
-                            <li>Air mawar (1 botol)</li>
-                            <li>Alas jenazah</li>
-                            <li>Telekung kafan 65 inci (sehelai)</li>
-                            <li>Jubah 95 inci (sehelai)</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kafan-lengkap', 'Set Kafan Lengkap', 280, 'Kategori 1')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kafan Lengkap"> -->
+                            <i class="fas fa-box-open service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Kafan Lengkap</h3>
+                            <div class="price">RM 280</div>
+                            <ul>
+                                <li>Kain kafan berkualiti</li>
+                                <li>Kapur barus & minyak atar (2 botol)</li>
+                                <li>Pencungkil gigi, putik kapas dan sarung tangan 2 set</li>
+                                <li>Kapas 600g (2 bungkus, 300g setiap bungkus)</li>
+                                <li>Tali kain kafan (5 helai)</li>
+                                <li>Air mawar (1 botol)</li>
+                                <li>Alas jenazah</li>
+                                <li>Telekung kafan 65 inci (sehelai)</li>
+                                <li>Jubah 95 inci (sehelai)</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kafan-lengkap', 'Set Kafan Lengkap', 280, 'Kategori 1')">Tambah ke Troli</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -726,41 +774,47 @@
                 <p class="category-desc">Servis mengikut syariat Islam</p>
                 <div class="services-grid">
                     <div class="service-card">
-                        <h3>Pakej Pengurusan Asas</h3>
-                        <div class="price">RM 800</div>
-                        <ul>
-                            <li>Memandikan jenazah</li>
-                            <li>Mengkafankan jenazah</li>
-                            <li>Bimbingan kepada waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-asas', 'Pakej Pengurusan Asas', 800, 'Kategori 2')">Tambah ke Troli</button>
+                        <div class="service-content">
+                            <h3>Pakej Pengurusan Asas</h3>
+                            <div class="price">RM 800</div>
+                            <ul>
+                                <li>Memandikan jenazah</li>
+                                <li>Mengkafankan jenazah</li>
+                                <li>Bimbingan kepada waris</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('pengurusan-asas', 'Pakej Pengurusan Asas', 800, 'Kategori 2')">Tambah ke Troli</button>
+                        </div>
                     </div>
                     <div class="service-card">
-                        <h3>Pakej Pengurusan Lengkap</h3>
-                        <div class="price">RM 1,500</div>
-                        <ul>
-                            <li>Memandikan jenazah</li>
-                            <li>Mengkafankan jenazah</li>
-                            <li>Solat jenazah</li>
-                            <li>Pengkebumian</li>
-                            <li>Pengangkutan</li>
-                            <li>Bimbingan waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-lengkap', 'Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">Tambah ke Troli</button>
+                        <div class="service-content">
+                            <h3>Pakej Pengurusan Lengkap</h3>
+                            <div class="price">RM 1,500</div>
+                            <ul>
+                                <li>Memandikan jenazah</li>
+                                <li>Mengkafankan jenazah</li>
+                                <li>Solat jenazah</li>
+                                <li>Pengkebumian</li>
+                                <li>Pengangkutan</li>
+                                <li>Bimbingan waris</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('pengurusan-lengkap', 'Pakej Pengurusan Lengkap', 1500, 'Kategori 2')">Tambah ke Troli</button>
+                        </div>
                     </div>
                     <div class="service-card">
-                        <h3>Pakej Pengurusan Premium</h3>
-                        <div class="price">RM 2,300</div>
-                        <ul>
-                            <li>Memandikan & mengkafankan</li>
-                            <li>Solat jenazah</li>
-                            <li>Pengebumian penuh</li>
-                            <li>Pengangkutan</li>
-                            <li>Dokumen kematian</li>
-                            <li>Penyelarasan masjid</li>
-                            <li>Sokongan penuh waris</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('pengurusan-premium', 'Pakej Pengurusan Premium', 2300, 'Kategori 2')">Tambah ke Troli</button>
+                        <div class="service-content">
+                            <h3>Pakej Pengurusan Premium</h3>
+                            <div class="price">RM 2,300</div>
+                            <ul>
+                                <li>Memandikan & mengkafankan</li>
+                                <li>Solat jenazah</li>
+                                <li>Pengebumian penuh</li>
+                                <li>Pengangkutan</li>
+                                <li>Dokumen kematian</li>
+                                <li>Penyelarasan masjid</li>
+                                <li>Sokongan penuh waris</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('pengurusan-premium', 'Pakej Pengurusan Premium', 2300, 'Kategori 2')">Tambah ke Troli</button>
+                        </div>
                     </div>
                 </div>
                 <div class="emergency-card">
@@ -780,46 +834,235 @@
                 <p class="category-desc">Struktur & pemasangan kubur</p>
                 <div class="services-grid">
                     <div class="service-card">
-                        <h3>Set Kubur Asas</h3>
-                        <div class="price">RM 700</div>
-                        <ul>
-                            <li>Kepuk kubur tanah</li>
-                            <li>Papan liang lahad</li>
-                            <li>Penutup liang lahad</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-asas', 'Set Kubur Asas', 700, 'Kategori 3')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Asas"> -->
+                            <i class="fas fa-monument service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Kubur Asas</h3>
+                            <div class="price">RM 800</div>
+                            <ul>
+                                <li>Kepuk kubur standard</li>
+                                <li>Batu nisan standard (jenis paling ekonomi)</li>
+                                <li>Plat nama stainless steel</li>
+                                <li>Papan liang lahad</li>
+                                <li>Penutup liang lahad</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kubur-asas', 'Set Kubur Asas', 800, 'Kategori 3')">Tambah ke Troli</button>
+                        </div>
                     </div>
                     <div class="service-card">
-                        <h3>Set Kubur Standard</h3>
-                        <div class="price">RM 1,200</div>
-                        <ul>
-                            <li>Kepuk kubur konkrit</li>
-                            <li>Papan liang lahad</li>
-                            <li>Penutup liang lahad</li>
-                            <li>Batu tanda kepala</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-standard', 'Set Kubur Standard', 1200, 'Kategori 3')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Premium"> -->
+                            <i class="fas fa-kaaba service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Kubur Premium</h3>
+                            <div class="price">RM 1,500</div>
+                            <ul>
+                                <li>Kepuk kubur berkualiti tinggi</li>
+                                <li>Batu nisan premium (granit/marmar)</li>
+                                <li>Plat nama stainless steel berkualiti</li>
+                                <li>Papan liang lahad kukuh</li>
+                                <li>Penutup liang lahad</li>
+                                <li>Ukiran kaligrafi pada batu nisan</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kubur-premium', 'Set Kubur Premium', 1500, 'Kategori 3')">Tambah ke Troli</button>
+                        </div>
                     </div>
                     <div class="service-card">
-                        <h3>Set Kubur Lengkap</h3>
-                        <div class="price">RM 1,800</div>
-                        <ul>
-                            <li>Kepuk kubur konkrit</li>
-                            <li>Batu nisan</li>
-                            <li>Batu tanda kepala & kaki</li>
-                            <li>Pemasangan batu nisan</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('kubur-lengkap', 'Set Kubur Lengkap', 1800, 'Kategori 3')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Mewah"> -->
+                            <i class="fas fa-gem service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Kubur Mewah</h3>
+                            <div class="price">RM 2,500</div>
+                            <ul>
+                                <li>Kepuk kubur eksklusif dengan finishing istimewa</li>
+                                <li>Batu nisan mewah (granit imported/marmar pilihan)</li>
+                                <li>Plat nama brass/gold plated</li>
+                                <li>Papan liang lahad premium</li>
+                                <li>Penutup liang lahad kukuh</li>
+                                <li>Ukiran kaligrafi eksklusif</li>
+                                <li>Design custom mengikut permintaan</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kubur-mewah', 'Set Kubur Mewah', 2500, 'Kategori 3')">Tambah ke Troli</button>
+                        </div>
                     </div>
+                </div>
+
+                <!-- ITEM BERASINGAN -->
+                <h4 style="font-size: 1.5rem; color: var(--primary); margin: 40px 0 20px 0; padding-left: 15px; border-left: 4px solid var(--primary);">Item Berasingan - Pilih Mengikut Keperluan</h4>
+                <div class="services-grid">
                     <div class="service-card">
-                        <h3>Servis Tambahan Kubur</h3>
-                        <div class="price">RM 300</div>
-                        <ul>
-                            <li>Naik taraf struktur kubur</li>
-                            <li>Penambahan batu tanda</li>
-                            <li>Penyelenggaraan asas</li>
-                        </ul>
-                        <button class="btn" onclick="addToCart('servis-tambahan', 'Servis Tambahan Kubur', 300, 'Kategori 3')">Tambah ke Troli</button>
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kain Kafan Sahaja"> -->
+                            <i class="fas fa-tshirt service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Kain Kafan Sahaja</h3>
+                            <div class="price">RM 80</div>
+                            <ul>
+                                <li>Kain kafan standard (Lelaki/Perempuan)</li>
+                                <li>3 helai kain putih berkualiti</li>
+                                <li>Tali kain kafan (5 helai)</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kafan-sahaja', 'Kain Kafan Sahaja', 80, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Mandian Jenazah"> -->
+                            <i class="fas fa-shower service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Set Mandian Jenazah</h3>
+                            <div class="price">RM 100</div>
+                            <ul>
+                                <li>Sabun mandian jenazah khas</li>
+                                <li>Kapur barus (3 biji)</li>
+                                <li>Air mawar (2 botol)</li>
+                                <li>Minyak atar (1 botol)</li>
+                                <li>Serbuk cendana</li>
+                                <li>Kapas 300g</li>
+                                <li>Pencungkil gigi</li>
+                                <li>Sarung tangan (2 pasang)</li>
+                                <li>Kain meruam (2 keping)</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('set-mandian', 'Set Mandian Jenazah', 100, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kepuk Kubur Standard"> -->
+                            <i class="fas fa-cube service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Kepuk Kubur Standard</h3>
+                            <div class="price">RM 400</div>
+                            <ul>
+                                <li>Kepuk kubur konkrit standard</li>
+                                <li>Papan liang lahad</li>
+                                <li>Penutup liang lahad</li>
+                                <li>Pemasangan dan upah kerja</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kepuk-standard', 'Kepuk Kubur Standard', 400, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kepuk Kubur Premium"> -->
+                            <i class="fas fa-cubes service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Kepuk Kubur Premium</h3>
+                            <div class="price">RM 700</div>
+                            <ul>
+                                <li>Kepuk kubur konkrit berkualiti tinggi</li>
+                                <li>Papan liang lahad kukuh</li>
+                                <li>Penutup liang lahad reinforced</li>
+                                <li>Finishing halus dan kemas</li>
+                                <li>Pemasangan dan upah kerja</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('kepuk-premium', 'Kepuk Kubur Premium', 700, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Standard"> -->
+                            <i class="fas fa-square service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Batu Nisan Standard</h3>
+                            <div class="price">RM 250</div>
+                            <ul>
+                                <li>Batu nisan konkrit standard</li>
+                                <li>Ukuran standard</li>
+                                <li>Tanpa ukiran kaligrafi</li>
+                                <li>Pemasangan termasuk</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('nisan-standard', 'Batu Nisan Standard', 250, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Premium"> -->
+                            <i class="fas fa-certificate service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Batu Nisan Premium</h3>
+                            <div class="price">RM 600</div>
+                            <ul>
+                                <li>Batu nisan granit/marmar</li>
+                                <li>Ukiran kaligrafi cantik</li>
+                                <li>Finishing berkualiti tinggi</li>
+                                <li>Tahan lama dan tidak pudar</li>
+                                <li>Pemasangan termasuk</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('nisan-premium', 'Batu Nisan Premium', 600, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Mewah"> -->
+                            <i class="fas fa-award service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Batu Nisan Mewah</h3>
+                            <div class="price">RM 1,200</div>
+                            <ul>
+                                <li>Batu nisan granit imported/marmar pilihan</li>
+                                <li>Ukiran kaligrafi eksklusif dan detail</li>
+                                <li>Design custom mengikut permintaan</li>
+                                <li>Polish premium, tahan lasak</li>
+                                <li>Pemasangan profesional termasuk</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('nisan-mewah', 'Batu Nisan Mewah', 1200, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Plat Nama Sahaja"> -->
+                            <i class="fas fa-id-card service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Plat Nama Sahaja</h3>
+                            <div class="price">RM 80</div>
+                            <ul>
+                                <li>Plat nama stainless steel</li>
+                                <li>Ukiran nama dan tarikh</li>
+                                <li>Tahan karat dan cuaca</li>
+                                <li>Pemasangan mudah</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('plat-nama', 'Plat Nama Sahaja', 80, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="service-image">
+                            <!-- <img src="URL_GAMBAR_ANDA" alt="Plat Nama Premium"> -->
+                            <i class="fas fa-id-badge service-image-placeholder"></i>
+                        </div>
+                        <div class="service-content">
+                            <h3>Plat Nama Premium</h3>
+                            <div class="price">RM 150</div>
+                            <ul>
+                                <li>Plat nama brass/gold plated</li>
+                                <li>Ukiran detail dan kaligrafi</li>
+                                <li>Finishing mewah dan berkelas</li>
+                                <li>Tahan lama dan tidak pudar</li>
+                                <li>Pemasangan termasuk</li>
+                            </ul>
+                            <button class="btn" onclick="addToCart('plat-premium', 'Plat Nama Premium', 150, 'Item Berasingan')">Tambah ke Troli</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -834,3 +1077,476 @@
         <div class="cart-header">
             <h3>Troli Anda</h3>
             <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i>
+                <p>Troli anda kosong</p>
+            </div>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>JUMLAH</span>
+                <span id="cartTotal">RM 0.00</span>
+            </div>
+            <button class="btn" onclick="openCheckout()">
+                <i class="fas fa-shopping-cart"></i> Teruskan ke Pembayaran
+            </button>
+        </div>
+    </div>
+
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Butiran Pembayaran</h3>
+                <button class="close-modal" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="checkout-steps">
+                    <div id="step1" class="step active">1. Maklumat</div>
+                    <div id="step2" class="step">2. Pembayaran</div>
+                    <div id="step3" class="step">3. Pengesahan</div>
+                    <div id="step4" class="step" style="display:none">4. Selesai</div>
+                </div>
+
+                <div id="step1Content" class="checkout-step active">
+                    <div class="form-group">
+                        <label>Nama Penuh *</label>
+                        <input type="text" id="customerName" placeholder="Nama penuh anda">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombor Telefon *</label>
+                        <input type="tel" id="customerPhone" placeholder="0123456789">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" placeholder="email@contoh.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat Penuh *</label>
+                        <textarea id="customerAddress" placeholder="Alamat lengkap"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Nota Tambahan</label>
+                        <textarea id="customerNotes" placeholder="Nota khas..."></textarea>
+                    </div>
+                    <div class="order-summary">
+                        <h4>Ringkasan Pesanan</h4>
+                        <div id="orderItems"></div>
+                        <div id="orderTotal"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="closeCheckout()">Batal</button>
+                        <button class="btn" onclick="nextStep(2)">Seterusnya</button>
+                    </div>
+                </div>
+
+                <div id="step2Content" class="checkout-step">
+                    <div class="form-group">
+                        <label>Kaedah Pembayaran</label>
+                        <select id="paymentMethod">
+                            <option value="credit_card">Kad Kredit / Debit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama pada Kad *</label>
+                        <input type="text" id="cardName" placeholder="Nama seperti pada kad">
+                    </div>
+                    <div class="form-group">
+                        <label>Nombor Kad *</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="form-group">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+                            <div>
+                                <label>Tarikh Luput *</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/YY">
+                            </div>
+                            <div>
+                                <label>CVV *</label>
+                                <input type="password" id="cardCVV" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="nextStep(1)">Kembali</button>
+                        <button class="btn" onclick="nextStep(3)">Seterusnya</button>
+                    </div>
+                </div>
+
+                <div id="step3Content" class="checkout-step">
+                    <h3>Sahkan Pesanan Anda</h3>
+                    <p>Sila semak maklumat di bawah sebelum membuat pembayaran:</p>
+                    <div class="order-summary">
+                        <h4>Maklumat Pelanggan</h4>
+                        <div id="confirmCustomer"></div>
+                        <h4 style="margin-top:20px">Ringkasan Pesanan</h4>
+                        <div id="confirmItems"></div>
+                        <h4 style="margin-top:20px">Maklumat Pembayaran</h4>
+                        <div id="confirmPayment"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="nextStep(2)">Kembali</button>
+                        <button class="btn" id="payBtn" onclick="processPayment()">Selesaikan Pembayaran</button>
+                    </div>
+                </div>
+
+                <div id="step4Content" class="checkout-step">
+                    <div id="successContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">Baitul<span>Jenazah</span></div>
+                    <p>Perkhidmatan pengurusan jenazah mengikut syariat Islam dengan penuh hormat dan prihatin.</p>
+                </div>
+                <div class="footer-links">
+                    <h3>Pautan Pantas</h3>
+                    <ul>
+                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                        <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
+                    <p><i class="fas fa-envelope"></i> info@baituljenazah.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Utama, KL</p>
+                    <p><i class="fas fa-clock"></i> 24 Jam (Kecemasan)</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Baitul Jenazah. Hak Cipta Terpelihara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function loadCart() {
+            const saved = localStorage.getItem('baituljenazah_cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                updateCartDisplay();
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('baituljenazah_cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function addToCart(id, name, price, category) {
+            cart.push({id, name, price, category, quantity: 1});
+            saveCart();
+            alert(name + ' telah ditambah ke troli.');
+            toggleCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartCount.textContent = cart.length;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>';
+                cartTotal.textContent = 'RM 0.00';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.category}</p>
+                        </div>
+                        <div style="display:flex;align-items:center">
+                            <div class="cart-item-price">RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
+                            <button class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartTotal.textContent = 'RM ' + total.toLocaleString('en-MY', {minimumFractionDigits: 2});
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                alert('Sila tambah sekurang-kurangnya satu item ke troli.');
+                return;
+            }
+            document.getElementById('checkoutModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateOrderSummary();
+            nextStep(1);
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+            
+            let total = 0;
+            orderItems.innerHTML = '';
+            
+            cart.forEach(item => {
+                total += item.price;
+                orderItems.innerHTML += `
+                    <div class="summary-item">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            orderTotal.innerHTML = `
+                <div class="summary-item summary-total">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                </div>
+            `;
+        }
+
+        function nextStep(step) {
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('step' + step).classList.add('active');
+            document.getElementById('step' + step + 'Content').classList.add('active');
+            
+            if (step === 3) updateConfirmSections();
+        }
+
+        function updateConfirmSections() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const customerEmail = document.getElementById('customerEmail').value;
+            const customerAddress = document.getElementById('customerAddress').value;
+            const customerNotes = document.getElementById('customerNotes').value;
+            
+            const cardName = document.getElementById('cardName').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            
+            document.getElementById('confirmCustomer').innerHTML = `
+                <div class="summary-item"><span>Nama:</span><span>${customerName}</span></div>
+                <div class="summary-item"><span>Telefon:</span><span>${customerPhone}</span></div>
+                <div class="summary-item"><span>Email:</span><span>${customerEmail || '-'}</span></div>
+                <div class="summary-item"><span>Alamat:</span><span>${customerAddress}</span></div>
+                ${customerNotes ? `<div class="summary-item"><span>Nota:</span><span>${customerNotes}</span></div>` : ''}
+            `;
+            
+            document.getElementById('confirmPayment').innerHTML = `
+                <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
+                <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
+                <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.slice(-4)}</span></div>
+            `;
+            
+            let total = 0;
+            let itemsHTML = '';
+            cart.forEach(item => {
+                total += item.price;
+                itemsHTML += `
+                    <div class="summary-item">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            itemsHTML += `
+                <div class="summary-item summary-total">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                </div>
+            `;
+            
+            document.getElementById('confirmItems').innerHTML = itemsHTML;
+        }
+
+        function validateStep1() {
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            
+            if (!name || !phone || !address) {
+                alert('Sila isi semua maklumat yang diperlukan.');
+                return false;
+            }
+            
+            if (!/^\d{10,11}$/.test(phone.replace(/\D/g, ''))) {
+                alert('Sila masukkan nombor telefon yang sah (10-11 digit).');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateStep2() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const expiry = document.getElementById('cardExpiry').value;
+            const cvv = document.getElementById('cardCVV').value;
+            const cardName = document.getElementById('cardName').value;
+            
+            if (!cardName || !cardNumber || !expiry || !cvv) {
+                alert('Sila isi semua maklumat kad pembayaran.');
+                return false;
+            }
+            
+            if (!/^\d{16}$/.test(cardNumber)) {
+                alert('Sila masukkan nombor kad yang sah (16 digit).');
+                return false;
+            }
+            
+            if (!/^\d{3,4}$/.test(cvv)) {
+                alert('Sila masukkan CVV yang sah (3 atau 4 digit).');
+                return false;
+            }
+            
+            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                alert('Format tarikh luput tidak sah. Gunakan format MM/YY.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function processPayment() {
+            const payBtn = document.getElementById('payBtn');
+            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            payBtn.disabled = true;
+
+            setTimeout(() => {
+                const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+                
+                const customer = {
+                    name: document.getElementById('customerName').value,
+                    phone: document.getElementById('customerPhone').value,
+                    email: document.getElementById('customerEmail').value || '',
+                    address: document.getElementById('customerAddress').value,
+                    notes: document.getElementById('customerNotes').value || ''
+                };
+                
+                const payment = {
+                    method: 'credit_card',
+                    cardName: document.getElementById('cardName').value,
+                    cardNumber: document.getElementById('cardNumber').value,
+                    cardLast4: document.getElementById('cardNumber').value.slice(-4),
+                    cardExpiry: document.getElementById('cardExpiry').value
+                };
+                
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                
+                const transaction = {
+                    refNumber: refNumber,
+                    date: new Date().toLocaleString('ms-MY'),
+                    timestamp: new Date().toISOString(),
+                    customer: customer,
+                    payment: payment,
+                    items: [...cart],
+                    total: total,
+                    status: 'Selesai'
+                };
+                
+                saveTransaction(transaction);
+                showSuccess(transaction);
+                
+                payBtn.innerHTML = 'Selesaikan Pembayaran';
+                payBtn.disabled = false;
+            }, 1500);
+        }
+
+        function saveTransaction(transaction) {
+            try {
+                const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+                transactions.push(transaction);
+                localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
+                
+                cart = [];
+                saveCart();
+            } catch (error) {
+                console.error('Error saving transaction:', error);
+            }
+        }
+
+        function showSuccess(transaction) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('step4').style.display = 'block';
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step4Content').classList.add('active');
+            
+            document.getElementById('successContent').innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Pembayaran Berjaya!</h3>
+                    <p>Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
+                    
+                    <div class="transaction-details">
+                        <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
+                        <p><strong>Tarikh:</strong> ${transaction.date}</p>
+                        <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                        <p><strong>Jumlah Bayaran:</strong> RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</p>
+                        <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
+                    </div>
+                    
+                    <p style="margin-top:20px;font-size:0.9rem;color:#666">
+                        Resit akan dihantar ke email anda (jika diberikan).
+                    </p>
+                    
+                    <div style="margin-top:30px">
+                        <button class="btn" onclick="window.print()" style="width:auto;padding:12px 30px">
+                            <i class="fas fa-print"></i> Cetak Resit
+                        </button>
+                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
+                            <i class="fas fa-home"></i> Selesai
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function completeOrder() {
+            closeCheckout();
+            toggleCart();
+            alert('Terima kasih! Pesanan anda telah direkodkan.');
+        }
+
+        window.onload = loadCart;
+    </script>
+</body>
+</html>
