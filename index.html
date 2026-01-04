@@ -84,6 +84,85 @@
         }
         
         /* ============================================
+           SMOOTH BACK TO TOP BUTTON
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 99;
+            box-shadow: var(--shadow);
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                     pulse 2s infinite 0.5s;
+        }
+        
+        .back-to-top:hover {
+            background-color: #78d178;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: none; /* Stop pulse animation on hover */
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(136, 231, 136, 0.3);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* Floating animation for attention */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* ============================================
            UPDATED LOADING PAGE LAYOUT
            ============================================ */
         .loading-page {
@@ -312,10 +391,15 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            cursor: pointer;
         }
         
         .logo span {
             color: var(--text-dark);
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
         }
         
         nav ul {
@@ -612,6 +696,15 @@
             .values-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            /* Back to top button for mobile */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
         }
         
         @media (max-width: 576px) {
@@ -641,6 +734,15 @@
             .values-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
+            }
+            
+            /* Back to top button for small screens */
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
         }
         
@@ -897,13 +999,19 @@
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="logo">Baitul<span>Jenazah</span></div>
+            <!-- Logo dengan link ke homepage -->
+            <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -1048,7 +1156,13 @@
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
             const body = document.body;
+            
+            // Variables for scroll detection
+            let lastScrollTop = 0;
+            let scrollThreshold = 100; // Show button after 100px scroll
+            let isButtonVisible = false;
             
             // Flag to track if loading page has been hidden
             let loadingPageHidden = false;
@@ -1075,6 +1189,32 @@
             continueBtn.addEventListener('click', function() {
                 hideLoadingPage();
             });
+            
+            // Back to top button functionality
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection with immediate response
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                // Show button immediately when user starts scrolling down
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                // Hide button when at the top
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
             
             // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', function(e) {
