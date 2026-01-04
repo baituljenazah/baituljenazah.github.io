@@ -84,6 +84,75 @@
         }
         
         /* ============================================
+           SMOOTH BACK TO TOP BUTTON
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 99;
+            box-shadow: var(--shadow);
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                     pulse 2s infinite 0.5s;
+        }
+        
+        .back-to-top:hover {
+            background-color: #78d178;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: none; /* Stop pulse animation on hover */
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(136, 231, 136, 0.3);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* ============================================
            ANIMATIONS
            ============================================ */
         @keyframes smoothFadeIn {
@@ -176,7 +245,7 @@
             }
         }
         
-        /* Header - COPY DARI HOMEPAGE */
+        /* Header - UPDATED SAMA DENGAN HOMEPAGE */
         header {
             background-color: var(--secondary-color);
             box-shadow: var(--shadow);
@@ -198,10 +267,15 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            cursor: pointer;
         }
         
         .logo span {
             color: var(--text-dark);
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
         }
         
         nav ul {
@@ -255,7 +329,7 @@
             z-index: 101;
         }
         
-        /* Mobile menu overlay - COPY DARI HOMEPAGE */
+        /* Mobile menu overlay - UPDATED SAMA DENGAN HOMEPAGE */
         .mobile-menu-overlay {
             display: none;
             position: fixed;
@@ -730,7 +804,7 @@
             background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040);
         }
         
-        /* Footer - COPY DARI HOMEPAGE */
+        /* Footer - UPDATED SAMA DENGAN HOMEPAGE */
         footer {
             background-color: #333;
             color: var(--secondary-color);
@@ -895,6 +969,15 @@
                 padding: 0 10px;
             }
             
+            /* Back to top button for mobile */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+            
             /* TOGGLE BUTTON SAMA STYLE DENGAN DESKTOP, CUMA LEBIH KECIL */
             .language-toggle-btn {
                 position: absolute;
@@ -1003,6 +1086,15 @@
                 padding: 0 10px;
             }
             
+            /* Back to top button for small screens */
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
             /* Toggle button lebih kecil untuk mobile kecil */
             .language-toggle-btn {
                 padding: 5px 10px;
@@ -1081,7 +1173,8 @@
             .language-toggle-btn:hover,
             .org-image-wrapper:hover,
             .org-image:hover,
-            .close-modal:hover {
+            .close-modal:hover,
+            .back-to-top:hover {
                 transform: none !important;
             }
             
@@ -1089,7 +1182,8 @@
             .contact-card:active, 
             .social-icon:active,
             .directory-section:active,
-            .language-toggle-btn:active {
+            .language-toggle-btn:active,
+            .back-to-top:active {
                 transform: scale(0.98) !important;
                 transition: transform 0.1s ease !important;
             }
@@ -1124,13 +1218,19 @@
         </div>
     </div>
 
-    <!-- Mobile Menu Overlay - COPY DARI HOMEPAGE -->
+    <!-- Back to Top Button - ADDED SAME AS HOMEPAGE -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Mobile Menu Overlay - UPDATED SAMA DENGAN HOMEPAGE -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
-    <!-- Header - COPY DARI HOMEPAGE -->
+    <!-- Header - UPDATED SAMA DENGAN HOMEPAGE -->
     <header>
         <div class="container header-container">
-            <div class="logo">Baitul<span>Jenazah</span></div>
+            <!-- Logo dengan link ke homepage -->
+            <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -1258,7 +1358,7 @@
         </section>
     </main>
 
-    <!-- Footer - COPY DARI HOMEPAGE -->
+    <!-- Footer - UPDATED SAMA DENGAN HOMEPAGE -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -1307,11 +1407,43 @@
             const imageModal = document.getElementById('imageModal');
             const closeModal = document.getElementById('closeModal');
             const modalImage = document.getElementById('modalImage');
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            // Variables for scroll detection - SAME AS HOMEPAGE
+            let lastScrollTop = 0;
+            let scrollThreshold = 100; // Show button after 100px scroll
+            let isButtonVisible = false;
             
             // State
             let isEnglish = false;
             
-            // Mobile menu toggle - COPY DARI HOMEPAGE
+            // Back to top button functionality - SAME AS HOMEPAGE
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection with immediate response - SAME AS HOMEPAGE
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                // Show button immediately when user starts scrolling down
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                // Hide button when at the top
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
+            
+            // Mobile menu toggle - UPDATED SAMA DENGAN HOMEPAGE
             mobileMenuBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
                 mainNav.classList.toggle('active');
@@ -1321,14 +1453,14 @@
                     : '<i class="fas fa-bars"></i>';
             });
             
-            // Close mobile menu when clicking on overlay - COPY DARI HOMEPAGE
+            // Close mobile menu when clicking on overlay - UPDATED SAMA DENGAN HOMEPAGE
             mobileMenuOverlay.addEventListener('click', function() {
                 mainNav.classList.remove('active');
                 mobileMenuOverlay.classList.remove('active');
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
             });
             
-            // Close mobile menu when clicking outside on mobile - COPY DARI HOMEPAGE
+            // Close mobile menu when clicking outside on mobile - UPDATED SAMA DENGAN HOMEPAGE
             document.addEventListener('click', function(e) {
                 if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
                     // If click is not on nav or menu button
@@ -1474,7 +1606,7 @@
             // Initial check
             checkAnimation();
             
-            // Trigger scroll event to set initial active state
+            // Trigger scroll event to set initial active state and back to top button
             setTimeout(function() {
                 window.dispatchEvent(new Event('scroll'));
             }, 100);
@@ -1482,4 +1614,3 @@
     </script>
 </body>
 </html>
-
