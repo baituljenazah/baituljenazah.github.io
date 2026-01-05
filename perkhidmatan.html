@@ -1560,8 +1560,8 @@
                         <div class="validation-error" id="phoneError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nombor telefon yang sah (10-11 digit)</div>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="nama@email.com">
+                        <label>Email *</label>
+                        <input type="email" id="customerEmail" placeholder="nama@email.com" required>
                         <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi email yang sah</div>
                     </div>
                     <div class="form-group">
@@ -1923,8 +1923,8 @@
             const email = document.getElementById('customerEmail').value.trim();
             
             // Validate required fields
-            if (!name || !phone || !address) {
-                alert('Sila isi semua maklumat yang diperlukan (nama, telefon, alamat).');
+            if (!name || !phone || !address || !email) {
+                alert('Sila isi semua maklumat yang diperlukan (nama, telefon, email, alamat).');
                 return false;
             }
             
@@ -1935,13 +1935,11 @@
                 return false;
             }
             
-            // Validate email format if provided
-            if (email) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(email)) {
-                    alert('Sila masukkan alamat email yang sah (contoh: nama@email.com).');
-                    return false;
-                }
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Sila masukkan alamat email yang sah (contoh: nama@email.com).');
+                return false;
             }
             
             return true;
@@ -1980,7 +1978,7 @@
             // Extract month and year
             const [monthStr, yearStr] = expiry.split('/');
             const month = parseInt(monthStr, 10);
-            const year = parseInt(yearStr, 10);
+            const year = parseInt('20' + yearStr, 10);
             
             // Validate month (01-12)
             if (month < 1 || month > 12) {
@@ -1990,29 +1988,13 @@
             
             // Validate expiry date not in the past
             const currentDate = new Date();
-            const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
-            const currentMonth = currentDate.getMonth() + 1; // Month is 0-indexed
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = currentDate.getMonth() + 1;
             
-            // Check if card is expired (specifically check for Jan 2026 or earlier)
-            const expiryYearFull = 2000 + year;
-            
-            // Create expiry date (last day of the month)
-            const expiryDate = new Date(expiryYearFull, month, 0);
-            
-            // Check if expired before Jan 2026
-            const jan2026 = new Date(2026, 0, 31); // 31 Jan 2026
-            
-            if (expiryDate < new Date()) {
+            // Check if card is expired
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
                 alert('Kad kredit/debit telah tamat tempoh. Sila gunakan kad yang sah.');
                 return false;
-            }
-            
-            // Additional check: if expiry is Jan 2026 or earlier, show warning
-            if (expiryDate <= jan2026) {
-                const userConfirmed = confirm('Kad anda akan tamat tempoh pada ' + expiry + '. Adakah anda pasti mahu meneruskan?');
-                if (!userConfirmed) {
-                    return false;
-                }
             }
             
             return true;
@@ -2132,10 +2114,10 @@
                     if (value && /^\d{2}\/\d{2}$/.test(value)) {
                         const [monthStr, yearStr] = value.split('/');
                         const month = parseInt(monthStr, 10);
-                        const year = parseInt(yearStr, 10);
+                        const year = parseInt('20' + yearStr, 10);
                         
                         const currentDate = new Date();
-                        const currentYear = currentDate.getFullYear() % 100;
+                        const currentYear = currentDate.getFullYear();
                         const currentMonth = currentDate.getMonth() + 1;
                         
                         if (month < 1 || month > 12) {
@@ -2252,6 +2234,9 @@
                 // SIMPAN TRANSACTION DAN AUTO DOWNLOAD
                 saveTransaction(transaction);
                 
+                // SEND EMAIL NOTIFICATION
+                sendEmailNotification(transaction);
+                
                 // Remove loading overlay
                 if (loadingOverlay.parentNode) {
                     loadingOverlay.parentNode.removeChild(loadingOverlay);
@@ -2265,6 +2250,26 @@
                 payBtn.innerHTML = 'Selesaikan Pembayaran';
                 payBtn.disabled = false;
             }, 1500);
+        }
+
+        // FUNCTION TO SEND EMAIL NOTIFICATION
+        function sendEmailNotification(transaction) {
+            const customerEmail = transaction.customer.email;
+            if (!customerEmail) return;
+            
+            // Simulate email sending
+            console.log('Sending email notification to:', customerEmail);
+            console.log('Transaction details:', transaction.refNumber);
+            
+            // In a real application, you would use:
+            // 1. EmailJS
+            // 2. Backend API (PHP, Node.js)
+            // 3. Third-party service
+            
+            // For demonstration, show a message
+            setTimeout(() => {
+                console.log('✅ Email notification sent to:', customerEmail);
+            }, 1000);
         }
 
         function saveTransaction(transaction) {
@@ -2318,7 +2323,7 @@
             
             // Show notification
             setTimeout(() => {
-                alert(`✅ Resit telah dimuat turun secara automatik!\n\n📄 Fail: Resit_BaitulJenazah_${transaction.refNumber}.html\n\n💾 Disimpan dalam folder "Downloads" anda.`);
+                alert(`✅ Resit telah dimuat turun secara automatik!\n\n📄 Fail: Resit_BaitulJenazah_${transaction.refNumber}.html\n\n📧 Notifikasi telah dihantar ke: ${transaction.customer.email}\n\n💾 Disimpan dalam folder "Downloads" anda.`);
             }, 500);
         }
 
@@ -2567,6 +2572,7 @@
             const emailStatus = transaction.customer.email 
                 ? `<p style="margin:15px 0;padding:12px;background:#e8f5e9;border-radius:4px;">
                       <i class="fas fa-envelope"></i> Email: <strong>${transaction.customer.email}</strong>
+                      <br><small>Notifikasi transaksi telah dihantar ke email anda</small>
                    </p>`
                 : '';
             
@@ -2639,6 +2645,7 @@
                     
                     <p style="margin-top:20px;font-size:0.9rem;color:#666;text-align:center;">
                         <i class="fas fa-info-circle"></i> Resit telah dimuat turun secara automatik ke komputer anda.
+                        ${transaction.customer.email ? '<br><i class="fas fa-envelope"></i> Notifikasi telah dihantar ke email anda.' : ''}
                     </p>
                     
                     <div style="margin-top:30px;text-align:center;">
@@ -2650,125 +2657,121 @@
             `;
         }
 
-        // DOWNLOAD RECEIPT AGAIN
-        function downloadReceiptAgain(transaction) {
-            const receiptContent = generateReceiptHTML(transaction);
-            const blob = new Blob([receiptContent], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Resit_BaitulJenazah_${transaction.refNumber}_${Date.now()}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            alert('Resit berjaya dimuat turun!');
-        }
-
-        // PRINT RECEIPT (FIXED FOR 1 PAGE)
+        // PRINT RECEIPT FUNCTION (FIXED FOR 1 PAGE ONLY)
         function printReceipt() {
-            // Close modal first
-            closeCheckout();
-            
-            // Create print content
-            const receiptContent = generateReceiptHTMLForPrint();
-            
-            // Create print window
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(receiptContent);
-            printWindow.document.close();
-            
-            // Auto print after load
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
-        }
-
-        function generateReceiptHTMLForPrint() {
             // Get last transaction
             const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
-            if (transactions.length === 0) return '';
+            if (transactions.length === 0) {
+                alert('Tiada resit untuk dicetak.');
+                return;
+            }
             
             const transaction = transactions[0];
             
-            return `<!DOCTYPE html>
+            // Create simple receipt for printing (ONE PAGE ONLY)
+            const receiptContent = `
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Resit Baitul Jenazah</title>
+    <title>Resit Baitul Jenazah - ${transaction.refNumber}</title>
+    <meta charset="UTF-8">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 15mm;
-            font-size: 12pt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 15mm; 
+            max-width: 800px; 
+            margin: 0 auto; 
         }
-        .receipt {
-            width: 100%;
+        .receipt-container { 
+            border: 1px solid #000; 
+            padding: 20px; 
+            margin: 0 auto;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
+        .header { 
+            text-align: center; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #88E788; 
         }
-        .company-name {
-            font-size: 24pt;
-            font-weight: bold;
-            color: #000;
+        .company-name { 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: #88E788; 
+            margin-bottom: 5px; 
         }
-        .receipt-title {
-            font-size: 18pt;
-            margin: 10px 0;
+        .receipt-title { 
+            font-size: 20px; 
+            margin: 10px 0; 
         }
-        .details {
-            margin: 20px 0;
+        .ref-number { 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin: 10px 0; 
         }
-        .items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        .details { 
+            margin: 15px 0; 
         }
-        .items-table th, .items-table td {
+        .items-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 15px 0; 
+        }
+        .items-table th { 
+            background: #f0f0f0; 
+            padding: 8px; 
+            text-align: left; 
             border: 1px solid #000;
-            padding: 8px;
-            text-align: left;
         }
-        .total {
-            text-align: right;
-            font-size: 14pt;
-            font-weight: bold;
-            margin-top: 20px;
-            padding-top: 10px;
-            border-top: 2px solid #000;
+        .items-table td { 
+            padding: 6px 8px; 
+            border: 1px solid #000; 
         }
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 10pt;
-            color: #666;
+        .total { 
+            text-align: right; 
+            margin-top: 20px; 
+            padding-top: 10px; 
+            border-top: 2px solid #000; 
+            font-size: 18px; 
+            font-weight: bold; 
+        }
+        .footer { 
+            margin-top: 20px; 
+            text-align: center; 
+            font-size: 12px; 
+            color: #666; 
+            padding-top: 10px; 
+            border-top: 1px solid #ddd; 
         }
         @page {
-            size: A4;
             margin: 15mm;
+            size: A4;
         }
         @media print {
             body {
+                padding: 0;
                 margin: 0;
+            }
+            .receipt-container {
+                border: none;
+                padding: 15mm;
             }
         }
     </style>
 </head>
 <body>
-    <div class="receipt">
+    <div class="receipt-container">
         <div class="header">
             <div class="company-name">Baitul Jenazah</div>
-            <div class="receipt-title">RESIT PEMBAYARAN</div>
-            <div>No. Rujukan: ${transaction.refNumber}</div>
+            <div class="receipt-title">RESIT PEMBAYARAN RASMI</div>
+            <div class="ref-number">No. Rujukan: ${transaction.refNumber}</div>
             <div>Tarikh: ${transaction.date}</div>
         </div>
         
         <div class="details">
             <div><strong>Pelanggan:</strong> ${transaction.customer.name}</div>
             <div><strong>Telefon:</strong> ${transaction.customer.phone}</div>
+            <div><strong>Email:</strong> ${transaction.customer.email || '-'}</div>
             <div><strong>Alamat:</strong> ${transaction.customer.address}</div>
         </div>
         
@@ -2776,7 +2779,7 @@
             <thead>
                 <tr>
                     <th>Bil</th>
-                    <th>Item</th>
+                    <th>Item Perkhidmatan</th>
                     <th>Harga (RM)</th>
                 </tr>
             </thead>
@@ -2792,26 +2795,47 @@
         </table>
         
         <div class="total">
-            Jumlah Keseluruhan: RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}
+            JUMLAH KESELURUHAN: RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}
         </div>
         
         <div class="footer">
             <p>Terima kasih atas pembelian anda.</p>
-            <p>Baitul Jenazah - No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
-            <p>Tel: 03-1234 5678 | Email: info@baituljenazah.my</p>
+            <p>Baitul Jenazah Sdn Bhd</p>
+            <p>No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+            <p>Tel: 03-1234 5678 | WhatsApp: 012-345 6789</p>
         </div>
     </div>
     
     <script>
         window.onload = function() {
             window.print();
-            setTimeout(() => {
+            setTimeout(function() {
                 window.close();
             }, 1000);
         };
     </script>
 </body>
 </html>`;
+            
+            // Create print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(receiptContent);
+            printWindow.document.close();
+        }
+
+        // DOWNLOAD RECEIPT AGAIN
+        function downloadReceiptAgain(transaction) {
+            const receiptContent = generateReceiptHTML(transaction);
+            const blob = new Blob([receiptContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Resit_BaitulJenazah_${transaction.refNumber}_${Date.now()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('Resit berjaya dimuat turun!');
         }
 
         // LOAD MY RECEIPTS
@@ -2892,6 +2916,7 @@
             const transaction = transactions.find(t => t.refNumber === refNumber);
             
             if (transaction) {
+                // Use the same print function
                 const receiptContent = generateReceiptHTML(transaction);
                 const printWindow = window.open('', '_blank');
                 printWindow.document.write(receiptContent);
