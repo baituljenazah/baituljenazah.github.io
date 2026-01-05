@@ -344,11 +344,11 @@ function validateStep2() {
         return false;
     }
     
-    // Validate CVV (3-4 digits)
-    if (!/^\d{3,4}$/.test(cvv)) {
-        alert('Sila masukkan CVV yang sah (3 atau 4 digit).');
-        return false;
-    }
+// Validate CVV (3 digits sahaja - betulkan dari 3-4 digits ke 3 digits sahaja)
+if (!/^\d{3}$/.test(cvv)) {
+    alert('Sila masukkan CVV yang sah (3 digit tepat).');
+    return false;
+}
     
     // Validate expiry date format
     if (!/^\d{2}\/\d{2}$/.test(expiry)) {
@@ -533,29 +533,28 @@ function setupInputFormatting() {
         });
     }
     
-    // Format CVV input (3-4 digits)
-    const cvvInput = document.getElementById('cardCVV');
-    if (cvvInput) {
-        cvvInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            
-            // Limit to 4 digits
-            if (value.length > 4) {
-                value = value.substring(0, 4);
-            }
-            
-            e.target.value = value;
-            
-            // Show error if invalid
-            const errorElement = document.getElementById('cvvError');
-            if (value.length < 3 && value.length > 0) {
-                errorElement.textContent = 'CVV perlu 3-4 digit';
-                errorElement.style.display = 'block';
-            } else {
-                errorElement.style.display = 'none';
-            }
-        });
-    }
+// Format CVV input (3 digits sahaja - bukan 4)
+const cvvInput = document.getElementById('cardCVV');
+if (cvvInput) {
+    cvvInput.addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        
+        // Limit to 3 digits sahaja (bukan 4)
+        if (value.length > 3) {
+            value = value.substring(0, 3);
+        }
+        
+        e.target.value = value;
+        
+        // Show error if invalid
+        const errorElement = document.getElementById('cvvError');
+        if (value.length !== 3 && value.length > 0) {
+            errorElement.textContent = 'CVV perlu 3 digit tepat';
+            errorElement.style.display = 'block';
+        } else {
+            errorElement.style.display = 'none';
+        }
+    });
 }
 
 function setupRealTimeValidation() {
@@ -706,7 +705,7 @@ function showSuccess(transaction) {
             </p>
             
             <div style="margin-top:30px">
-                <button class="btn" onclick="window.print()" style="width:auto;padding:12px 30px">
+                <button class="btn" onclick="printReceipt(${JSON.stringify(transaction).replace(/'/g, "&#39;")})" style="width:auto;padding:12px 30px">
                     <i class="fas fa-print"></i> Cetak Resit
                 </button>
                 <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
@@ -721,4 +720,252 @@ function completeOrder() {
     closeCheckout();
     toggleCart();
     alert('Terima kasih! Pesanan anda telah direkodkan.');
+}
+
+    function printReceipt(transaction) {
+    // Create a printable receipt
+    const printContent = `
+        <!DOCTYPE html>
+        <html lang="ms">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Resit Baitul Jenazah</title>
+            <style>
+                @media print {
+                    @page {
+                        margin: 0.5cm;
+                        size: auto;
+                    }
+                    body {
+                        margin: 0;
+                        padding: 15px;
+                        font-family: Arial, sans-serif;
+                        font-size: 12px;
+                        color: #000;
+                        background: #fff;
+                        width: 100%;
+                    }
+                    * {
+                        box-sizing: border-box;
+                    }
+                }
+                
+                body {
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                    color: #000;
+                    background: #fff;
+                    margin: 0;
+                    padding: 15px;
+                    max-width: 100%;
+                }
+                
+                .receipt-container {
+                    width: 100%;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    border: 1px solid #ddd;
+                    padding: 20px;
+                    background: #fff;
+                }
+                
+                .header {
+                    text-align: center;
+                    margin-bottom: 20px;
+                    border-bottom: 2px solid #333;
+                    padding-bottom: 15px;
+                }
+                
+                .header h1 {
+                    font-size: 20px;
+                    margin: 0 0 5px 0;
+                    color: #333;
+                }
+                
+                .header h2 {
+                    font-size: 16px;
+                    margin: 0 0 10px 0;
+                    color: #666;
+                }
+                
+                .receipt-info {
+                    margin-bottom: 20px;
+                }
+                
+                .info-row {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 5px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px dashed #eee;
+                }
+                
+                .info-label {
+                    font-weight: bold;
+                    width: 40%;
+                }
+                
+                .info-value {
+                    width: 60%;
+                    text-align: right;
+                }
+                
+                .items-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }
+                
+                .items-table th {
+                    background: #f5f5f5;
+                    padding: 8px;
+                    text-align: left;
+                    border-bottom: 2px solid #333;
+                    font-weight: bold;
+                }
+                
+                .items-table td {
+                    padding: 8px;
+                    border-bottom: 1px solid #ddd;
+                }
+                
+                .items-table tr:last-child td {
+                    border-bottom: 2px solid #333;
+                }
+                
+                .total-row {
+                    font-weight: bold;
+                    font-size: 14px;
+                }
+                
+                .footer {
+                    text-align: center;
+                    margin-top: 30px;
+                    padding-top: 15px;
+                    border-top: 2px solid #333;
+                    font-size: 11px;
+                    color: #666;
+                }
+                
+                .watermark {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) rotate(-45deg);
+                    font-size: 100px;
+                    color: rgba(0,0,0,0.1);
+                    z-index: -1;
+                    pointer-events: none;
+                    opacity: 0.3;
+                }
+                
+                .no-print {
+                    display: none;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="watermark">BAITUL JENAZAH</div>
+            
+            <div class="receipt-container">
+                <div class="header">
+                    <h1>BAITUL JENAZAH</h1>
+                    <h2>Resit Pembayaran</h2>
+                    <div style="font-size: 14px; color: #666;">No. Rujukan: ${transaction.refNumber}</div>
+                    <div style="font-size: 12px;">Tarikh: ${transaction.date}</div>
+                </div>
+                
+                <div class="receipt-info">
+                    <div class="info-row">
+                        <div class="info-label">Nama Pelanggan:</div>
+                        <div class="info-value">${transaction.customer.name}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">No. Telefon:</div>
+                        <div class="info-value">${transaction.customer.phone}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Email:</div>
+                        <div class="info-value">${transaction.customer.email || '-'}</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Alamat:</div>
+                        <div class="info-value">${transaction.customer.address}</div>
+                    </div>
+                    ${transaction.customer.notes ? `
+                    <div class="info-row">
+                        <div class="info-label">Nota:</div>
+                        <div class="info-value">${transaction.customer.notes}</div>
+                    </div>
+                    ` : ''}
+                </div>
+                
+                <table class="items-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Kategori</th>
+                            <th style="text-align:right">Harga (RM)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${transaction.items.map(item => `
+                            <tr>
+                                <td>${item.name}</td>
+                                <td>${item.category}</td>
+                                <td style="text-align:right">${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</td>
+                            </tr>
+                        `).join('')}
+                        <tr class="total-row">
+                            <td colspan="2" style="text-align:right"><strong>JUMLAH KESELURUHAN:</strong></td>
+                            <td style="text-align:right"><strong>RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="receipt-info">
+                    <div class="info-row">
+                        <div class="info-label">Kaedah Pembayaran:</div>
+                        <div class="info-value">Kad Kredit/Debit</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">Status:</div>
+                        <div class="info-value" style="color:#27ae60;font-weight:bold">${transaction.status}</div>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <p>Terima kasih atas pembelian anda.</p>
+                    <p>Baitul Jenazah - Perkhidmatan Pengurusan Jenazah Berkualiti</p>
+                    <p>Hubungi kami: 03-1234 5678 | www.baituljenazah.my</p>
+                </div>
+                
+                <div class="no-print" style="margin-top:20px;text-align:center">
+                    <button onclick="window.close()" style="padding:10px 20px;background:#333;color:white;border:none;cursor:pointer">
+                        Tutup Tetingkap
+                    </button>
+                </div>
+            </div>
+            
+            <script>
+                window.onload = function() {
+                    // Auto print and close
+                    setTimeout(function() {
+                        window.print();
+                        setTimeout(function() {
+                            window.close();
+                        }, 1000);
+                    }, 500);
+                };
+            </script>
+        </body>
+        </html>
+    `;
+    
+    // Open print window
+    const printWindow = window.open('', '_blank', 'width=900,height=600');
+    printWindow.document.open();
+    printWindow.document.write(printContent);
+    printWindow.document.close();
 }
