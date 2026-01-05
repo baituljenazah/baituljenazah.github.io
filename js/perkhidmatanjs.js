@@ -679,6 +679,9 @@ function showSuccess(transaction) {
     document.getElementById('step4').classList.add('active');
     document.getElementById('step4Content').classList.add('active');
     
+    // Escape single quotes properly untuk transaction object
+    const transactionJSON = JSON.stringify(transaction).replace(/'/g, "\\'");
+    
     document.getElementById('successContent').innerHTML = `
         <div class="success-message">
             <div class="success-icon"><i class="fas fa-check-circle"></i></div>
@@ -706,7 +709,7 @@ function showSuccess(transaction) {
             </p>
             
             <div style="margin-top:30px">
-                <button class="btn" onclick="printReceipt(${JSON.stringify(transaction).replace(/'/g, "&#39;")})" style="width:auto;padding:12px 30px">
+                <button class="btn" onclick="printReceipt(${transactionJSON})" style="width:auto;padding:12px 30px">
                     <i class="fas fa-print"></i> Cetak Resit
                 </button>
                 <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
