@@ -1071,4 +1071,74 @@ footer {
         font-size: 1rem;
         bottom: -40px;
     }
+
+    /* Tambah di akhir file css/style.css */
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    #successContent,
+    #successContent * {
+        visibility: visible;
+    }
+    
+    #successContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+        box-shadow: none;
+    }
+    
+    .success-message {
+        max-width: 100%;
+        padding: 20px;
+        margin: 0;
+    }
+    
+    .transaction-details {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    
+    .btn,
+    .back-to-top,
+    header,
+    footer,
+    nav,
+    .cart-sidebar,
+    .modal {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    @page {
+        margin: 0.5cm;
+        size: auto;
+    }
+}
+
+/* Tambah class untuk styling print */
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
 }
