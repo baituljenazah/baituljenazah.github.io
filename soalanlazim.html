@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soalan Lazim - Baitul Jenazah</title>
+    <title>Baitul Jenazah - Soalan Lazim Pengurusan Jenazah</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -84,6 +84,279 @@
             margin-left: 8px;
         }
         
+        /* ============================================
+           SMOOTH BACK TO TOP BUTTON (sama seperti homepage)
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 99;
+            box-shadow: var(--shadow);
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                     pulse 2s infinite 0.5s;
+        }
+        
+        .back-to-top:hover {
+            background-color: #78d178;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(136, 231, 136, 0.3);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
+        /* ============================================
+           UPDATED LOADING PAGE LAYOUT (sama seperti homepage)
+           ============================================ */
+        .loading-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c7744 0%, var(--primary-color) 100%);
+            z-index: 9999;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease, visibility 1s ease;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loading-page.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-container {
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+        
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .verse-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .arabic-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-align: justify;
+            direction: rtl;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.5s forwards;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+        
+        .translation-text {
+            font-size: 1rem;
+            color: white;
+            font-style: italic;
+            line-height: 1.6;
+            text-align: justify;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .verse-reference {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            font-style: normal;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.2s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .loading-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .loading-btn {
+            font-size: 1.1rem;
+            padding: 14px 35px;
+            color: #2c7744;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.5s forwards;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+        
+        .loading-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            background: #f8fff8;
+            color: #2c7744;
+        }
+        
+        .loading-hint {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            opacity: 0;
+            animation: fadeIn 1.5s ease 1.8s forwards;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .decoration {
+            position: absolute;
+            z-index: 1;
+        }
+        
+        .leaf-1 {
+            top: -30px;
+            left: -30px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+        
+        .leaf-2 {
+            bottom: -60px;
+            right: -60px;
+            width: 160px;
+            height: 160px;
+            background: rgba(44, 119, 68, 0.1);
+            border-radius: 50%;
+        }
+        
+        .islamic-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(136, 231, 136, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(44, 119, 68, 0.08) 0%, transparent 20%);
+            z-index: 1;
+        }
+        
+        .loading-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeIn 1.5s ease 0.3s forwards;
+        }
+        
+        .loading-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 2px;
+            animation: loadingProgress 10s linear forwards;
+        }
+        
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes loadingProgress {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        
         /* Header - sama seperti homepage */
         header {
             background-color: var(--secondary-color);
@@ -106,10 +379,15 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            cursor: pointer;
         }
         
         .logo span {
             color: var(--text-dark);
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
         }
         
         nav ul {
@@ -179,12 +457,12 @@
             display: block;
         }
         
-        /* Hero Section untuk FAQ */
+        /* Hero Section untuk FAQ - diperbaiki sizing */
         .faq-hero {
             background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1579154204601-01588f351e67?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
-            padding: 60px 0;
+            padding: 80px 0;
             text-align: center;
             color: var(--text-dark);
         }
@@ -195,20 +473,20 @@
         }
         
         .faq-hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             max-width: 800px;
             margin: 0 auto 25px;
         }
         
         /* Main FAQ Content */
         .faq-content {
-            padding: 60px 0;
+            padding: 80px 0;
             background-color: var(--secondary-color);
         }
         
         .section-title {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             position: relative;
             font-size: 2rem;
         }
@@ -224,27 +502,30 @@
             background-color: var(--primary-color);
         }
         
-        /* FAQ Accordion */
+        /* FAQ Accordion - PERBAIKI SIZING KOTAK */
         .faq-accordion {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         .faq-item {
-            margin-bottom: 15px;
-            border-radius: 8px;
+            margin-bottom: 20px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: var(--shadow);
             background-color: var(--faq-bg);
             transition: all 0.3s ease;
+            border: 1px solid #eaeaea;
         }
         
         .faq-item:hover {
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
         }
         
         .faq-question {
-            padding: 20px 25px;
+            padding: 25px 30px;
             background-color: var(--faq-bg);
             cursor: pointer;
             display: flex;
@@ -259,20 +540,22 @@
         
         .faq-question h3 {
             margin: 0;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-dark);
             flex: 1;
+            font-weight: 600;
         }
         
         .faq-icon {
             color: var(--primary-color);
-            font-size: 1.3rem;
-            transition: transform 0.3s ease;
-            margin-left: 15px;
+            font-size: 1.5rem;
+            transition: transform 0.4s ease;
+            margin-left: 20px;
+            min-width: 24px;
         }
         
         .faq-answer {
-            padding: 0 25px;
+            padding: 0 30px;
             max-height: 0;
             overflow: hidden;
             transition: all 0.5s ease;
@@ -280,13 +563,13 @@
         }
         
         .faq-answer.active {
-            padding: 25px;
-            max-height: 1000px;
+            padding: 30px;
+            max-height: 2000px;
         }
         
         .faq-answer p {
             margin-bottom: 0;
-            font-size: 1rem;
+            font-size: 1.05rem;
             line-height: 1.7;
             color: var(--text-light);
         }
@@ -295,25 +578,26 @@
         .faq-answer ul {
             list-style: none;
             margin-left: 0;
-            margin-top: 15px;
-            margin-bottom: 20px;
+            margin-top: 20px;
+            margin-bottom: 25px;
         }
         
         .faq-answer ul li {
-            padding-left: 25px;
+            padding-left: 30px;
             position: relative;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             color: var(--text-light);
+            line-height: 1.6;
         }
         
         .faq-answer ul li:before {
             content: "•";
             color: var(--primary-color);
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             position: absolute;
             left: 0;
-            top: -4px;
+            top: -3px;
         }
         
         .faq-answer .bold-point {
@@ -323,40 +607,47 @@
         
         /* Additional Help Section */
         .additional-help {
-            padding: 50px 0;
+            padding: 60px 0;
             background-color: #f9f9f9;
             text-align: center;
-            margin-top: 50px;
-            border-radius: 10px;
+            margin-top: 60px;
+            border-radius: 15px;
         }
         
         .help-box {
             max-width: 800px;
             margin: 0 auto;
-            padding: 35px;
+            padding: 40px;
             background-color: white;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: var(--shadow);
+            border: 1px solid #eaeaea;
         }
         
         .help-box h3 {
             color: var(--primary-color);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .help-box p {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
         }
         
         /* Footer */
         footer {
             background-color: #333;
             color: var(--secondary-color);
-            padding: 50px 0 20px;
+            padding: 60px 0 30px;
         }
         
         .footer-content {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 40px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
         
         .footer-logo {
@@ -395,10 +686,99 @@
         
         .copyright {
             text-align: center;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid #444;
             font-size: 0.9rem;
             color: #aaa;
+        }
+        
+        /* Responsif untuk Loading Page */
+        @media (max-width: 768px) {
+            .loading-container {
+                padding: 25px;
+                width: 95%;
+                max-width: 500px;
+            }
+            
+            .arabic-text {
+                font-size: 1.5rem;
+                line-height: 1.6;
+            }
+            
+            .translation-text {
+                font-size: 0.9rem;
+            }
+            
+            .loading-btn {
+                font-size: 1rem;
+                padding: 12px 25px;
+            }
+            
+            .verse-container {
+                padding: 20px;
+            }
+            
+            /* Back to top button for mobile */
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .loading-container {
+                padding: 20px;
+                max-width: 450px;
+            }
+            
+            .arabic-text {
+                font-size: 1.3rem;
+            }
+            
+            .translation-text {
+                font-size: 0.85rem;
+            }
+            
+            .loading-btn {
+                font-size: 0.95rem;
+                padding: 10px 20px;
+            }
+            
+            .verse-container {
+                padding: 15px;
+            }
+            
+            /* Back to top button for small screens */
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .loading-container {
+                padding: 15px;
+                max-width: 380px;
+            }
+            
+            .arabic-text {
+                font-size: 1.1rem;
+            }
+            
+            .translation-text {
+                font-size: 0.8rem;
+            }
+            
+            .loading-btn {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
         }
         
         /* Responsif untuk FAQ */
@@ -407,8 +787,20 @@
                 font-size: 2.2rem;
             }
             
+            .faq-hero p {
+                font-size: 1.1rem;
+            }
+            
             .footer-content {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .faq-question {
+                padding: 22px 25px;
+            }
+            
+            .faq-answer.active {
+                padding: 25px;
             }
         }
         
@@ -448,7 +840,7 @@
             }
             
             .faq-hero {
-                padding: 50px 0;
+                padding: 60px 0;
             }
             
             .faq-hero h1 {
@@ -460,23 +852,44 @@
             }
             
             .faq-content {
-                padding: 50px 0;
+                padding: 60px 0;
             }
             
             .faq-question h3 {
-                font-size: 1rem;
+                font-size: 1.05rem;
             }
             
             .faq-answer p {
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
             
             .section-title {
                 font-size: 1.7rem;
             }
             
+            .faq-question {
+                padding: 20px;
+            }
+            
+            .faq-answer.active {
+                padding: 20px;
+            }
+            
             .faq-answer ul li {
-                padding-left: 20px;
+                padding-left: 25px;
+            }
+            
+            .faq-icon {
+                font-size: 1.3rem;
+                margin-left: 15px;
+            }
+            
+            .help-box {
+                padding: 30px 25px;
+            }
+            
+            .help-box h3 {
+                font-size: 1.5rem;
             }
         }
         
@@ -498,11 +911,19 @@
             }
             
             .faq-question h3 {
+                font-size: 1rem;
+            }
+            
+            .faq-answer p {
                 font-size: 0.95rem;
             }
             
             .help-box {
                 padding: 25px 20px;
+            }
+            
+            .help-box h3 {
+                font-size: 1.3rem;
             }
             
             .footer-content {
@@ -514,20 +935,68 @@
             }
             
             .faq-answer ul li {
-                padding-left: 18px;
+                padding-left: 22px;
+                font-size: 0.95rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                padding: 10px 20px;
                 font-size: 0.9rem;
+            }
+            
+            .faq-hero .btn {
+                width: auto;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Updated Loading Page Layout (sama seperti homepage) -->
+    <div class="loading-page" id="loadingPage">
+        <div class="islamic-pattern"></div>
+        <div class="decoration leaf-1"></div>
+        <div class="decoration leaf-2"></div>
+        
+        <div class="loading-container">
+            <div class="loading-content">
+                <div class="verse-container">
+                    <div class="arabic-text">
+                        كُلُّ نَفْسٍۢ ذَآئِقَةُ ٱلْمَوْتِ ۗ وَإِنَّمَا تُوَفَّوْنَ أُجُورَكُمْ يَوْمَ ٱلْقِيَـٰمَةِ ۖ فَمَن زُحْزِحَ عَنِ ٱلنَّارِ وَأُدْخِلَ ٱلْجَنَّةَ فَقَدْ فَازَ ۗ وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَـٰعُ ٱلْغُرُورِ ١٨٥
+                    </div>
+                    <div class="translation-text">
+                        Tiap-tiap yang bernyawa akan merasai mati, dan bahawasanya pada hari kiamat sahajalah akan disempurnakan balasan kamu. Ketika itu sesiapa yang dijauhkan dari neraka dan dimasukkan ke syurga maka sesungguhnya ia telah berjaya. Dan (ingatlah bahawa) kehidupan di dunia ini (meliputi segala kemewahannya dan pangkat kebesarannya) tidak lain hanyalah kesenangan bagi orang-orang yang terpedaya.
+                    </div>
+                    <div class="verse-reference">(Surah Ali 'Imran: 185)</div>
+                </div>
+            </div>
+            
+            <div class="loading-actions">
+                <button class="loading-btn" id="continueBtn">
+                    Masuk ke Soalan Lazim <i class="fas fa-arrow-right"></i>
+                </button>
+                <div class="loading-hint">Laman akan dimuatkan secara automatik dalam 10 saat</div>
+            </div>
+            
+            <div class="loading-progress">
+                <div class="loading-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top Button (sama seperti homepage) -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
     <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="logo">Baitul<span>Jenazah</span></div>
+            <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
             </button>
@@ -560,6 +1029,7 @@
             
             <!-- FAQ Accordion -->
             <div class="faq-accordion">
+                <!-- Soalan 1 hingga 20 (kekal seperti dalam fail anda) -->
                 <!-- Soalan 1 -->
                 <div class="faq-item">
                     <div class="faq-question">
@@ -689,6 +1159,137 @@
                         <p>Ya, untuk kematian luar biasa (seperti kemalangan, bunuh diri, atau kematian mengejut yang memerlukan siasatan), perlu mengikut prosedur pihak berkuasa terlebih dahulu sebelum pengurusan jenazah dapat dilakukan. Ini biasanya melibatkan laporan polis dan kadang-kala bedah siasat oleh pakar forensik. Setelah pihak berkuasa mengizinkan, barulah urusan pengurusan jenazah dapat diteruskan seperti biasa.</p>
                     </div>
                 </div>
+                
+                <!-- Soalan 11 - Soalan Perniagaan -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Adakah harga perkhidmatan yang ditawarkan termasuk cas penghantaran?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ya, harga yang dinyatakan untuk pakej perkhidmatan lengkap kami sudah termasuk cas penghantaran jenazah dari lokasi pengambilan (rumah/hospital) ke tempat pemandian, solat, dan seterusnya ke tanah perkuburan yang dipilih dalam lingkungan radius tertentu. Untuk jarak melebihi radius yang ditetapkan, mungkin dikenakan tambahan bayaran yang akan dimaklumkan terlebih dahulu.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 12 - Soalan Perniagaan -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Bolehkah saya membuat tempahan atau perancangan awal perkhidmatan?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ya, kami menyediakan perkhidmatan perancangan awal atau 'pre-need'. Anda boleh berjumpa dengan wakil kami untuk merancang dan merekodkan kehendak anda terlebih dahulu. Ini dapat meringankan beasan keluarga dan memastikan pengurusan jenazah dilakukan seperti yang diharapkan apabila tiba masanya. Perkhidmatan ini juga boleh disertakan dengan pelan kewangan tertentu.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 13 - Soalan Perniagaan -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah kaedah pembayaran yang diterima?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kami menerima pelbagai kaedah pembayaran untuk kemudahan anda, termasuk:</p>
+                        <ul>
+                            <li><span class="bold-point">Tunai</span></li>
+                            <li><span class="bold-point">Kad debit/kredit</span> (Visa, Mastercard)</li>
+                            <li><span class="bold-point">Perbankan internet</span> atau transfer bank</li>
+                            <li><span class="bold-point">Pembayaran melalui kad simpann khas</span> yang disediakan oleh rakan kewangan kami.</li>
+                        </ul>
+                        <p>Kami juga boleh menyediakan invois rasmi untuk tujuan tuntutan insurans atau pengurusan harta pusaka.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 14 - Soalan Perniagaan -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Adakah anda menyediakan pakej perkhidmatan mengikut bajet berbeza?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ya, kami menawarkan beberapa pakej perkhidmatan yang boleh dipilih berdasarkan keperluan dan kemampuan kewangan keluarga. Pakej asas merangkumi keperluan wajib seperti pemandian, pengkafanan, solat dan pengkebumian. Pakej yang lebih lengkap termasuk barangan tambahan seperti kafan premium, kenderaan khas, khemah majlis tahlil dan khidmat bimbingan untuk keluarga. Konsultan kami boleh membantu menerangkan perbezaan setiap pakej dengan telus.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 15 - Soalan Perniagaan -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Bagaimana jika saya tidak berpuas hati dengan perkhidmatan yang diberikan?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kami mengambil serius kualiti perkhidmatan dan kepuasan pelanggan. Sekiranya anda mempunyai sebarang aduan atau tidak berpuas hati, sila hubungi pengurus perkhidmatan pelanggan kami di talian 03-1234 5678 atau 012-345 6789. Kami akan menyiasat aduan tersebut dan mengambil tindakan pembetulan serta memberi maklumbalas dalam tempoh 24-48 jam. Matlamat kami adalah untuk memastikan perkhidmatan kami sentiasa mematuhi syariat dan memberi ketenangan kepada keluarga yang berduka.</p>
+                    </div>
+                </div>
+
+                <!-- Soalan 16 - Soalan Baru -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah yang perlu dilakukan sekiranya kematian berlaku di luar negara?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Kematian di luar negara melibatkan proses yang lebih kompleks. Keluarga perlu menghubungi Kedutaan atau Konsulat Malaysia di negara berkenaan untuk bantuan dalam proses dokumentasi dan repatriasi jenazah. </p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 17 - Soalan Baru -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Adakah dibenarkan menyembahyangkan jenazah secara ghaib?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Ya, solat jenazah ghaib adalah dibenarkan dan diamalkan apabila jenazah tidak hadir di tempat solat, seperti kematian di tempat yang jauh atau jenazah telah dikebumikan sebelum sempat disolatkan. Cara melaksanakannya adalah sama seperti solat jenazah biasa. Ia merupakan satu bentuk doa dan penghormatan terakhir daripada masyarakat Islam yang tidak dapat hadir.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 18 - Soalan Baru -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Bagaimana dengan pengurusan jenazah bayi yang keguguran atau meninggal selepas lahir?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Pengurusan jenazah bayi bergantung pada usia kandungan atau bayi:
+                        <ul>
+                            <li><span class="bold-point">Bayi yang lahir hidup (menangis)</span>: Wajib dimandikan, dikafan, disolat dan dikebumikan seperti jenazah dewasa.</li>
+                            <li><span class="bold-point">Keguguran sebelum 4 bulan (120 hari)</span>: Tidak wajib dimandikan dan disolat, tetapi perlu dibungkus dengan kain dan dikebumikan dengan hormat.</li>
+                            <li><span class="bold-point">Keguguran selepas 4 bulan atau ada tanda kehidupan</span>: Perlukan pengurusan penuh seperti jenazah biasa.</li>
+                        </ul>
+                        <p>Kami menyediakan perkhidmatan khas yang penuh sensitiviti untuk pengurusan jenazah bayi.</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 19 - Soalan Baru -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Bolehkah jenazah yang meninggal akibat penyakit berjangkit seperti COVID-19 dimandikan seperti biasa?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Untuk kes penyakit berjangkit berisiko tinggi, terdapat kelonggaran dalam syariat berdasarkan kaedah "darurat". Lazimnya, jenazah tidak dimandikan secara konvensional untuk mengelakkan jangkitan. Sebagai ganti, dilakukan "tayammum simbolik" (menyapu tanah ke atas kafan) dan kemudian dikafankan serta dikebumikan dengan segera. Proses ini mesti mengikut garis panduan kesihatan yang dikeluarkan oleh pihak berkuasa dan dilakukan oleh kakitangan terlatih dengan alat pelindung diri (PPE).</p>
+                    </div>
+                </div>
+                
+                <!-- Soalan 20 - Soalan Baru -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Apakah yang perlu saya sediakan sebagai waris sebelum menghubungi BaitulJenazah?</h3>
+                        <div class="faq-icon"><i class="fas fa-chevron-down"></i></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Untuk mempercepatkan proses, waris boleh menyediakan dokumen-dokumen berikut sebelum menghubungi kami:
+                        <ul>
+                            <li><span class="bold-point">Sijil Kematian</span> dari hospital/polis/pejabat doktor.</li>
+                            <li><span class="bold-point">Kad Pengenalan</span> si mati dan waris terdekat.</li>
+                            <li><span class="bold-point">Butiran tanah perkuburan</span> jika sudah ada tanah pusaka.</li>
+                            <li><span class="bold-point">Maklumat peribadi</span> si mati untuk pendaftaran (nama penuh, no KP, alamat).</li>
+                            <li><span class="bold-point">Pilihan pakej perkhidmatan</span> jika telah membuat perancangan awal.</li>
+                        </ul>
+                        <p>Walau bagaimanapun, sekiranya dokumen belum lengkap, kami tetap boleh memulakan proses dengan bantuan konsultan kami.</p>
+                    </div>
+                </div>
             </div>
             
             <!-- Additional Help Section -->
@@ -740,10 +1341,69 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const loadingPage = document.getElementById('loadingPage');
+            const continueBtn = document.getElementById('continueBtn');
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
             const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
+            const body = document.body;
             const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            // Variables for scroll detection
+            let lastScrollTop = 0;
+            let scrollThreshold = 100;
+            let isButtonVisible = false;
+            
+            // Flag to track if loading page has been hidden
+            let loadingPageHidden = false;
+            
+            // Function to hide loading page
+            function hideLoadingPage() {
+                if (loadingPageHidden) return;
+                
+                loadingPageHidden = true;
+                loadingPage.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    loadingPage.style.display = 'none';
+                    body.style.overflow = 'auto';
+                }, 1000);
+            }
+            
+            // Prevent scrolling when loading page is visible initially
+            body.style.overflow = 'hidden';
+            
+            // Continue button - hide loading page with fade out
+            continueBtn.addEventListener('click', function() {
+                hideLoadingPage();
+            });
+            
+            // Back to top button functionality
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection with immediate response
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                // Show button immediately when user starts scrolling down
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                // Hide button when at the top
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
             
             // Mobile menu toggle
             mobileMenuBtn.addEventListener('click', function(e) {
@@ -786,6 +1446,9 @@
             
             // Smooth scrolling for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                // Skip for links in loading page
+                if (anchor.closest('.loading-page')) return;
+                
                 anchor.addEventListener('click', function(e) {
                     e.preventDefault();
                     
@@ -819,6 +1482,22 @@
                     }
                 });
             });
+            
+            // Auto-hide loading page after 10 seconds
+            setTimeout(function() {
+                hideLoadingPage();
+            }, 10000);
+            
+            // Initialize active state for current page
+            const currentPageLink = document.querySelector('nav a[href="https://baituljenazah.github.io/soalanlazim.html"]');
+            if (currentPageLink) {
+                currentPageLink.classList.add('active');
+            }
+            
+            // Trigger scroll event on load to set initial active state
+            setTimeout(function() {
+                window.dispatchEvent(new Event('scroll'));
+            }, 100);
         });
     </script>
 </body>
