@@ -8,9 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="media/Logo BaitulJenazah.png" type="image/png">
     
     <style>
-        /* Menggunakan CSS yang sama dengan Directory/Services */
+        /* Reset dan dasar */
         * {
             margin: 0;
             padding: 0;
@@ -30,11 +31,26 @@
             line-height: 1.6;
             color: var(--text-dark);
             background-color: #f9f9f9;
+            overflow-x: hidden;
         }
         
-        h1, h2, h3 {
+        h1, h2, h3, h4, h5, h6 {
             font-family: 'Lora', serif;
             font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
         }
         
         .container {
@@ -44,6 +60,73 @@
             padding: 0 20px;
         }
         
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 99;
+            box-shadow: var(--shadow);
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                     pulse 2s infinite 0.5s;
+        }
+        
+        .back-to-top:hover {
+            background-color: #78d178;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(136, 231, 136, 0.3);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+        }
+        
         /* Header */
         header {
             background-color: var(--secondary-color);
@@ -51,6 +134,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            transition: all 0.3s ease;
         }
         
         .header-container {
@@ -65,22 +149,84 @@
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary-color);
+            cursor: pointer;
         }
         
-        .logo span { color: var(--text-dark); }
+        .logo span {
+            color: var(--text-dark);
+        }
         
-        nav ul { display: flex; gap: 30px; list-style: none; }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
         
         nav a {
-            text-decoration: none;
-            color: var(--text-dark);
             font-weight: 500;
             transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
         }
         
-        nav a:hover, nav a.active { color: var(--primary-color); }
-
-        /* Hero */
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+        
+        /* Hero section */
         .hero {
             background: linear-gradient(rgba(136, 231, 136, 0.9), rgba(136, 231, 136, 0.8)), url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
@@ -90,10 +236,39 @@
             color: var(--text-dark);
         }
         
-        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
 
-        /* Branch Content */
-        .branch-section { padding: 80px 0; }
+        /* Branch Section */
+        .branch-section {
+            padding: 80px 0;
+            background-color: var(--secondary-color);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
 
         .branch-grid {
             display: grid;
@@ -103,63 +278,281 @@
         }
 
         .branch-card {
-            background: white;
+            background: #f9f9f9;
             padding: 30px;
             border-radius: 8px;
             box-shadow: var(--shadow);
             border-top: 5px solid var(--primary-color);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .branch-card:hover { transform: translateY(-5px); }
+        .branch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
 
         .branch-card h3 {
             color: var(--primary-color);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.5rem;
         }
 
-        .branch-card ul { list-style: none; }
+        .branch-card h3 i {
+            font-size: 1.2rem;
+        }
+
+        .branch-card ul {
+            list-style: none;
+        }
 
         .branch-card ul li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            border-bottom: 1px solid #ddd;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .branch-card ul li:last-child { border-bottom: none; }
+        .branch-card ul li:last-child {
+            border-bottom: none;
+        }
 
+        .branch-card ul li span {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .branch-card ul li strong {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
         /* Footer */
         footer {
             background-color: #333;
-            color: white;
+            color: var(--secondary-color);
             padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-family: 'Lora', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .footer-links h3, .footer-contact h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-contact p {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-contact i {
+            color: var(--primary-color);
+            margin-top: 5px;
+        }
+        
+        .copyright {
             text-align: center;
-            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .branch-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary-color);
+                box-shadow: var(--shadow);
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 100;
+            }
+            
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+            }
+            
+            .branch-section {
+                padding: 60px 0;
+            }
+            
+            .branch-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .branch-card {
+                padding: 25px;
+            }
+            
+            .branch-card h3 {
+                font-size: 1.3rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            
+            .hero p {
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .branch-card {
+                padding: 20px;
+            }
+            
+            .branch-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .branch-card ul li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+                padding: 12px 0;
+            }
+            
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Header -->
     <header>
         <div class="container header-container">
-            <div class="logo">Baitul<span>Jenazah</span></div>
-            <nav>
+            <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
                 <ul>
-                  <li><a href="https://baituljenazah.github.io/" class="active">Laman Utama</a></li>
-                        <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
-                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
-                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
-                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
-                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                    <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                    <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                    <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                    <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                    <li><a href="https://baituljenazah.github.io/cawangan.html" class="active">Cawangan</a></li>
+                    <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <h1>Cawangan Kami</h1>
@@ -167,50 +560,187 @@
         </div>
     </section>
 
-    <main class="container branch-section">
-        <div class="branch-grid">
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> PERAK</h3>
-                <ul>
-                    <li><span>Ipoh (Pusat)</span> <strong>05-123 4567</strong></li>
-                    <li><span>Taiping</span> <strong>05-789 1011</strong></li>
-                    <li><span>Manjung</span> <strong>05-222 3333</strong></li>
-                </ul>
-            </div>
+    <!-- Branch Section -->
+    <main class="branch-section">
+        <div class="container">
+            <h2 class="section-title">Lokasi Cawangan</h2>
+            <div class="branch-grid">
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> PERAK</h3>
+                    <ul>
+                        <li><span>Ipoh (Pusat)</span> <strong>05-123 4567</strong></li>
+                        <li><span>Taiping</span> <strong>05-789 1011</strong></li>
+                        <li><span>Manjung</span> <strong>05-222 3333</strong></li>
+                    </ul>
+                </div>
 
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> SELANGOR</h3>
-                <ul>
-                    <li><span>Shah Alam</span> <strong>03-5511 2233</strong></li>
-                    <li><span>Gombak</span> <strong>03-6188 4455</strong></li>
-                    <li><span>Klang</span> <strong>03-3344 5566</strong></li>
-                </ul>
-            </div>
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> SELANGOR</h3>
+                    <ul>
+                        <li><span>Shah Alam</span> <strong>03-5511 2233</strong></li>
+                        <li><span>Gombak</span> <strong>03-6188 4455</strong></li>
+                        <li><span>Klang</span> <strong>03-3344 5566</strong></li>
+                    </ul>
+                </div>
 
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> JOHOR</h3>
-                <ul>
-                    <li><span>Johor Bahru</span> <strong>07-223 4455</strong></li>
-                    <li><span>Batu Pahat</span> <strong>07-431 6677</strong></li>
-                </ul>
-            </div>
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> JOHOR</h3>
+                    <ul>
+                        <li><span>Johor Bahru</span> <strong>07-223 4455</strong></li>
+                        <li><span>Batu Pahat</span> <strong>07-431 6677</strong></li>
+                    </ul>
+                </div>
 
-            <div class="branch-card">
-                <h3><i class="fas fa-map-marker-alt"></i> KEDAH</h3>
-                <ul>
-                    <li><span>Alor Setar</span> <strong>04-733 8899</strong></li>
-                    <li><span>Sungai Petani</span> <strong>04-421 0011</strong></li>
-                </ul>
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> KEDAH</h3>
+                    <ul>
+                        <li><span>Alor Setar</span> <strong>04-733 8899</strong></li>
+                        <li><span>Sungai Petani</span> <strong>04-421 0011</strong></li>
+                    </ul>
+                </div>
+
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> PULAU PINANG</h3>
+                    <ul>
+                        <li><span>Georgetown</span> <strong>04-226 7788</strong></li>
+                        <li><span>Butterworth</span> <strong>04-331 9900</strong></li>
+                    </ul>
+                </div>
+
+                <div class="branch-card">
+                    <h3><i class="fas fa-map-marker-alt"></i> MELAKA</h3>
+                    <ul>
+                        <li><span>Bandar Melaka</span> <strong>06-282 1122</strong></li>
+                        <li><span>Jasin</span> <strong>06-529 3344</strong></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer>
+    <!-- Footer -->
+    <footer id="contact">
         <div class="container">
-            <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">BaitulJenazah</div>
+                    <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Pautan Pantas</h3>
+                    <ul>
+                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                        <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
+                    <p><i class="fas fa-mobile-alt"></i> 012-345 6789</p>
+                    <p><i class="fas fa-envelope"></i> info@baituljenazah.my</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
+            </div>
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            let lastScrollTop = 0;
+            let scrollThreshold = 100;
+            let isButtonVisible = false;
+            
+            // Back to top button
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mainNav.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            mobileMenuOverlay.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
+                    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+            
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
