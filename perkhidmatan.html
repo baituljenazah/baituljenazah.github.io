@@ -263,6 +263,13 @@
         .service-image-placeholder {
             font-size: 4rem;
             color: rgba(255,255,255,0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.5; }
         }
 
         .service-content {
@@ -578,6 +585,12 @@
             border-radius: 4px; 
             font-size: 1rem; 
             font-family: 'Inter', sans-serif; 
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input.error, 
+        .form-group textarea.error { 
+            border-color: var(--danger); 
         }
         
         .form-group textarea { 
@@ -701,6 +714,28 @@
             border-top: 1px solid #444; 
             font-size: 0.9rem; 
             color: #aaa; 
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
         /* Responsive */
@@ -854,8 +889,6 @@
                 <div class="services-grid">
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- Letak URL gambar kat sini -->
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kafan Asas"> -->
                             <i class="fas fa-box service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -878,7 +911,6 @@
                     </div>
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kafan Lengkap"> -->
                             <i class="fas fa-box-open service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -968,7 +1000,6 @@
                 <div class="services-grid">
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Asas"> -->
                             <i class="fas fa-monument service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -986,7 +1017,6 @@
                     </div>
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Premium"> -->
                             <i class="fas fa-kaaba service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1005,7 +1035,6 @@
                     </div>
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Kubur Mewah"> -->
                             <i class="fas fa-gem service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1030,7 +1059,6 @@
                 <div class="services-grid">
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kain Kafan Sahaja"> -->
                             <i class="fas fa-tshirt service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1047,7 +1075,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Set Mandian Jenazah"> -->
                             <i class="fas fa-shower service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1070,7 +1097,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kepuk Kubur Standard"> -->
                             <i class="fas fa-cube service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1088,7 +1114,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Kepuk Kubur Premium"> -->
                             <i class="fas fa-cubes service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1107,7 +1132,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Standard"> -->
                             <i class="fas fa-square service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1125,7 +1149,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Premium"> -->
                             <i class="fas fa-certificate service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1144,7 +1167,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Batu Nisan Mewah"> -->
                             <i class="fas fa-award service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1163,7 +1185,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Plat Nama Sahaja"> -->
                             <i class="fas fa-id-card service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1181,7 +1202,6 @@
 
                     <div class="service-card">
                         <div class="service-image">
-                            <!-- <img src="URL_GAMBAR_ANDA" alt="Plat Nama Premium"> -->
                             <i class="fas fa-id-badge service-image-placeholder"></i>
                         </div>
                         <div class="service-content">
@@ -1245,19 +1265,23 @@
                 <div id="step1Content" class="checkout-step active">
                     <div class="form-group">
                         <label>Nama Penuh *</label>
-                        <input type="text" id="customerName" placeholder="Nama penuh anda">
+                        <input type="text" id="customerName" placeholder="Nama penuh anda" required>
+                        <div class="validation-error" id="nameError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nama penuh</div>
                     </div>
                     <div class="form-group">
                         <label>Nombor Telefon *</label>
-                        <input type="tel" id="customerPhone" placeholder="0123456789">
+                        <input type="tel" id="customerPhone" placeholder="0123456789" required>
+                        <div class="validation-error" id="phoneError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nombor telefon yang sah (10-11 digit)</div>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="email@contoh.com">
+                        <input type="email" id="customerEmail" placeholder="nama@email.com">
+                        <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi email yang sah</div>
                     </div>
                     <div class="form-group">
                         <label>Alamat Penuh *</label>
-                        <textarea id="customerAddress" placeholder="Alamat lengkap"></textarea>
+                        <textarea id="customerAddress" placeholder="Alamat lengkap" required></textarea>
+                        <div class="validation-error" id="addressError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi alamat penuh</div>
                     </div>
                     <div class="form-group">
                         <label>Nota Tambahan</label>
@@ -1283,21 +1307,25 @@
                     </div>
                     <div class="form-group">
                         <label>Nama pada Kad *</label>
-                        <input type="text" id="cardName" placeholder="Nama seperti pada kad">
+                        <input type="text" id="cardName" placeholder="Nama seperti pada kad" required>
+                        <div class="validation-error" id="cardNameError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nama pada kad</div>
                     </div>
                     <div class="form-group">
                         <label>Nombor Kad *</label>
-                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456">
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="validation-error" id="cardError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi 16 digit nombor kad</div>
                     </div>
                     <div class="form-group">
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
                             <div>
                                 <label>Tarikh Luput *</label>
-                                <input type="text" id="cardExpiry" placeholder="MM/YY">
+                                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                                <div class="validation-error" id="expiryError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;"></div>
                             </div>
                             <div>
                                 <label>CVV *</label>
-                                <input type="password" id="cardCVV" placeholder="123" maxlength="4">
+                                <input type="password" id="cardCVV" placeholder="123" maxlength="4" required>
+                                <div class="validation-error" id="cvvError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi CVV (3-4 digit)</div>
                             </div>
                         </div>
                     </div>
@@ -1426,6 +1454,10 @@
             if (perkhidmatanLink) {
                 perkhidmatanLink.classList.add('active');
             }
+            
+            // Setup input formatting and validation
+            setupRealTimeValidation();
+            setupInputFormatting();
         });
 
         let cart = [];
@@ -1549,14 +1581,15 @@
         }
 
         function updateConfirmSections() {
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
-            const customerEmail = document.getElementById('customerEmail').value;
-            const customerAddress = document.getElementById('customerAddress').value;
-            const customerNotes = document.getElementById('customerNotes').value;
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const customerAddress = document.getElementById('customerAddress').value.trim();
+            const customerNotes = document.getElementById('customerNotes').value.trim();
             
-            const cardName = document.getElementById('cardName').value;
+            const cardName = document.getElementById('cardName').value.trim();
             const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
             
             document.getElementById('confirmCustomer').innerHTML = `
                 <div class="summary-item"><span>Nama:</span><span>${customerName}</span></div>
@@ -1570,6 +1603,7 @@
                 <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
                 <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
                 <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.slice(-4)}</span></div>
+                <div class="summary-item"><span>Tarikh Luput:</span><span>${cardExpiry}</span></div>
             `;
             
             let total = 0;
@@ -1595,18 +1629,31 @@
         }
 
         function validateStep1() {
-            const name = document.getElementById('customerName').value;
-            const phone = document.getElementById('customerPhone').value;
-            const address = document.getElementById('customerAddress').value;
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
             
+            // Validate required fields
             if (!name || !phone || !address) {
-                alert('Sila isi semua maklumat yang diperlukan.');
+                alert('Sila isi semua maklumat yang diperlukan (nama, telefon, alamat).');
                 return false;
             }
             
-            if (!/^\d{10,11}$/.test(phone.replace(/\D/g, ''))) {
+            // Validate phone number (10-11 digits)
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (!/^\d{10,11}$/.test(phoneDigits)) {
                 alert('Sila masukkan nombor telefon yang sah (10-11 digit).');
                 return false;
+            }
+            
+            // Validate email format if provided
+            if (email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Sila masukkan alamat email yang sah (contoh: nama@email.com).');
+                    return false;
+                }
             }
             
             return true;
@@ -1614,31 +1661,206 @@
 
         function validateStep2() {
             const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-            const expiry = document.getElementById('cardExpiry').value;
-            const cvv = document.getElementById('cardCVV').value;
-            const cardName = document.getElementById('cardName').value;
+            const expiry = document.getElementById('cardExpiry').value.trim();
+            const cvv = document.getElementById('cardCVV').value.trim();
+            const cardName = document.getElementById('cardName').value.trim();
             
+            // Validate all required fields
             if (!cardName || !cardNumber || !expiry || !cvv) {
                 alert('Sila isi semua maklumat kad pembayaran.');
                 return false;
             }
             
+            // Validate card number (16 digits)
             if (!/^\d{16}$/.test(cardNumber)) {
                 alert('Sila masukkan nombor kad yang sah (16 digit).');
                 return false;
             }
             
+            // Validate CVV (3-4 digits)
             if (!/^\d{3,4}$/.test(cvv)) {
                 alert('Sila masukkan CVV yang sah (3 atau 4 digit).');
                 return false;
             }
             
+            // Validate expiry date format
             if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-                alert('Format tarikh luput tidak sah. Gunakan format MM/YY.');
+                alert('Format tarikh luput tidak sah. Gunakan format MM/YY (contoh: 12/26).');
+                return false;
+            }
+            
+            // Extract month and year
+            const [monthStr, yearStr] = expiry.split('/');
+            const month = parseInt(monthStr, 10);
+            const year = parseInt(yearStr, 10);
+            
+            // Validate month (01-12)
+            if (month < 1 || month > 12) {
+                alert('Bulan mesti antara 01 hingga 12.');
+                return false;
+            }
+            
+            // Validate expiry date not in the past
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
+            const currentMonth = currentDate.getMonth() + 1; // Month is 0-indexed
+            
+            // Check if card is expired
+            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                alert('Kad kredit/debit telah tamat tempoh. Sila gunakan kad yang sah.');
                 return false;
             }
             
             return true;
+        }
+
+        function setupInputFormatting() {
+            // Format card number input (4-4-4-4)
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 16 digits
+                    if (value.length > 16) {
+                        value = value.substring(0, 16);
+                    }
+                    
+                    // Format as 4-4-4-4
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formatted += ' ';
+                        }
+                        formatted += value[i];
+                    }
+                    
+                    e.target.value = formatted;
+                });
+            }
+            
+            // Format expiry date input (MM/YY)
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    // Format as MM/YY
+                    if (value.length >= 2) {
+                        const month = value.substring(0, 2);
+                        const year = value.substring(2, 4);
+                        
+                        // Validate month (01-12)
+                        if (parseInt(month) > 12) {
+                            value = '12' + (year || '');
+                        }
+                        if (parseInt(month) < 1) {
+                            value = '01' + (year || '');
+                        }
+                        
+                        value = value.substring(0, 2) + (value.length > 2 ? '/' + value.substring(2, 4) : '');
+                    }
+                    
+                    e.target.value = value;
+                });
+                
+                // Auto-focus next input
+                expiryInput.addEventListener('keyup', function(e) {
+                    if (e.target.value.length === 5) {
+                        document.getElementById('cardCVV').focus();
+                    }
+                });
+            }
+            
+            // Format CVV input (3-4 digits)
+            const cvvInput = document.getElementById('cardCVV');
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    e.target.value = value;
+                });
+            }
+        }
+
+        function setupRealTimeValidation() {
+            // Email validation
+            const emailInput = document.getElementById('customerEmail');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const email = this.value.trim();
+                    const errorElement = document.getElementById('emailError');
+                    
+                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        errorElement.textContent = 'Format email tidak sah (contoh: nama@email.com)';
+                        errorElement.style.display = 'block';
+                        this.classList.add('error');
+                    } else {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
+            
+            // Card expiry validation
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                expiryInput.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    const errorElement = document.getElementById('expiryError');
+                    
+                    if (value && /^\d{2}\/\d{2}$/.test(value)) {
+                        const [monthStr, yearStr] = value.split('/');
+                        const month = parseInt(monthStr, 10);
+                        const year = parseInt(yearStr, 10);
+                        
+                        const currentDate = new Date();
+                        const currentYear = currentDate.getFullYear() % 100;
+                        const currentMonth = currentDate.getMonth() + 1;
+                        
+                        if (month < 1 || month > 12) {
+                            errorElement.textContent = 'Bulan mesti antara 01 hingga 12';
+                            errorElement.style.display = 'block';
+                            this.classList.add('error');
+                        } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                            errorElement.textContent = 'Kad telah tamat tempoh';
+                            errorElement.style.display = 'block';
+                            this.classList.add('error');
+                        } else {
+                            errorElement.style.display = 'none';
+                            this.classList.remove('error');
+                        }
+                    }
+                });
+            }
+            
+            // Card number validation
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('blur', function() {
+                    const value = this.value.replace(/\s/g, '');
+                    const errorElement = document.getElementById('cardError');
+                    
+                    if (value && !/^\d{16}$/.test(value)) {
+                        errorElement.textContent = 'Nombor kad mesti 16 digit';
+                        errorElement.style.display = 'block';
+                        this.classList.add('error');
+                    } else {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
         }
 
         function processPayment() {
@@ -1646,23 +1868,34 @@
             payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             payBtn.disabled = true;
 
+            // Show loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                    <p>Memproses pembayaran anda...</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+
             setTimeout(() => {
                 const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
                 
                 const customer = {
-                    name: document.getElementById('customerName').value,
-                    phone: document.getElementById('customerPhone').value,
-                    email: document.getElementById('customerEmail').value || '',
-                    address: document.getElementById('customerAddress').value,
-                    notes: document.getElementById('customerNotes').value || ''
+                    name: document.getElementById('customerName').value.trim(),
+                    phone: document.getElementById('customerPhone').value.trim(),
+                    email: document.getElementById('customerEmail').value.trim() || '',
+                    address: document.getElementById('customerAddress').value.trim(),
+                    notes: document.getElementById('customerNotes').value.trim() || ''
                 };
                 
                 const payment = {
                     method: 'credit_card',
-                    cardName: document.getElementById('cardName').value,
+                    cardName: document.getElementById('cardName').value.trim(),
                     cardNumber: document.getElementById('cardNumber').value,
                     cardLast4: document.getElementById('cardNumber').value.slice(-4),
-                    cardExpiry: document.getElementById('cardExpiry').value
+                    cardExpiry: document.getElementById('cardExpiry').value.trim()
                 };
                 
                 const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -1678,7 +1911,20 @@
                     status: 'Selesai'
                 };
                 
+                // Simulate email sending if email provided
+                if (customer.email) {
+                    console.log(`[Simulasi] Resit email dihantar ke: ${customer.email}`);
+                    console.log(`[Simulasi] Subject: Resit Pembayaran - ${refNumber}`);
+                    console.log(`[Simulasi] Isi: Terima kasih atas pembayaran anda sebanyak RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
+                }
+                
                 saveTransaction(transaction);
+                
+                // Remove loading overlay
+                if (loadingOverlay.parentNode) {
+                    loadingOverlay.parentNode.removeChild(loadingOverlay);
+                }
+                
                 showSuccess(transaction);
                 
                 payBtn.innerHTML = 'Selesaikan Pembayaran';
@@ -1721,8 +1967,14 @@
                         <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
                     </div>
                     
+                    ${transaction.customer.email ? `
+                        <p style="margin-top:20px;color:#27ae60">
+                            <i class="fas fa-envelope"></i> Resit telah dihantar ke email: ${transaction.customer.email}
+                        </p>
+                    ` : ''}
+                    
                     <p style="margin-top:20px;font-size:0.9rem;color:#666">
-                        Resit akan dihantar ke email anda (jika diberikan).
+                        Sila simpan nombor rujukan untuk rujukan masa hadapan.
                     </p>
                     
                     <div style="margin-top:30px">
@@ -1743,7 +1995,10 @@
             alert('Terima kasih! Pesanan anda telah direkodkan.');
         }
 
-        window.onload = loadCart;
+        // Initialize on page load
+        window.onload = function() {
+            loadCart();
+        };
     </script>
 </body>
 </html>
