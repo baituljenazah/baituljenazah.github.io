@@ -344,11 +344,11 @@ function validateStep2() {
         return false;
     }
     
-// Validate CVV (3 digits sahaja - betulkan dari 3-4 digits ke 3 digits sahaja)
-if (!/^\d{3}$/.test(cvv)) {
-    alert('Sila masukkan CVV yang sah (3 digit tepat).');
-    return false;
-}
+    // Validate CVV (3 digits sahaja - betulkan dari 3-4 digits ke 3 digits sahaja)
+    if (!/^\d{3}$/.test(cvv)) {
+        alert('Sila masukkan CVV yang sah (3 digit tepat).');
+        return false;
+    }
     
     // Validate expiry date format
     if (!/^\d{2}\/\d{2}$/.test(expiry)) {
@@ -533,28 +533,29 @@ function setupInputFormatting() {
         });
     }
     
-// Format CVV input (3 digits sahaja - bukan 4)
-const cvvInput = document.getElementById('cardCVV');
-if (cvvInput) {
-    cvvInput.addEventListener('input', function(e) {
-        let value = e.target.value.replace(/\D/g, '');
-        
-        // Limit to 3 digits sahaja (bukan 4)
-        if (value.length > 3) {
-            value = value.substring(0, 3);
-        }
-        
-        e.target.value = value;
-        
-        // Show error if invalid
-        const errorElement = document.getElementById('cvvError');
-        if (value.length !== 3 && value.length > 0) {
-            errorElement.textContent = 'CVV perlu 3 digit tepat';
-            errorElement.style.display = 'block';
-        } else {
-            errorElement.style.display = 'none';
-        }
-    });
+    // Format CVV input (3 digits sahaja - bukan 4)
+    const cvvInput = document.getElementById('cardCVV');
+    if (cvvInput) {
+        cvvInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limit to 3 digits sahaja (bukan 4)
+            if (value.length > 3) {
+                value = value.substring(0, 3);
+            }
+            
+            e.target.value = value;
+            
+            // Show error if invalid
+            const errorElement = document.getElementById('cvvError');
+            if (value.length !== 3 && value.length > 0) {
+                errorElement.textContent = 'CVV perlu 3 digit tepat';
+                errorElement.style.display = 'block';
+            } else {
+                errorElement.style.display = 'none';
+            }
+        });
+    }
 }
 
 function setupRealTimeValidation() {
@@ -722,7 +723,7 @@ function completeOrder() {
     alert('Terima kasih! Pesanan anda telah direkodkan.');
 }
 
-    function printReceipt(transaction) {
+function printReceipt(transaction) {
     // Create a printable receipt
     const printContent = `
         <!DOCTYPE html>
