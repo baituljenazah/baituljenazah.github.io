@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="media/Logo BaitulJenazah.png" type="image/png">
-    <link rel="stylesheet" href="perkhidmatan.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- Image Modal -->
@@ -27,9 +27,10 @@
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
-    <!-- Header -->
+    <!-- Header dari homepage -->
     <header>
         <div class="container header-container">
+            <!-- Updated Logo with link to homepage -->
             <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
@@ -475,4 +476,121 @@
                     </div>
                     <div class="form-group">
                         <label>Alamat Penuh *</label>
-                        <textarea id="customerAddress" placeholder="Alamat lengkap" required>
+                        <textarea id="customerAddress" placeholder="Alamat lengkap" required></textarea>
+                        <div class="validation-error" id="addressError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi alamat penuh</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nota Tambahan</label>
+                        <textarea id="customerNotes" placeholder="Nota khas..."></textarea>
+                    </div>
+                    <div class="order-summary">
+                        <h4>Ringkasan Pesanan</h4>
+                        <div id="orderItems"></div>
+                        <div id="orderTotal"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="closeCheckout()">Batal</button>
+                        <button class="btn" onclick="nextStep(2)">Seterusnya</button>
+                    </div>
+                </div>
+
+                <div id="step2Content" class="checkout-step">
+                    <div class="form-group">
+                        <label>Kaedah Pembayaran</label>
+                        <select id="paymentMethod">
+                            <option value="credit_card">Kad Kredit / Debit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nama pada Kad *</label>
+                        <input type="text" id="cardName" placeholder="Nama seperti pada kad" required>
+                        <div class="validation-error" id="cardNameError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nama pada kad</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Nombor Kad *</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <div class="validation-error" id="cardError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi 16 digit nombor kad</div>
+                    </div>
+                    <div class="form-group">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px">
+                            <div>
+                                <label>Tarikh Luput *</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                                <div class="validation-error" id="expiryError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;"></div>
+                            </div>
+                            <div>
+                                <label>CVV *</label>
+                                <input type="password" id="cardCVV" placeholder="123" maxlength="4" required>
+                                <div class="validation-error" id="cvvError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi CVV (3-4 digit)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="nextStep(1)">Kembali</button>
+                        <button class="btn" onclick="nextStep(3)">Seterusnya</button>
+                    </div>
+                </div>
+
+                <div id="step3Content" class="checkout-step">
+                    <h3>Sahkan Pesanan Anda</h3>
+                    <p>Sila semak maklumat di bawah sebelum membuat pembayaran:</p>
+                    <div class="order-summary">
+                        <h4>Maklumat Pelanggan</h4>
+                        <div id="confirmCustomer"></div>
+                        <h4 style="margin-top:20px">Ringkasan Pesanan</h4>
+                        <div id="confirmItems"></div>
+                        <h4 style="margin-top:20px">Maklumat Pembayaran</h4>
+                        <div id="confirmPayment"></div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="nextStep(2)">Kembali</button>
+                        <button class="btn" id="payBtn" onclick="processPayment()">Selesaikan Pembayaran</button>
+                    </div>
+                </div>
+
+                <div id="step4Content" class="checkout-step">
+                    <div id="successContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer dari homepage -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">Baitul<span>Jenazah</span></div>
+                    <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Pautan Pantas</h3>
+                    <ul>
+                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                        <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
+                    <p><i class="fas fa-mobile-alt"></i> 012-345 6789</p>
+                    <p><i class="fas fa-envelope"></i> info@baituljenazah.my</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
