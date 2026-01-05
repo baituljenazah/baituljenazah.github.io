@@ -1456,8 +1456,9 @@
             }
             
             // Setup input formatting and validation
-            setupRealTimeValidation();
             setupInputFormatting();
+            setupRealTimeValidation();
+            loadCart();
         });
 
         let cart = [];
@@ -1602,7 +1603,7 @@
             document.getElementById('confirmPayment').innerHTML = `
                 <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
                 <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
-                <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.slice(-4)}</span></div>
+                <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.replace(/\s/g, '').slice(-4)}</span></div>
                 <div class="summary-item"><span>Tarikh Luput:</span><span>${cardExpiry}</span></div>
             `;
             
@@ -1705,10 +1706,26 @@
             const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
             const currentMonth = currentDate.getMonth() + 1; // Month is 0-indexed
             
-            // Check if card is expired
-            if (year < currentYear || (year === currentYear && month < currentMonth)) {
+            // Check if card is expired (specifically check for Jan 2026 or earlier)
+            const expiryYearFull = 2000 + year;
+            
+            // Create expiry date (last day of the month)
+            const expiryDate = new Date(expiryYearFull, month, 0);
+            
+            // Check if expired before Jan 2026
+            const jan2026 = new Date(2026, 0, 31); // 31 Jan 2026
+            
+            if (expiryDate < new Date()) {
                 alert('Kad kredit/debit telah tamat tempoh. Sila gunakan kad yang sah.');
                 return false;
+            }
+            
+            // Additional check: if expiry is Jan 2026 or earlier, show warning
+            if (expiryDate <= jan2026) {
+                const userConfirmed = confirm('Kad anda akan tamat tempoh pada ' + expiry + '. Adakah anda pasti mahu meneruskan?');
+                if (!userConfirmed) {
+                    return false;
+                }
             }
             
             return true;
@@ -1719,6 +1736,7 @@
             const cardNumberInput = document.getElementById('cardNumber');
             if (cardNumberInput) {
                 cardNumberInput.addEventListener('input', function(e) {
+                    // Remove all non-digits
                     let value = e.target.value.replace(/\D/g, '');
                     
                     // Limit to 16 digits
@@ -1736,85 +1754,90 @@
                     }
                     
                     e.target.value = formatted;
+                    
+                    // Show error if not enough digits
+                    const errorElement = document.getElementById('cardError');
+                    if (value.length < 16 && value.length > 0) {
+                        errorElement.textContent = 'Nombor kad perlu 16 digit (masih kurang ' + (16 - value.length) + ' digit)';
+                        errorElement.style.display = 'block';
+                    } else {
+                        errorElement.style.display = 'none';
+                    }
+                });
+                
+                // Auto format on focus out
+                cardNumberInput.addEventListener('blur', function() {
+                    let value = this.value.replace(/\D/g, '');
+                    if (value.length === 16) {
+                        let formatted = '';
+                        for (let i = 0; i < value.length; i++) {
+                            if (i > 0 && i % 4 === 0) {
+                                formatted += ' ';
+                            }
+                            formatted += value[i];
+                        }
+                        this.value = formatted;
+                    }
                 });
             }
             
-            // Format expiry date input (MM/YY)
+            // Format expiry date input (MM/YY) - AUTO FORMAT
             const expiryInput = document.getElementById('cardExpiry');
             if (expiryInput) {
+                let isDeleting = false;
+                
+                expiryInput.addEventListener('keydown', function(e) {
+                    // Check if backspace or delete
+                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                        isDeleting = true;
+                    } else {
+                        isDeleting = false;
+                    }
+                });
+                
                 expiryInput.addEventListener('input', function(e) {
                     let value = e.target.value.replace(/\D/g, '');
                     
+                    // If deleting, don't auto-format
+                    if (isDeleting) {
+                        return;
+                    }
+                    
                     // Limit to 4 digits
                     if (value.length > 4) {
                         value = value.substring(0, 4);
                     }
                     
-                    // Format as MM/YY
+                    // Auto-add slash after 2 digits
                     if (value.length >= 2) {
                         const month = value.substring(0, 2);
-                        const year = value.substring(2, 4);
+                        let year = value.substring(2, 4);
                         
-                        // Validate month (01-12)
-                        if (parseInt(month) > 12) {
-                            value = '12' + (year || '');
+                        // Auto-correct month if invalid
+                        let monthNum = parseInt(month, 10);
+                        if (monthNum > 12) {
+                            monthNum = 12;
                         }
-                        if (parseInt(month) < 1) {
-                            value = '01' + (year || '');
+                        if (monthNum < 1) {
+                            monthNum = 1;
                         }
                         
-                        value = value.substring(0, 2) + (value.length > 2 ? '/' + value.substring(2, 4) : '');
+                        // Format with leading zero
+                        const formattedMonth = monthNum.toString().padStart(2, '0');
+                        
+                        // Auto-add slash
+                        value = formattedMonth + (value.length > 2 ? '/' + year : '');
                     }
                     
                     e.target.value = value;
-                });
-                
-                // Auto-focus next input
-                expiryInput.addEventListener('keyup', function(e) {
-                    if (e.target.value.length === 5) {
+                    
+                    // Auto-focus to CVV if expiry is complete
+                    if (value.length === 5) {
                         document.getElementById('cardCVV').focus();
                     }
                 });
-            }
-            
-            // Format CVV input (3-4 digits)
-            const cvvInput = document.getElementById('cardCVV');
-            if (cvvInput) {
-                cvvInput.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    
-                    // Limit to 4 digits
-                    if (value.length > 4) {
-                        value = value.substring(0, 4);
-                    }
-                    
-                    e.target.value = value;
-                });
-            }
-        }
-
-        function setupRealTimeValidation() {
-            // Email validation
-            const emailInput = document.getElementById('customerEmail');
-            if (emailInput) {
-                emailInput.addEventListener('blur', function() {
-                    const email = this.value.trim();
-                    const errorElement = document.getElementById('emailError');
-                    
-                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                        errorElement.textContent = 'Format email tidak sah (contoh: nama@email.com)';
-                        errorElement.style.display = 'block';
-                        this.classList.add('error');
-                    } else {
-                        errorElement.style.display = 'none';
-                        this.classList.remove('error');
-                    }
-                });
-            }
-            
-            // Card expiry validation
-            const expiryInput = document.getElementById('cardExpiry');
-            if (expiryInput) {
+                
+                // Validate on blur
                 expiryInput.addEventListener('blur', function() {
                     const value = this.value.trim();
                     const errorElement = document.getElementById('expiryError');
@@ -1844,15 +1867,41 @@
                 });
             }
             
-            // Card number validation
-            const cardNumberInput = document.getElementById('cardNumber');
-            if (cardNumberInput) {
-                cardNumberInput.addEventListener('blur', function() {
-                    const value = this.value.replace(/\s/g, '');
-                    const errorElement = document.getElementById('cardError');
+            // Format CVV input (3-4 digits)
+            const cvvInput = document.getElementById('cardCVV');
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
                     
-                    if (value && !/^\d{16}$/.test(value)) {
-                        errorElement.textContent = 'Nombor kad mesti 16 digit';
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    e.target.value = value;
+                    
+                    // Show error if invalid
+                    const errorElement = document.getElementById('cvvError');
+                    if (value.length < 3 && value.length > 0) {
+                        errorElement.textContent = 'CVV perlu 3-4 digit';
+                        errorElement.style.display = 'block';
+                    } else {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        function setupRealTimeValidation() {
+            // Email validation
+            const emailInput = document.getElementById('customerEmail');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const email = this.value.trim();
+                    const errorElement = document.getElementById('emailError');
+                    
+                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        errorElement.textContent = 'Format email tidak sah (contoh: nama@email.com)';
                         errorElement.style.display = 'block';
                         this.classList.add('error');
                     } else {
@@ -1893,8 +1942,8 @@
                 const payment = {
                     method: 'credit_card',
                     cardName: document.getElementById('cardName').value.trim(),
-                    cardNumber: document.getElementById('cardNumber').value,
-                    cardLast4: document.getElementById('cardNumber').value.slice(-4),
+                    cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+                    cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
                     cardExpiry: document.getElementById('cardExpiry').value.trim()
                 };
                 
@@ -1913,9 +1962,20 @@
                 
                 // Simulate email sending if email provided
                 if (customer.email) {
-                    console.log(`[Simulasi] Resit email dihantar ke: ${customer.email}`);
-                    console.log(`[Simulasi] Subject: Resit Pembayaran - ${refNumber}`);
-                    console.log(`[Simulasi] Isi: Terima kasih atas pembayaran anda sebanyak RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
+                    console.log(`[SIMULASI EMAIL] ====================================`);
+                    console.log(`[SIMULASI EMAIL] Kepada: ${customer.email}`);
+                    console.log(`[SIMULASI EMAIL] Subjek: Resit Pembayaran Baitul Jenazah - ${refNumber}`);
+                    console.log(`[SIMULASI EMAIL] Isi:`);
+                    console.log(`[SIMULASI EMAIL] Terima kasih atas pembelian anda!`);
+                    console.log(`[SIMULASI EMAIL] No. Rujukan: ${refNumber}`);
+                    console.log(`[SIMULASI EMAIL] Jumlah: RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
+                    console.log(`[SIMULASI EMAIL] Tarikh: ${transaction.date}`);
+                    console.log(`[SIMULASI EMAIL] ====================================`);
+                    
+                    // Show message to user
+                    setTimeout(() => {
+                        alert(`📧 Resit telah dihantar ke: ${customer.email}\nSila semak folder spam jika tiada dalam inbox.`);
+                    }, 100);
                 }
                 
                 saveTransaction(transaction);
@@ -1929,7 +1989,7 @@
                 
                 payBtn.innerHTML = 'Selesaikan Pembayaran';
                 payBtn.disabled = false;
-            }, 1500);
+            }, 2000);
         }
 
         function saveTransaction(transaction) {
@@ -1963,13 +2023,15 @@
                         <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
                         <p><strong>Tarikh:</strong> ${transaction.date}</p>
                         <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                        <p><strong>Telefon:</strong> ${transaction.customer.phone}</p>
                         <p><strong>Jumlah Bayaran:</strong> RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</p>
                         <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
                     </div>
                     
                     ${transaction.customer.email ? `
-                        <p style="margin-top:20px;color:#27ae60">
-                            <i class="fas fa-envelope"></i> Resit telah dihantar ke email: ${transaction.customer.email}
+                        <p style="margin-top:20px;color:#27ae60;background:#e8f5e9;padding:15px;border-radius:4px;">
+                            <i class="fas fa-envelope"></i> Resit telah dihantar ke email: <strong>${transaction.customer.email}</strong>
+                            <br><small style="color:#666;">Sila semak folder spam jika tiada dalam inbox.</small>
                         </p>
                     ` : ''}
                     
@@ -1994,11 +2056,6 @@
             toggleCart();
             alert('Terima kasih! Pesanan anda telah direkodkan.');
         }
-
-        // Initialize on page load
-        window.onload = function() {
-            loadCart();
-        };
     </script>
 </body>
 </html>
