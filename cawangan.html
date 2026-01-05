@@ -272,9 +272,14 @@
 
         .branch-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 30px;
             margin-top: 40px;
+        }
+        
+        /* Mempusatkan kotak Sarawak - ia adalah kotak ke-13 (last-child) */
+        .branch-card:last-child {
+            grid-column: 2 / 3;
         }
 
         .branch-card {
@@ -390,6 +395,11 @@
         @media (max-width: 992px) {
             .branch-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            /* Reset positioning untuk screen size sederhana */
+            .branch-card:last-child {
+                grid-column: auto;
             }
             
             .footer-content {
@@ -568,7 +578,7 @@
                 <div class="branch-card">
                     <h3><i class="fas fa-map-marker-alt"></i> PERAK</h3>
                     <ul>
-                        <li><span>Ipoh (Pusat)</span> <strong>05-123 4567</strong></li>
+                        <li><span>Ipoh</span> <strong>05-123 4567</strong></li>
                         <li><span>Taiping</span> <strong>05-789 1011</strong></li>
                         <li><span>Manjung</span> <strong>05-222 3333</strong></li>
                     </ul>
