@@ -738,6 +738,292 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
         }
 
+        /* Receipt Preview Styling */
+        .receipt-preview {
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000;
+        }
+        
+        .receipt-company {
+            font-size: 24px;
+            font-weight: bold;
+            color: #88E788;
+        }
+        
+        .receipt-title {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        
+        .receipt-details {
+            margin: 15px 0;
+        }
+        
+        .receipt-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .receipt-items th {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .receipt-items td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .receipt-total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+        }
+        
+        .receipt-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+        }
+        
+        /* Download button */
+        .download-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 5px;
+        }
+        
+        .download-btn:hover {
+            background: #45a049;
+        }
+        
+        /* My Receipts Section */
+        .my-receipts {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .receipts-list {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .receipt-card {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #88E788;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .receipt-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .receipt-ref {
+            font-weight: bold;
+            color: #88E788;
+        }
+        
+        .receipt-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .action-btn:hover {
+            background: #f5f5f5;
+        }
+        
+        .action-btn.print {
+            border-color: #88E788;
+            color: #88E788;
+        }
+        
+        .action-btn.download {
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+        
+        .no-receipts {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        /* Print Styles - FIXED FOR 1 PAGE */
+        @media print {
+            body * {
+                visibility: hidden;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            #checkoutModal,
+            #checkoutModal * {
+                visibility: visible;
+            }
+            
+            #checkoutModal {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+                box-shadow: none !important;
+                border: none !important;
+                overflow: visible !important;
+                z-index: 999999 !important;
+            }
+            
+            .modal-content {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+            }
+            
+            .modal-header {
+                display: none !important;
+            }
+            
+            .modal-body {
+                padding: 20px !important;
+                margin: 0 !important;
+            }
+            
+            .success-message {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .transaction-details {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            
+            .receipt-preview {
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Hide buttons and unnecessary elements */
+            .btn,
+            .btn-group,
+            .close-modal,
+            .cart-icon,
+            header,
+            footer,
+            .cart-sidebar,
+            .mobile-menu-btn,
+            nav,
+            .checkout-steps,
+            .step,
+            .loading-overlay,
+            .download-btn,
+            .action-btn,
+            .receipt-actions,
+            .receipt-footer {
+                display: none !important;
+            }
+            
+            /* Force single page */
+            html, body {
+                height: auto !important;
+                overflow: visible !important;
+            }
+            
+            /* Receipt print styling */
+            .receipt-header {
+                border-bottom: 3px solid #000;
+                margin-bottom: 20px;
+            }
+            
+            .receipt-items th {
+                background: #f0f0f0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            
+            .receipt-total {
+                border-top: 3px solid #000;
+            }
+            
+            /* Prevent page breaks inside important elements */
+            .success-message,
+            .transaction-details,
+            .receipt-preview {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+            
+            /* Set print margins */
+            @page {
+                margin: 15mm;
+                size: A4;
+            }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             nav { 
@@ -1459,6 +1745,7 @@
             setupInputFormatting();
             setupRealTimeValidation();
             loadCart();
+            loadMyReceipts();
         });
 
         let cart = [];
@@ -1917,13 +2204,15 @@
             payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
             payBtn.disabled = true;
 
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            
             // Show loading overlay
             const loadingOverlay = document.createElement('div');
             loadingOverlay.className = 'loading-overlay';
             loadingOverlay.innerHTML = `
                 <div class="loading-content">
                     <i class="fas fa-spinner fa-spin fa-3x"></i>
-                    <p>Memproses pembayaran anda...</p>
+                    <p>Memproses pembayaran...</p>
                 </div>
             `;
             document.body.appendChild(loadingOverlay);
@@ -1934,7 +2223,7 @@
                 const customer = {
                     name: document.getElementById('customerName').value.trim(),
                     phone: document.getElementById('customerPhone').value.trim(),
-                    email: document.getElementById('customerEmail').value.trim() || '',
+                    email: customerEmail || '',
                     address: document.getElementById('customerAddress').value.trim(),
                     notes: document.getElementById('customerNotes').value.trim() || ''
                 };
@@ -1960,24 +2249,7 @@
                     status: 'Selesai'
                 };
                 
-                // Simulate email sending if email provided
-                if (customer.email) {
-                    console.log(`[SIMULASI EMAIL] ====================================`);
-                    console.log(`[SIMULASI EMAIL] Kepada: ${customer.email}`);
-                    console.log(`[SIMULASI EMAIL] Subjek: Resit Pembayaran Baitul Jenazah - ${refNumber}`);
-                    console.log(`[SIMULASI EMAIL] Isi:`);
-                    console.log(`[SIMULASI EMAIL] Terima kasih atas pembelian anda!`);
-                    console.log(`[SIMULASI EMAIL] No. Rujukan: ${refNumber}`);
-                    console.log(`[SIMULASI EMAIL] Jumlah: RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
-                    console.log(`[SIMULASI EMAIL] Tarikh: ${transaction.date}`);
-                    console.log(`[SIMULASI EMAIL] ====================================`);
-                    
-                    // Show message to user
-                    setTimeout(() => {
-                        alert(`📧 Resit telah dihantar ke: ${customer.email}\nSila semak folder spam jika tiada dalam inbox.`);
-                    }, 100);
-                }
-                
+                // SIMPAN TRANSACTION DAN AUTO DOWNLOAD
                 saveTransaction(transaction);
                 
                 // Remove loading overlay
@@ -1985,24 +2257,303 @@
                     loadingOverlay.parentNode.removeChild(loadingOverlay);
                 }
                 
+                // AUTO DOWNLOAD RECEIPT
+                autoDownloadReceipt(transaction);
+                
                 showSuccess(transaction);
                 
                 payBtn.innerHTML = 'Selesaikan Pembayaran';
                 payBtn.disabled = false;
-            }, 2000);
+            }, 1500);
         }
 
         function saveTransaction(transaction) {
             try {
+                // Save to transactions
                 const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
-                transactions.push(transaction);
+                transactions.unshift(transaction); // Add to beginning
                 localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
                 
+                // Save to receipts
+                const receipts = JSON.parse(localStorage.getItem('baituljenazah_myreceipts') || '[]');
+                receipts.unshift({
+                    ref: transaction.refNumber,
+                    date: transaction.date,
+                    amount: transaction.total,
+                    name: transaction.customer.name,
+                    items: transaction.items.length
+                });
+                localStorage.setItem('baituljenazah_myreceipts', JSON.stringify(receipts));
+                
+                // Clear cart
                 cart = [];
                 saveCart();
+                
+                // Update receipts list
+                loadMyReceipts();
+                
             } catch (error) {
                 console.error('Error saving transaction:', error);
             }
+        }
+
+        // AUTO DOWNLOAD RECEIPT AS HTML FILE
+        function autoDownloadReceipt(transaction) {
+            const receiptContent = generateReceiptHTML(transaction);
+            
+            // Create blob and download
+            const blob = new Blob([receiptContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Resit_BaitulJenazah_${transaction.refNumber}.html`;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            // Show notification
+            setTimeout(() => {
+                alert(`✅ Resit telah dimuat turun secara automatik!\n\n📄 Fail: Resit_BaitulJenazah_${transaction.refNumber}.html\n\n💾 Disimpan dalam folder "Downloads" anda.`);
+            }, 500);
+        }
+
+        // GENERATE RECEIPT HTML CONTENT
+        function generateReceiptHTML(transaction) {
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Resit Baitul Jenazah - ${transaction.refNumber}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #fff;
+        }
+        .receipt-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 2px solid #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #88E788;
+        }
+        .company-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #88E788;
+            margin-bottom: 5px;
+        }
+        .company-tagline {
+            color: #666;
+            font-size: 14px;
+        }
+        .receipt-title {
+            font-size: 22px;
+            margin: 15px 0;
+            text-transform: uppercase;
+        }
+        .ref-number {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .details-section {
+            margin: 25px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .detail-box {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #88E788;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .detail-value {
+            font-size: 16px;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        .items-table th {
+            background: #88E788;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .items-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        .items-table tr:hover {
+            background: #f9f9f9;
+        }
+        .total-section {
+            text-align: right;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #333;
+        }
+        .total-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .total-amount {
+            font-size: 28px;
+            font-weight: bold;
+            color: #88E788;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .print-date {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 20px;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.1;
+            font-size: 48px;
+            font-weight: bold;
+            color: #88E788;
+            transform: rotate(-15deg);
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            .receipt-container {
+                border: none;
+                padding: 15px;
+            }
+            .watermark {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt-container">
+        <div class="print-date">
+            Dicetak pada: ${new Date().toLocaleString('ms-MY')}
+        </div>
+        
+        <div class="header">
+            <div class="company-name">Baitul Jenazah</div>
+            <div class="company-tagline">Pengurusan Jenazah Mengikut Syariat Islam</div>
+            <div class="receipt-title">RESIT PEMBAYARAN RASMI</div>
+            <div class="ref-number">No. Rujukan: ${transaction.refNumber}</div>
+            <div style="margin-top: 10px; font-size: 14px; color: #666;">
+                Tarikh Transaksi: ${transaction.date}
+            </div>
+        </div>
+        
+        <div class="details-section">
+            <div class="detail-box">
+                <div class="detail-label">MAKLUMAT PELANGGAN</div>
+                <div class="detail-value">
+                    <strong>${transaction.customer.name}</strong><br>
+                    ${transaction.customer.phone}<br>
+                    ${transaction.customer.email || ''}<br>
+                    ${transaction.customer.address}
+                </div>
+            </div>
+            
+            <div class="detail-box">
+                <div class="detail-label">MAKLUMAT PEMBAYARAN</div>
+                <div class="detail-value">
+                    Kaedah: Kad Kredit/Debit<br>
+                    Nama Kad: ${transaction.payment.cardName}<br>
+                    Nombor Kad: **** **** **** ${transaction.payment.cardLast4}<br>
+                    Tamat Tempoh: ${transaction.payment.cardExpiry}<br>
+                    Status: ${transaction.status}
+                </div>
+            </div>
+        </div>
+        
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th width="5%">#</th>
+                    <th width="55%">Item Perkhidmatan</th>
+                    <th width="20%">Kategori</th>
+                    <th width="20%">Harga (RM)</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${transaction.items.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.category}</td>
+                    <td style="text-align: right;">${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</td>
+                </tr>
+                `).join('')}
+            </tbody>
+        </table>
+        
+        <div class="total-section">
+            <div class="total-label">JUMLAH KESELURUHAN</div>
+            <div class="total-amount">RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Baitul Jenazah Sdn Bhd</strong></p>
+            <p>No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+            <p>Tel: 03-1234 5678 | WhatsApp: 012-345 6789 | Email: info@baituljenazah.my</p>
+            <p style="margin-top: 15px; font-style: italic;">
+                * Resit ini adalah bukti pembayaran yang sah<br>
+                * Simpan untuk rujukan masa hadapan<br>
+                * Untuk pertanyaan, sila berikan nombor rujukan di atas
+            </p>
+        </div>
+        
+        <div class="watermark">BAITUL JENAZAH</div>
+    </div>
+    
+    <script>
+        // Auto print if opened in browser
+        window.onload = function() {
+            setTimeout(() => {
+                if (confirm('Cetak resit ini?')) {
+                    window.print();
+                }
+            }, 500);
+        };
+    </script>
+</body>
+</html>`;
         }
 
         function showSuccess(transaction) {
@@ -2013,11 +2564,17 @@
             document.getElementById('step4').classList.add('active');
             document.getElementById('step4Content').classList.add('active');
             
+            const emailStatus = transaction.customer.email 
+                ? `<p style="margin:15px 0;padding:12px;background:#e8f5e9;border-radius:4px;">
+                      <i class="fas fa-envelope"></i> Email: <strong>${transaction.customer.email}</strong>
+                   </p>`
+                : '';
+            
             document.getElementById('successContent').innerHTML = `
                 <div class="success-message">
                     <div class="success-icon"><i class="fas fa-check-circle"></i></div>
                     <h3>Pembayaran Berjaya!</h3>
-                    <p>Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
+                    <p>Terima kasih atas pesanan anda.</p>
                     
                     <div class="transaction-details">
                         <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
@@ -2028,22 +2585,64 @@
                         <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
                     </div>
                     
-                    ${transaction.customer.email ? `
-                        <p style="margin-top:20px;color:#27ae60;background:#e8f5e9;padding:15px;border-radius:4px;">
-                            <i class="fas fa-envelope"></i> Resit telah dihantar ke email: <strong>${transaction.customer.email}</strong>
-                            <br><small style="color:#666;">Sila semak folder spam jika tiada dalam inbox.</small>
-                        </p>
-                    ` : ''}
+                    ${emailStatus}
                     
-                    <p style="margin-top:20px;font-size:0.9rem;color:#666">
-                        Sila simpan nombor rujukan untuk rujukan masa hadapan.
+                    <div class="receipt-preview">
+                        <div class="receipt-header">
+                            <div class="receipt-company">Baitul Jenazah</div>
+                            <div class="receipt-title">RESIT PEMBAYARAN</div>
+                            <div>No. Rujukan: ${transaction.refNumber}</div>
+                            <div style="font-size:14px;color:#666;">${transaction.date}</div>
+                        </div>
+                        
+                        <div class="receipt-details">
+                            <div><strong>Pelanggan:</strong> ${transaction.customer.name}</div>
+                            <div><strong>Telefon:</strong> ${transaction.customer.phone}</div>
+                        </div>
+                        
+                        <table class="receipt-items">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Harga (RM)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${transaction.items.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</td>
+                                </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        
+                        <div class="receipt-total">
+                            Jumlah: RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}
+                        </div>
+                    </div>
+                    
+                    <div style="margin:25px 0;text-align:center;">
+                        <h4>Pilihan Resit:</h4>
+                        <div style="display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:15px;">
+                            <button class="download-btn" onclick="downloadReceiptAgain(${JSON.stringify(transaction).replace(/"/g, '&quot;')})">
+                                <i class="fas fa-download"></i> Muat Turun Semula
+                            </button>
+                            <button class="download-btn" onclick="printReceipt()" style="background:#2196F3;">
+                                <i class="fas fa-print"></i> Cetak Sekarang
+                            </button>
+                            <button class="download-btn" onclick="viewMyReceipts()" style="background:#9C27B0;">
+                                <i class="fas fa-receipt"></i> Lihat Semua Resit
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top:20px;font-size:0.9rem;color:#666;text-align:center;">
+                        <i class="fas fa-info-circle"></i> Resit telah dimuat turun secara automatik ke komputer anda.
                     </p>
                     
-                    <div style="margin-top:30px">
-                        <button class="btn" onclick="window.print()" style="width:auto;padding:12px 30px">
-                            <i class="fas fa-print"></i> Cetak Resit
-                        </button>
-                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
+                    <div style="margin-top:30px;text-align:center;">
+                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;">
                             <i class="fas fa-home"></i> Selesai
                         </button>
                     </div>
@@ -2051,11 +2650,284 @@
             `;
         }
 
+        // DOWNLOAD RECEIPT AGAIN
+        function downloadReceiptAgain(transaction) {
+            const receiptContent = generateReceiptHTML(transaction);
+            const blob = new Blob([receiptContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Resit_BaitulJenazah_${transaction.refNumber}_${Date.now()}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            alert('Resit berjaya dimuat turun!');
+        }
+
+        // PRINT RECEIPT (FIXED FOR 1 PAGE)
+        function printReceipt() {
+            // Close modal first
+            closeCheckout();
+            
+            // Create print content
+            const receiptContent = generateReceiptHTMLForPrint();
+            
+            // Create print window
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(receiptContent);
+            printWindow.document.close();
+            
+            // Auto print after load
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+
+        function generateReceiptHTMLForPrint() {
+            // Get last transaction
+            const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+            if (transactions.length === 0) return '';
+            
+            const transaction = transactions[0];
+            
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <title>Resit Baitul Jenazah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15mm;
+            font-size: 12pt;
+        }
+        .receipt {
+            width: 100%;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+        .company-name {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #000;
+        }
+        .receipt-title {
+            font-size: 18pt;
+            margin: 10px 0;
+        }
+        .details {
+            margin: 20px 0;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .items-table th, .items-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        .total {
+            text-align: right;
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 10pt;
+            color: #666;
+        }
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        @media print {
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="receipt">
+        <div class="header">
+            <div class="company-name">Baitul Jenazah</div>
+            <div class="receipt-title">RESIT PEMBAYARAN</div>
+            <div>No. Rujukan: ${transaction.refNumber}</div>
+            <div>Tarikh: ${transaction.date}</div>
+        </div>
+        
+        <div class="details">
+            <div><strong>Pelanggan:</strong> ${transaction.customer.name}</div>
+            <div><strong>Telefon:</strong> ${transaction.customer.phone}</div>
+            <div><strong>Alamat:</strong> ${transaction.customer.address}</div>
+        </div>
+        
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Bil</th>
+                    <th>Item</th>
+                    <th>Harga (RM)</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${transaction.items.map((item, index) => `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</td>
+                </tr>
+                `).join('')}
+            </tbody>
+        </table>
+        
+        <div class="total">
+            Jumlah Keseluruhan: RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}
+        </div>
+        
+        <div class="footer">
+            <p>Terima kasih atas pembelian anda.</p>
+            <p>Baitul Jenazah - No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+            <p>Tel: 03-1234 5678 | Email: info@baituljenazah.my</p>
+        </div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            window.print();
+            setTimeout(() => {
+                window.close();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>`;
+        }
+
+        // LOAD MY RECEIPTS
+        function loadMyReceipts() {
+            const receipts = JSON.parse(localStorage.getItem('baituljenazah_myreceipts') || '[]');
+            
+            // If we have receipts, show the section
+            const receiptsSection = document.getElementById('myReceiptsSection');
+            if (!receiptsSection && receipts.length > 0) {
+                // Add receipts section after services section
+                const servicesSection = document.getElementById('services');
+                if (servicesSection) {
+                    const newSection = document.createElement('div');
+                    newSection.className = 'my-receipts';
+                    newSection.id = 'myReceiptsSection';
+                    newSection.innerHTML = `
+                        <h3 style="color: var(--primary); margin-bottom: 20px; border-left: 4px solid var(--primary); padding-left: 15px;">
+                            <i class="fas fa-receipt"></i> Resit Saya
+                        </h3>
+                        <div id="receiptsList"></div>
+                    `;
+                    servicesSection.appendChild(newSection);
+                }
+            }
+            
+            // Update receipts list
+            const receiptsList = document.getElementById('receiptsList');
+            if (receiptsList) {
+                if (receipts.length === 0) {
+                    receiptsList.innerHTML = `
+                        <div class="no-receipts">
+                            <i class="fas fa-receipt" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i>
+                            <p>Tiada resit buat masa ini.</p>
+                        </div>
+                    `;
+                } else {
+                    receiptsList.innerHTML = receipts.map(receipt => `
+                        <div class="receipt-card">
+                            <div class="receipt-card-header">
+                                <div class="receipt-ref">${receipt.ref}</div>
+                                <div class="receipt-date">${receipt.date}</div>
+                            </div>
+                            <div style="margin: 10px 0;">
+                                <div><strong>${receipt.name}</strong></div>
+                                <div>${receipt.items} item • RM ${receipt.amount.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
+                            </div>
+                            <div class="receipt-actions">
+                                <button class="action-btn print" onclick="printReceiptFromList('${receipt.ref}')">
+                                    <i class="fas fa-print"></i> Cetak
+                                </button>
+                                <button class="action-btn download" onclick="downloadReceiptFromList('${receipt.ref}')">
+                                    <i class="fas fa-download"></i> Muat Turun
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        // VIEW MY RECEIPTS
+        function viewMyReceipts() {
+            closeCheckout();
+            loadMyReceipts();
+            
+            // Scroll to receipts section
+            const receiptsSection = document.getElementById('myReceiptsSection');
+            if (receiptsSection) {
+                receiptsSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                alert('Tiada resit buat masa ini.');
+            }
+        }
+
+        // PRINT RECEIPT FROM LIST
+        function printReceiptFromList(refNumber) {
+            const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+            const transaction = transactions.find(t => t.refNumber === refNumber);
+            
+            if (transaction) {
+                const receiptContent = generateReceiptHTML(transaction);
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(receiptContent);
+                printWindow.document.close();
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            } else {
+                alert('Resit tidak ditemui.');
+            }
+        }
+
+        // DOWNLOAD RECEIPT FROM LIST
+        function downloadReceiptFromList(refNumber) {
+            const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+            const transaction = transactions.find(t => t.refNumber === refNumber);
+            
+            if (transaction) {
+                downloadReceiptAgain(transaction);
+            } else {
+                alert('Resit tidak ditemui.');
+            }
+        }
+
+        // COMPLETE ORDER
         function completeOrder() {
             closeCheckout();
             toggleCart();
-            alert('Terima kasih! Pesanan anda telah direkodkan.');
+            alert('Terima kasih! Pesanan anda telah direkodkan.\n\nResit telah disimpan dalam "Resit Saya".');
         }
+
+        // Initialize
+        window.onload = function() {
+            loadCart();
+            loadMyReceipts();
+        };
     </script>
 </body>
 </html>
