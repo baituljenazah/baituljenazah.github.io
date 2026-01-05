@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi - Baitul Jenazah</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/simulasicss.css">
+</head>
+<body>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                    <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                    <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                    <li><a href="https://baituljenazah.github.io/simulasi.html" class="active">Simulasi</a></li>
+                    <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                    <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Simulasi Pengurusan Jenazah</h1>
+            <p>Belajar prosedur pengurusan jenazah melalui video panduan dan kuiz interaktif</p>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section">
+        <div class="container">
+      
+            <!-- STEP 1 -->
+            <div class="timeline-item right">
+                <div class="video-box">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/mandi.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-box">
+                    <h3>1. Memandikan Jenazah</h3>
+                    <p>Mandi jenazah ialah proses penyucian tubuh jenazah orang Islam yang dilaksanakan secara tertib dan beradab mengikut ketetapan syariat Islam. Ia bertujuan membersihkan jenazah sebelum proses pengkafanan dan pensolatan. Pelaksanaannya merupakan fardu kifayah serta menuntut penjagaan maruah, penutupan aurat dan sikap berhati-hati sepanjang proses dijalankan.</p>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="timeline-item left">
+                <div class="video-box">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/kafan.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-box">
+                    <h3>2. Mengafankan Jenazah</h3>
+                    <p>Mengkafankan jenazah ialah proses membalut tubuh jenazah dengan kain kafan mengikut ketetapan syariat Islam. Tujuannya adalah untuk menutup aurat dan memelihara kehormatan jenazah sebelum disolatkan dan dikebumikan. Proses ini juga merupakan fardu kifayah dan perlu dilaksanakan dengan tertib serta penuh penghormatan.</p>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="timeline-item right">
+                <div class="video-box">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/solat.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-box">
+                    <h3>3. Menyembahyangkan Jenazah</h3>
+                    <p>Solat jenazah ialah solat khas yang dilakukan untuk mendoakan jenazah muslim sebelum dikebumikan. Ia merupakan fardu kifayah ke atas umat Islam dan dilaksanakan tanpa rukuk dan sujud. Solat ini mengandungi empat takbir dengan bacaan dan doa tertentu sebagai penghormatan terakhir kepada si mati.</p>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="timeline-item left">
+                <div class="video-box">
+                    <video autoplay muted loop playsinline>
+                        <source src="videos/kubur.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="content-box">
+                    <h3>4. Mengebumikan Jenazah</h3>
+                    <p>Mengebumikan jenazah ialah proses terakhir dalam pengurusan jenazah dengan meletakkan jenazah ke dalam liang lahad mengikut cara yang ditetapkan oleh syariat Islam. Tujuannya adalah untuk menyempurnakan tanggungjawab terhadap jenazah serta mengembalikannya ke tanah dengan penuh adab dan penghormatan.</p>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <div class="quiz-header">
+                    <h2>Kuiz Pengurusan Jenazah</h2>
+                    <p>Uji pemahaman anda dengan menjawab 3 peringkat soalan. Anda perlu betul untuk ke peringkat seterusnya!</p>
+                </div>
+
+                <div class="stage-indicator">
+                    <div class="stage-dot active" data-stage="1">1</div>
+                    <div class="stage-dot" data-stage="2">2</div>
+                    <div class="stage-dot" data-stage="3">3</div>
+                </div>
+
+                <div class="question-container" id="questionContainer"></div>
+                <div class="feedback" id="feedback"></div>
+                <button class="next-btn" id="nextBtn">
+                    Soalan Seterusnya <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="completion-section" id="completionSection">
+                    <div class="completion-icon"><i class="fas fa-trophy"></i></div>
+                    <h2>Tahniah! Anda Berjaya!</h2>
+                    <p>Anda telah tamat semua 3 peringkat dengan jayanya. Anda sudah memahami asas pengurusan jenazah.</p>
+                    <button class="restart-btn" id="restartBtn">
+                        <i class="fas fa-redo"></i> Cuba Lagi
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">BaitulJenazah</div>
+                    <p>Menyediakan perkhidmatan pengurusan jenazah secara tersusun, patuh syariah dan memberi tumpuan kepada kebajikan waris.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Pautan Pantas</h3>
+                    <ul>
+                        <li><a href="https://baituljenazah.github.io/">Laman Utama</a></li>
+                        <li><a href="https://baituljenazah.github.io/direktori.html">Direktori</a></li>
+                        <li><a href="https://baituljenazah.github.io/perkhidmatan.html">Perkhidmatan</a></li>
+                        <li><a href="https://baituljenazah.github.io/simulasi.html">Simulasi</a></li>
+                        <li><a href="https://baituljenazah.github.io/cawangan.html">Cawangan</a></li>
+                        <li><a href="https://baituljenazah.github.io/soalanlazim.html">Soalan Lazim</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3>Hubungi Kami</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</p>
+                    <p><i class="fas fa-phone"></i> 03-1234 5678</p>
+                    <p><i class="fas fa-mobile-alt"></i> 012-345 6789</p>
+                    <p><i class="fas fa-envelope"></i> info@baituljenazah.my</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Baitul Jenazah. Semua hak cipta terpelihara.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="js/simulasijs.js"></script>
+    
+    <!-- Script untuk Header & Back to Top -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
+            
+            let lastScrollTop = 0;
+            let scrollThreshold = 100;
+            let isButtonVisible = false;
+            
+            // Back to top button functionality
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mainNav.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking on overlay
+            mobileMenuOverlay.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
+                    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
