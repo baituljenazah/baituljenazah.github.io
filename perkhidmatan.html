@@ -469,11 +469,13 @@
                         <input type="tel" id="customerPhone" placeholder="0123456789" required>
                         <div class="validation-error" id="phoneError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nombor telefon yang sah (10-11 digit)</div>
                     </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="nama@email.com">
-                        <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi email yang sah</div>
-                    </div>
+<!-- Dalam checkout modal - step 1 -->
+<div class="form-group">
+    <label>Email *</label>
+    <input type="email" id="customerEmail" placeholder="nama@email.com" required>
+    <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;"></div>
+    <small style="color:#666;font-size:0.85rem;">Resit akan dihantar ke email ini</small>
+</div>
                     <div class="form-group">
                         <label>Alamat Penuh *</label>
                         <textarea id="customerAddress" placeholder="Alamat lengkap" required></textarea>
