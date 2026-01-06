@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="media/Logo BaitulJenazah.png" type="image/png">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         * { 
             margin: 0; 
@@ -2820,51 +2821,45 @@
             }, 200);
         }
 
-        function completePayment() {
-            const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-            
-            const customer = {
-                name: document.getElementById('customerName').value.trim(),
-                phone: document.getElementById('customerPhone').value.trim(),
-                email: document.getElementById('customerEmail').value.trim(),
-                address: document.getElementById('customerAddress').value.trim(),
-                notes: document.getElementById('customerNotes').value.trim() || ''
-            };
-            
-            const payment = {
-                method: 'credit_card',
-                cardName: document.getElementById('cardName').value.trim(),
-                cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
-                cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
-                cardExpiry: document.getElementById('cardExpiry').value.trim()
-            };
-            
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            
-            const transaction = {
-                orderId: refNumber,
-                transactionId: 'TXN-' + Date.now(),
-                customer: customer,
-                payment: payment,
-                items: [...cart],
-                total: total,
-                status: 'Selesai',
-                date: new Date().toLocaleDateString('ms-MY'),
-                time: new Date().toLocaleTimeString('ms-MY')
-            };
-            
-            saveTransaction(transaction);
-            
-            // Create confetti celebration
-            createConfetti();
-            
-            // Show success message
-            showSuccess(transaction);
-            
-            // Send email notification
-            sendOrderConfirmationEmail(transaction);
-        }
-
+function completePayment() {
+    const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    
+    const customer = {
+        name: document.getElementById('customerName').value.trim(),
+        phone: document.getElementById('customerPhone').value.trim(),
+        // Make sure email is captured from the form
+        email: document.getElementById('customerEmail').value.trim(),
+        address: document.getElementById('customerAddress').value.trim(),
+        notes: document.getElementById('customerNotes').value.trim() || ''
+    };
+    
+    const payment = {
+        method: 'credit_card',
+        cardName: document.getElementById('cardName').value.trim(),
+        cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+        cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
+        cardExpiry: document.getElementById('cardExpiry').value.trim()
+    };
+    
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    
+    const transaction = {
+        orderId: refNumber,
+        transactionId: 'TXN-' + Date.now(),
+        customer: customer, // This now includes the 'email' property
+        payment: payment,
+        items: [...cart],
+        total: total,
+        status: 'Selesai',
+        date: new Date().toLocaleDateString('ms-MY'),
+        time: new Date().toLocaleTimeString('ms-MY')
+    };
+    
+    saveTransaction(transaction);
+    createConfetti();
+    showSuccess(transaction);
+    sendOrderConfirmationEmail(transaction); // This function can now access the email
+}
         function saveTransaction(transaction) {
             try {
                 const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
@@ -3178,8 +3173,5 @@
             emailjs.init(EMAILJS_CONFIG.publicKey);
         })();
     </script>
-    
-    <!-- EmailJS SDK -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </body>
 </html>
