@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perkhidmatan - Baitul Jenazah</title>
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="media/Logo BaitulJenazah.png" type="image/png">
     <link rel="stylesheet" href="css/perkhidmatan.css">
 </head>
@@ -469,13 +469,11 @@
                         <input type="tel" id="customerPhone" placeholder="0123456789" required>
                         <div class="validation-error" id="phoneError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nombor telefon yang sah (10-11 digit)</div>
                     </div>
-<!-- Dalam checkout modal - step 1 -->
-<div class="form-group">
-    <label>Email *</label>
-    <input type="email" id="customerEmail" placeholder="nama@email.com" required>
-    <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;"></div>
-    <small style="color:#666;font-size:0.85rem;">Resit akan dihantar ke email ini</small>
-</div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" placeholder="nama@email.com">
+                        <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi email yang sah</div>
+                    </div>
                     <div class="form-group">
                         <label>Alamat Penuh *</label>
                         <textarea id="customerAddress" placeholder="Alamat lengkap" required></textarea>
@@ -592,10 +590,8 @@
             </div>
         </div>
     </footer>
-
 <!-- Tambah script EmailJS -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script src="js/perkhidmatan.js"></script>
-
 </body>
 </html>
