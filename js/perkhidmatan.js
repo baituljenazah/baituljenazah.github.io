@@ -1,17 +1,13 @@
-// BAITUL JENAZAH - FIXED VERSION
-// PERKHIDMATAN.JS - FINAL FIX
+// ============================================
+// BAITUL JENAZAH - PERKHIDMATAN.JS
+// SIMPLIFIED VERSION - NO EMAILJS ERRORS
+// ============================================
 
-// ============================================
-// GLOBAL VARIABLES - ONLY DECLARED ONCE
-// ============================================
-var cart = [];  // Use 'var' instead of 'let' to avoid redeclaration
-var lastScrollTop = 0;
-var isButtonVisible = false;
-var scrollThreshold = 100;
+// Global variables
+var cart = [];
+var isProcessing = false;
 
-// ============================================
-// EMAILJS CONFIGURATION
-// ============================================
+// EmailJS configuration
 var EMAILJS_CONFIG = {
     SERVICE_ID: 'service_veo15lv',
     TEMPLATE_ID: 'template_h17hgd6',
@@ -19,180 +15,85 @@ var EMAILJS_CONFIG = {
 };
 
 // ============================================
-// MAIN INITIALIZATION
+// INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Baitul Jenazah - Page loaded');
+    console.log('🚀 Baitul Jenazah - Sistem dimuatkan');
     
-    // Initialize EmailJS
-    initializeEmailJS();
-    
-    // Setup mobile menu
+    // Setup semua komponen
     setupMobileMenu();
-    
-    // Setup other components
-    setupInputFormatting();
-    setupRealTimeValidation();
-    loadCart();
     setupBackToTop();
     setupImageModal();
+    setupInputFormatting();
+    loadCart();
     
-    // Mark active nav item
-    markActiveNavItem();
+    // Mark active nav
+    var perkhidmatanLink = document.querySelector('nav a[href*="perkhidmatan"]');
+    if (perkhidmatanLink) perkhidmatanLink.classList.add('active');
+    
+    // Check EmailJS
+    checkEmailJS();
 });
 
 // ============================================
-// EMAILJS INITIALIZATION
+// EMAILJS FUNCTIONS
 // ============================================
-function initializeEmailJS() {
-    // Check if EmailJS SDK is loaded
-    if (typeof emailjs === 'undefined') {
-        console.warn('⚠️ EmailJS SDK not loaded yet, loading now...');
-        
-        // Dynamically load EmailJS SDK
-        var script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js';
-        script.onload = function() {
-            console.log('✅ EmailJS SDK loaded');
-            initEmailJSAfterLoad();
-        };
-        script.onerror = function() {
-            console.error('❌ Failed to load EmailJS SDK');
-            showToast('Email service sedang dalam penyelenggaraan. Sila cetak resit selepas pembayaran.', 'warning');
-        };
-        document.head.appendChild(script);
-    } else {
-        initEmailJSAfterLoad();
-    }
-}
-
-function initEmailJSAfterLoad() {
-    try {
-        emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-        console.log('✅ EmailJS initialized with key:', EMAILJS_CONFIG.PUBLIC_KEY);
-        
-        // Test connection
-        setTimeout(testEmailJSConnection, 1000);
-    } catch (error) {
-        console.error('❌ EmailJS initialization failed:', error);
-    }
-}
-
-async function testEmailJSConnection() {
-    try {
-        console.log('🔧 Testing EmailJS connection...');
+function checkEmailJS() {
+    if (typeof emailjs !== 'undefined') {
+        console.log('✅ EmailJS sedia digunakan');
         return true;
-    } catch (error) {
-        console.warn('⚠️ EmailJS test failed:', error.message);
+    } else {
+        console.warn('⚠️ EmailJS belum dimuatkan. Email mungkin tidak dapat dihantar.');
         return false;
     }
 }
 
-// ============================================
-// MOBILE MENU SETUP
-// ============================================
-function setupMobileMenu() {
-    var mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    var mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-    var mainNav = document.getElementById('mainNav');
-    
-    if (!mobileMenuBtn) return;
-    
-    mobileMenuBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        mainNav.classList.toggle('active');
-        mobileMenuOverlay.classList.toggle('active');
-        mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
-            ? '<i class="fas fa-times"></i>' 
-            : '<i class="fas fa-bars"></i>';
-    });
-    
-    mobileMenuOverlay.addEventListener('click', function() {
-        mainNav.classList.remove('active');
-        mobileMenuOverlay.classList.remove('active');
-        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-    });
-    
-    // Close menu on outside click
-    document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
-            if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                mainNav.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            }
-        }
-    });
-    
-    // Close menu on link click
-    var navLinks = document.querySelectorAll('nav a');
-    navLinks.forEach(function(link) {
-        link.addEventListener('click', function() {
-            mainNav.classList.remove('active');
-            mobileMenuOverlay.classList.remove('active');
-            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-    });
-}
-
-function markActiveNavItem() {
-    var navLinks = document.querySelectorAll('nav a');
-    var perkhidmatanLink = document.querySelector('nav a[href*="perkhidmatan"]');
-    
-    if (perkhidmatanLink) {
-        perkhidmatanLink.classList.add('active');
+async function sendEmailReceipt(transaction) {
+    // Jika EmailJS tidak tersedia, return false
+    if (typeof emailjs === 'undefined') {
+        console.warn('EmailJS tidak tersedia. Skip email sending.');
+        return { success: false, message: 'Email service tidak tersedia' };
     }
-}
-
-// ============================================
-// BACK TO TOP BUTTON
-// ============================================
-function setupBackToTop() {
-    var backToTopBtn = document.getElementById('backToTop');
     
-    if (!backToTopBtn) return;
-    
-    backToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    try {
+        console.log('📧 Menghantar email kepada:', transaction.customer.email);
+        
+        // Format items untuk email
+        var itemsHtml = '';
+        transaction.items.forEach(function(item) {
+            itemsHtml += `<tr><td>${item.name}</td><td>RM ${item.price.toFixed(2)}</td></tr>`;
         });
-    });
-    
-    window.addEventListener('scroll', function() {
-        var currentScroll = window.scrollY;
         
-        if (currentScroll > scrollThreshold && !isButtonVisible) {
-            isButtonVisible = true;
-            backToTopBtn.classList.add('visible');
-        } else if (currentScroll <= scrollThreshold && isButtonVisible) {
-            isButtonVisible = false;
-            backToTopBtn.classList.remove('visible');
-        }
+        // Siapkan data untuk email
+        var templateParams = {
+            to_email: transaction.customer.email,
+            to_name: transaction.customer.name,
+            ref_number: transaction.refNumber,
+            customer_name: transaction.customer.name,
+            customer_phone: transaction.customer.phone,
+            items_list: itemsHtml,
+            total_amount: 'RM ' + transaction.total.toFixed(2),
+            transaction_date: transaction.date
+        };
         
-        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-    }, false);
-}
-
-// ============================================
-// IMAGE MODAL
-// ============================================
-function setupImageModal() {
-    var imageModal = document.getElementById('imageModal');
-    
-    if (!imageModal) return;
-    
-    imageModal.addEventListener('click', function(e) {
-        if (e.target === imageModal) {
-            closeImageModal();
-        }
-    });
-    
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-            closeImageModal();
-        }
-    });
+        // Hantar email menggunakan EmailJS
+        var response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID,
+            EMAILJS_CONFIG.TEMPLATE_ID,
+            templateParams
+        );
+        
+        console.log('✅ Email berjaya dihantar');
+        return { success: true, response: response };
+        
+    } catch (error) {
+        console.error('❌ Gagal menghantar email:', error);
+        return { 
+            success: false, 
+            message: error.text || 'Gagal menghantar email',
+            error: error 
+        };
+    }
 }
 
 // ============================================
@@ -201,8 +102,13 @@ function setupImageModal() {
 function loadCart() {
     var saved = localStorage.getItem('baituljenazah_cart');
     if (saved) {
-        cart = JSON.parse(saved);
-        updateCartDisplay();
+        try {
+            cart = JSON.parse(saved);
+            updateCartDisplay();
+        } catch (e) {
+            console.error('Error loading cart:', e);
+            cart = [];
+        }
     }
 }
 
@@ -214,15 +120,17 @@ function saveCart() {
 function addToCart(id, name, price, category) {
     cart.push({id: id, name: name, price: price, category: category, quantity: 1});
     saveCart();
-    showToast(name + ' telah ditambah ke troli.', 'success');
+    showToast(name + ' ditambah ke troli', 'success');
     toggleCart();
 }
 
 function removeFromCart(index) {
-    var removedItem = cart[index];
-    cart.splice(index, 1);
-    saveCart();
-    showToast(removedItem.name + ' telah dikeluarkan dari troli.', 'info');
+    if (index >= 0 && index < cart.length) {
+        var itemName = cart[index].name;
+        cart.splice(index, 1);
+        saveCart();
+        showToast(itemName + ' dikeluarkan dari troli', 'info');
+    }
 }
 
 function updateCartDisplay() {
@@ -232,26 +140,34 @@ function updateCartDisplay() {
     
     if (!cartItems || !cartCount || !cartTotal) return;
     
+    // Update cart count
     cartCount.textContent = cart.length;
     
+    // If cart is empty
     if (cart.length === 0) {
-        cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>';
+        cartItems.innerHTML = `
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Troli anda kosong</p>
+            </div>
+        `;
         cartTotal.textContent = 'RM 0.00';
         return;
     }
     
+    // Show cart items
     var total = 0;
-    cartItems.innerHTML = '';
+    var itemsHtml = '';
     
     cart.forEach(function(item, index) {
         total += item.price;
-        cartItems.innerHTML += `
+        itemsHtml += `
             <div class="cart-item">
                 <div class="cart-item-info">
                     <h4>${item.name}</h4>
                     <p>${item.category}</p>
                 </div>
-                <div style="display:flex;align-items:center">
+                <div class="cart-item-actions">
                     <div class="cart-item-price">RM ${item.price.toFixed(2)}</div>
                     <button class="remove-item" onclick="removeFromCart(${index})">
                         <i class="fas fa-trash"></i>
@@ -261,6 +177,7 @@ function updateCartDisplay() {
         `;
     });
     
+    cartItems.innerHTML = itemsHtml;
     cartTotal.textContent = 'RM ' + total.toFixed(2);
 }
 
@@ -276,13 +193,13 @@ function toggleCart() {
 // ============================================
 function openCheckout() {
     if (cart.length === 0) {
-        showToast('Sila tambah sekurang-kurangnya satu item ke troli.', 'warning');
+        showToast('Troli kosong. Tambah item terlebih dahulu.', 'warning');
         return;
     }
     
-    var checkoutModal = document.getElementById('checkoutModal');
-    if (checkoutModal) {
-        checkoutModal.classList.add('active');
+    var modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         updateOrderSummary();
         nextStep(1);
@@ -290,9 +207,9 @@ function openCheckout() {
 }
 
 function closeCheckout() {
-    var checkoutModal = document.getElementById('checkoutModal');
-    if (checkoutModal) {
-        checkoutModal.classList.remove('active');
+    var modal = document.getElementById('checkoutModal');
+    if (modal) {
+        modal.classList.remove('active');
         document.body.style.overflow = 'auto';
     }
 }
@@ -304,11 +221,11 @@ function updateOrderSummary() {
     if (!orderItems || !orderTotal) return;
     
     var total = 0;
-    orderItems.innerHTML = '';
+    var itemsHtml = '';
     
     cart.forEach(function(item) {
         total += item.price;
-        orderItems.innerHTML += `
+        itemsHtml += `
             <div class="summary-item">
                 <span>${item.name}</span>
                 <span>RM ${item.price.toFixed(2)}</span>
@@ -316,6 +233,7 @@ function updateOrderSummary() {
         `;
     });
     
+    orderItems.innerHTML = itemsHtml;
     orderTotal.innerHTML = `
         <div class="summary-item summary-total">
             <span>JUMLAH KESELURUHAN</span>
@@ -325,71 +243,75 @@ function updateOrderSummary() {
 }
 
 function nextStep(step) {
+    // Hide all steps
+    var steps = document.querySelectorAll('.step');
+    var contents = document.querySelectorAll('.checkout-step');
+    
+    steps.forEach(function(step) { step.classList.remove('active'); });
+    contents.forEach(function(content) { content.classList.remove('active'); });
+    
+    // Validate before proceeding
     if (step === 2 && !validateStep1()) return;
     if (step === 3 && !validateStep2()) return;
     
-    // Update steps
-    var steps = document.querySelectorAll('.step');
-    var stepContents = document.querySelectorAll('.checkout-step');
+    // Show target step
+    var stepEl = document.getElementById('step' + step);
+    var contentEl = document.getElementById('step' + step + 'Content');
     
-    steps.forEach(function(s) {
-        s.classList.remove('active');
-    });
-    
-    stepContents.forEach(function(s) {
-        s.classList.remove('active');
-    });
-    
-    var stepElement = document.getElementById('step' + step);
-    var stepContent = document.getElementById('step' + step + 'Content');
-    
-    if (stepElement) stepElement.classList.add('active');
-    if (stepContent) stepContent.classList.add('active');
+    if (stepEl) stepEl.classList.add('active');
+    if (contentEl) contentEl.classList.add('active');
     
     if (step === 3) updateConfirmSections();
 }
 
 function updateConfirmSections() {
-    var customerName = document.getElementById('customerName').value.trim();
-    var customerPhone = document.getElementById('customerPhone').value.trim();
-    var customerEmail = document.getElementById('customerEmail').value.trim();
-    var customerAddress = document.getElementById('customerAddress').value.trim();
-    var customerNotes = document.getElementById('customerNotes').value.trim();
+    // Get customer data
+    var customer = {
+        name: getValue('customerName'),
+        phone: getValue('customerPhone'),
+        email: getValue('customerEmail'),
+        address: getValue('customerAddress'),
+        notes: getValue('customerNotes')
+    };
     
-    var cardName = document.getElementById('cardName').value.trim();
-    var cardNumber = document.getElementById('cardNumber').value;
-    var cardExpiry = document.getElementById('cardExpiry').value.trim();
+    // Get payment data
+    var payment = {
+        cardName: getValue('cardName'),
+        cardLast4: getValue('cardNumber').replace(/\s/g, '').slice(-4),
+        cardExpiry: getValue('cardExpiry')
+    };
     
+    // Update confirmation sections
     var confirmCustomer = document.getElementById('confirmCustomer');
     var confirmPayment = document.getElementById('confirmPayment');
     var confirmItems = document.getElementById('confirmItems');
     
     if (confirmCustomer) {
         confirmCustomer.innerHTML = `
-            <div class="summary-item"><span>Nama:</span><span>${customerName}</span></div>
-            <div class="summary-item"><span>Telefon:</span><span>${customerPhone}</span></div>
-            <div class="summary-item"><span>Email:</span><span>${customerEmail}</span></div>
-            <div class="summary-item"><span>Alamat:</span><span>${customerAddress}</span></div>
-            ${customerNotes ? `<div class="summary-item"><span>Nota:</span><span>${customerNotes}</span></div>` : ''}
+            <div class="summary-item"><span>Nama:</span><span>${customer.name}</span></div>
+            <div class="summary-item"><span>Telefon:</span><span>${customer.phone}</span></div>
+            <div class="summary-item"><span>Email:</span><span>${customer.email}</span></div>
+            <div class="summary-item"><span>Alamat:</span><span>${customer.address}</span></div>
+            ${customer.notes ? `<div class="summary-item"><span>Nota:</span><span>${customer.notes}</span></div>` : ''}
         `;
     }
     
     if (confirmPayment) {
         confirmPayment.innerHTML = `
             <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
-            <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
-            <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.replace(/\s/g, '').slice(-4)}</span></div>
-            <div class="summary-item"><span>Tarikh Luput:</span><span>${cardExpiry}</span></div>
+            <div class="summary-item"><span>Nama Kad:</span><span>${payment.cardName}</span></div>
+            <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${payment.cardLast4}</span></div>
+            <div class="summary-item"><span>Tarikh Luput:</span><span>${payment.cardExpiry}</span></div>
         `;
     }
     
     if (confirmItems) {
         var total = 0;
-        var itemsHTML = '';
+        var itemsHtml = '';
         
         cart.forEach(function(item) {
             total += item.price;
-            itemsHTML += `
+            itemsHtml += `
                 <div class="summary-item">
                     <span>${item.name}</span>
                     <span>RM ${item.price.toFixed(2)}</span>
@@ -397,382 +319,225 @@ function updateConfirmSections() {
             `;
         });
         
-        itemsHTML += `
+        itemsHtml += `
             <div class="summary-item summary-total">
                 <span>JUMLAH KESELURUHAN</span>
                 <span>RM ${total.toFixed(2)}</span>
             </div>
         `;
         
-        confirmItems.innerHTML = itemsHTML;
+        confirmItems.innerHTML = itemsHtml;
     }
+}
+
+function getValue(elementId) {
+    var element = document.getElementById(elementId);
+    return element ? element.value.trim() : '';
 }
 
 // ============================================
 // VALIDATION FUNCTIONS
 // ============================================
 function validateStep1() {
-    var name = document.getElementById('customerName').value.trim();
-    var phone = document.getElementById('customerPhone').value.trim();
-    var address = document.getElementById('customerAddress').value.trim();
-    var email = document.getElementById('customerEmail').value.trim();
-    
     var isValid = true;
     
     // Reset errors
-    var errors = ['nameError', 'phoneError', 'addressError', 'emailError'];
-    errors.forEach(function(errorId) {
-        var errorElement = document.getElementById(errorId);
-        if (errorElement) {
-            errorElement.style.display = 'none';
-        }
+    var errorIds = ['nameError', 'phoneError', 'addressError', 'emailError'];
+    errorIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
     });
     
     // Validate name
+    var name = getValue('customerName');
     if (!name) {
-        document.getElementById('nameError').style.display = 'block';
-        document.getElementById('customerName').classList.add('error');
+        showError('customerName', 'nameError', 'Sila isi nama penuh');
         isValid = false;
     }
     
     // Validate phone
-    var phoneDigits = phone.replace(/\D/g, '');
+    var phone = getValue('customerPhone').replace(/\D/g, '');
     if (!phone) {
-        document.getElementById('phoneError').style.display = 'block';
-        document.getElementById('customerPhone').classList.add('error');
+        showError('customerPhone', 'phoneError', 'Sila isi nombor telefon');
         isValid = false;
-    } else if (!/^\d{10,11}$/.test(phoneDigits)) {
-        document.getElementById('phoneError').style.display = 'block';
-        document.getElementById('customerPhone').classList.add('error');
+    } else if (phone.length < 10 || phone.length > 11) {
+        showError('customerPhone', 'phoneError', 'Nombor telefon mesti 10-11 digit');
         isValid = false;
     }
     
     // Validate address
+    var address = getValue('customerAddress');
     if (!address) {
-        document.getElementById('addressError').style.display = 'block';
-        document.getElementById('customerAddress').classList.add('error');
+        showError('customerAddress', 'addressError', 'Sila isi alamat penuh');
         isValid = false;
     }
     
     // Validate email
+    var email = getValue('customerEmail');
     if (!email) {
-        document.getElementById('emailError').style.display = 'block';
-        document.getElementById('customerEmail').classList.add('error');
+        showError('customerEmail', 'emailError', 'Sila isi alamat email');
         isValid = false;
     } else if (!isValidEmail(email)) {
-        document.getElementById('emailError').style.display = 'block';
-        document.getElementById('customerEmail').classList.add('error');
+        showError('customerEmail', 'emailError', 'Format email tidak sah');
         isValid = false;
     }
     
     if (!isValid) {
-        showToast('Sila betulkan maklumat yang salah.', 'error');
+        showToast('Sila betulkan maklumat di atas', 'error');
     }
     
     return isValid;
 }
 
 function validateStep2() {
-    var cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-    var expiry = document.getElementById('cardExpiry').value.trim();
-    var cvv = document.getElementById('cardCVV').value.trim();
-    var cardName = document.getElementById('cardName').value.trim();
-    
     var isValid = true;
     
     // Reset errors
-    var errors = ['cardNameError', 'cardError', 'expiryError', 'cvvError'];
-    errors.forEach(function(errorId) {
-        var errorElement = document.getElementById(errorId);
-        if (errorElement) {
-            errorElement.style.display = 'none';
-        }
+    var errorIds = ['cardNameError', 'cardError', 'expiryError', 'cvvError'];
+    errorIds.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
     });
     
     // Validate card name
+    var cardName = getValue('cardName');
     if (!cardName) {
-        document.getElementById('cardNameError').style.display = 'block';
-        document.getElementById('cardName').classList.add('error');
+        showError('cardName', 'cardNameError', 'Sila isi nama pada kad');
         isValid = false;
     }
     
     // Validate card number
+    var cardNumber = getValue('cardNumber').replace(/\s/g, '');
     if (!cardNumber) {
-        document.getElementById('cardError').style.display = 'block';
-        document.getElementById('cardNumber').classList.add('error');
+        showError('cardNumber', 'cardError', 'Sila isi nombor kad');
         isValid = false;
-    } else if (!/^\d{16}$/.test(cardNumber)) {
-        document.getElementById('cardError').style.display = 'block';
-        document.getElementById('cardNumber').classList.add('error');
+    } else if (cardNumber.length !== 16) {
+        showError('cardNumber', 'cardError', 'Nombor kad mesti 16 digit');
         isValid = false;
     }
     
-    // Validate expiry date
+    // Validate expiry
+    var expiry = getValue('cardExpiry');
     if (!expiry) {
-        document.getElementById('expiryError').style.display = 'block';
-        document.getElementById('cardExpiry').classList.add('error');
+        showError('cardExpiry', 'expiryError', 'Sila isi tarikh luput');
         isValid = false;
     } else if (!/^\d{2}\/\d{2}$/.test(expiry)) {
-        document.getElementById('expiryError').style.display = 'block';
-        document.getElementById('cardExpiry').classList.add('error');
+        showError('cardExpiry', 'expiryError', 'Format: MM/YY');
         isValid = false;
     }
     
     // Validate CVV
+    var cvv = getValue('cardCVV');
     if (!cvv) {
-        document.getElementById('cvvError').style.display = 'block';
-        document.getElementById('cardCVV').classList.add('error');
+        showError('cardCVV', 'cvvError', 'Sila isi kod CVV');
         isValid = false;
-    } else if (!/^\d{3,4}$/.test(cvv)) {
-        document.getElementById('cvvError').style.display = 'block';
-        document.getElementById('cardCVV').classList.add('error');
+    } else if (cvv.length < 3 || cvv.length > 4) {
+        showError('cardCVV', 'cvvError', 'CVV mesti 3-4 digit');
         isValid = false;
     }
     
     if (!isValid) {
-        showToast('Sila betulkan maklumat pembayaran.', 'error');
+        showToast('Sila betulkan maklumat pembayaran', 'error');
     }
     
     return isValid;
 }
 
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-// ============================================
-// INPUT FORMATTING
-// ============================================
-function setupInputFormatting() {
-    // Card number formatting
-    var cardNumberInput = document.getElementById('cardNumber');
-    if (cardNumberInput) {
-        cardNumberInput.addEventListener('input', function(e) {
-            var value = e.target.value.replace(/\D/g, '');
-            
-            if (value.length > 16) {
-                value = value.substring(0, 16);
-            }
-            
-            var formatted = '';
-            for (var i = 0; i < value.length; i++) {
-                if (i > 0 && i % 4 === 0) {
-                    formatted += ' ';
-                }
-                formatted += value[i];
-            }
-            
-            e.target.value = formatted;
-        });
+function showError(inputId, errorId, message) {
+    var input = document.getElementById(inputId);
+    var error = document.getElementById(errorId);
+    
+    if (input) {
+        input.classList.add('error');
+        input.focus();
     }
     
-    // Expiry date formatting
-    var expiryInput = document.getElementById('cardExpiry');
-    if (expiryInput) {
-        expiryInput.addEventListener('input', function(e) {
-            var value = e.target.value.replace(/\D/g, '');
-            
-            if (value.length > 4) {
-                value = value.substring(0, 4);
-            }
-            
-            if (value.length >= 2) {
-                var month = value.substring(0, 2);
-                var year = value.substring(2, 4);
-                
-                // Auto-correct month
-                var monthNum = parseInt(month, 10);
-                if (monthNum > 12) monthNum = 12;
-                if (monthNum < 1) monthNum = 1;
-                
-                var formattedMonth = monthNum.toString().padStart(2, '0');
-                value = formattedMonth + (value.length > 2 ? '/' + year : '');
-            }
-            
-            e.target.value = value;
-        });
+    if (error) {
+        error.textContent = message;
+        error.style.display = 'block';
     }
 }
 
-function setupRealTimeValidation() {
-    // Email validation
-    var emailInput = document.getElementById('customerEmail');
-    if (emailInput) {
-        emailInput.addEventListener('blur', function() {
-            var email = this.value.trim();
-            var errorElement = document.getElementById('emailError');
-            
-            if (!errorElement) return;
-            
-            if (!email) {
-                errorElement.textContent = 'Sila isi alamat email';
-                errorElement.style.display = 'block';
-                this.classList.add('error');
-            } else if (!isValidEmail(email)) {
-                errorElement.textContent = 'Format email tidak sah';
-                errorElement.style.display = 'block';
-                this.classList.add('error');
-            } else {
-                errorElement.style.display = 'none';
-                this.classList.remove('error');
-            }
-        });
-    }
+function isValidEmail(email) {
+    var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
 }
 
 // ============================================
 // PAYMENT PROCESSING
 // ============================================
 async function processPayment() {
-    console.log('💳 Starting payment processing...');
+    if (isProcessing) return;
     
+    isProcessing = true;
     var payBtn = document.getElementById('payBtn');
-    if (!payBtn) return;
-    
-    var originalBtnText = payBtn.innerHTML;
-    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-    payBtn.disabled = true;
+    var originalText = payBtn ? payBtn.innerHTML : '';
     
     // Show loading
+    if (payBtn) {
+        payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+        payBtn.disabled = true;
+    }
+    
     showLoading('Memproses pembayaran anda...');
     
     try {
         // Generate reference
-        var refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+        var refNumber = 'BJ-' + Date.now();
         
-        // Get customer data
-        var customer = {
-            name: document.getElementById('customerName').value.trim(),
-            phone: document.getElementById('customerPhone').value.trim(),
-            email: document.getElementById('customerEmail').value.trim(),
-            address: document.getElementById('customerAddress').value.trim(),
-            notes: document.getElementById('customerNotes').value.trim() || ''
-        };
-        
-        // Get payment data
-        var payment = {
-            method: 'credit_card',
-            cardName: document.getElementById('cardName').value.trim(),
-            cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
-            cardExpiry: document.getElementById('cardExpiry').value.trim()
-        };
-        
-        // Calculate total
-        var total = 0;
-        cart.forEach(function(item) {
-            total += item.price;
-        });
-        
-        // Create transaction
+        // Collect data
         var transaction = {
             refNumber: refNumber,
             date: new Date().toLocaleString('ms-MY'),
-            customer: customer,
-            payment: payment,
-            items: JSON.parse(JSON.stringify(cart)), // Deep copy
-            total: total,
+            customer: {
+                name: getValue('customerName'),
+                phone: getValue('customerPhone'),
+                email: getValue('customerEmail'),
+                address: getValue('customerAddress'),
+                notes: getValue('customerNotes')
+            },
+            payment: {
+                method: 'credit_card',
+                cardLast4: getValue('cardNumber').replace(/\s/g, '').slice(-4)
+            },
+            items: JSON.parse(JSON.stringify(cart)),
+            total: cart.reduce(function(sum, item) { return sum + item.price; }, 0),
             status: 'Selesai'
         };
         
-        console.log('💾 Saving transaction:', refNumber);
+        console.log('💾 Menyimpan transaksi:', refNumber);
         
         // Save transaction
-        saveTransactionToStorage(transaction);
+        saveTransaction(transaction);
         
         // Try to send email
-        var emailSent = false;
-        var emailError = null;
+        var emailResult = { success: false, message: 'Email tidak dihantar' };
         
-        if (customer.email && isValidEmail(customer.email)) {
-            try {
-                updateLoading('Menghantar resit ke email...');
-                var emailResult = await sendEmailReceipt(transaction);
-                emailSent = emailResult.success;
-            } catch (error) {
-                emailError = error.message;
-                console.warn('⚠️ Email failed:', error);
-            }
+        if (transaction.customer.email && isValidEmail(transaction.customer.email)) {
+            updateLoading('Menghantar resit ke email...');
+            emailResult = await sendEmailReceipt(transaction);
         }
         
-        // Hide loading
-        hideLoading();
-        
-        // Reset button
-        payBtn.innerHTML = originalBtnText;
-        payBtn.disabled = false;
-        
         // Show success
-        showSuccessPage(transaction, emailSent, emailError);
+        hideLoading();
+        showSuccessPage(transaction, emailResult.success, emailResult.message);
         
     } catch (error) {
         console.error('❌ Payment error:', error);
-        
-        // Hide loading
         hideLoading();
-        
-        // Reset button
-        payBtn.innerHTML = originalBtnText;
-        payBtn.disabled = false;
-        
         showToast('Ralat: ' + error.message, 'error');
+    } finally {
+        isProcessing = false;
+        if (payBtn) {
+            payBtn.innerHTML = originalText;
+            payBtn.disabled = false;
+        }
     }
 }
 
-async function sendEmailReceipt(transaction) {
-    console.log('📧 Sending email receipt...');
-    
-    // Check if EmailJS is available
-    if (typeof emailjs === 'undefined') {
-        throw new Error('Email service tidak tersedia');
-    }
-    
-    // Format items
-    var itemsHtml = '';
-    transaction.items.forEach(function(item) {
-        itemsHtml += `
-            <tr>
-                <td>${item.name}</td>
-                <td>${item.category}</td>
-                <td>RM ${item.price.toFixed(2)}</td>
-            </tr>
-        `;
-    });
-    
-    // Prepare email data
-    var templateParams = {
-        to_email: transaction.customer.email,
-        to_name: transaction.customer.name,
-        ref_number: transaction.refNumber,
-        customer_name: transaction.customer.name,
-        customer_phone: transaction.customer.phone,
-        items_list: itemsHtml,
-        total_amount: 'RM ' + transaction.total.toFixed(2),
-        transaction_date: transaction.date
-    };
-    
+function saveTransaction(transaction) {
     try {
-        var response = await emailjs.send(
-            EMAILJS_CONFIG.SERVICE_ID,
-            EMAILJS_CONFIG.TEMPLATE_ID,
-            templateParams
-        );
-        
-        console.log('✅ Email sent:', response);
-        return { success: true, response: response };
-        
-    } catch (error) {
-        console.error('❌ Email error:', error);
-        return { 
-            success: false, 
-            error: error,
-            message: 'Gagal menghantar email: ' + (error.text || error.message)
-        };
-    }
-}
-
-function saveTransactionToStorage(transaction) {
-    try {
-        // Save to localStorage
+        // Save to localStorage for history
         var transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
         transactions.push(transaction);
         localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
@@ -784,10 +549,8 @@ function saveTransactionToStorage(transaction) {
         cart = [];
         saveCart();
         
-        console.log('💾 Transaction saved');
-        
     } catch (error) {
-        console.error('❌ Save error:', error);
+        console.error('Error saving transaction:', error);
         throw error;
     }
 }
@@ -795,7 +558,7 @@ function saveTransactionToStorage(transaction) {
 // ============================================
 // SUCCESS PAGE
 // ============================================
-function showSuccessPage(transaction, emailSent, emailError) {
+function showSuccessPage(transaction, emailSent, emailMessage) {
     // Show step 4
     var step4 = document.getElementById('step4');
     var step4Content = document.getElementById('step4Content');
@@ -810,81 +573,230 @@ function showSuccessPage(transaction, emailSent, emailError) {
     }
     
     // Hide other steps
-    var steps = document.querySelectorAll('.step');
-    var stepContents = document.querySelectorAll('.checkout-step');
-    
-    steps.forEach(function(step) {
-        if (step.id !== 'step4') {
-            step.classList.remove('active');
-        }
+    document.querySelectorAll('.step:not(#step4)').forEach(function(s) {
+        s.classList.remove('active');
     });
     
-    stepContents.forEach(function(content) {
-        if (content.id !== 'step4Content') {
-            content.classList.remove('active');
-        }
+    document.querySelectorAll('.checkout-step:not(#step4Content)').forEach(function(s) {
+        s.classList.remove('active');
     });
     
-    // Build success content
-    var emailStatus = '';
-    if (emailSent) {
-        emailStatus = `
-            <div style="background:#e8f5e9;padding:15px;border-radius:8px;margin:20px 0;">
-                <i class="fas fa-check-circle" style="color:#27ae60"></i>
-                <strong> Resit telah dihantar ke:</strong> ${transaction.customer.email}
-            </div>
-        `;
-    } else {
-        emailStatus = `
-            <div style="background:#fff3cd;padding:15px;border-radius:8px;margin:20px 0;">
-                <i class="fas fa-exclamation-triangle" style="color:#f39c12"></i>
-                <strong> Resit tidak dapat dihantar.</strong> Sila cetak resit di bawah.
-                ${emailError ? `<br><small>${emailError}</small>` : ''}
-            </div>
-        `;
-    }
-    
-    // Items list
-    var itemsList = '';
-    transaction.items.forEach(function(item) {
-        itemsList += `<div>${item.name} - RM ${item.price.toFixed(2)}</div>`;
-    });
+    // Build success message
+    var emailStatus = emailSent ? 
+        `<div class="email-success"><i class="fas fa-check-circle"></i> Resit telah dihantar ke email</div>` :
+        `<div class="email-warning"><i class="fas fa-exclamation-triangle"></i> ${emailMessage || 'Resit tidak dapat dihantar'}</div>`;
     
     var successContent = document.getElementById('successContent');
     if (successContent) {
         successContent.innerHTML = `
-            <div style="text-align:center;padding:20px;">
-                <div style="font-size:4rem;color:#27ae60;margin-bottom:20px;">
+            <div class="success-message">
+                <div class="success-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 
-                <h3 style="color:#27ae60;">Pembayaran Berjaya!</h3>
+                <h3>Pembayaran Berjaya!</h3>
                 <p>Terima kasih atas pesanan anda.</p>
                 
-                <div style="background:#f9f9f9;padding:20px;border-radius:8px;margin:20px 0;text-align:left;">
+                <div class="transaction-details">
                     <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
                     <p><strong>Tarikh:</strong> ${transaction.date}</p>
                     <p><strong>Nama:</strong> ${transaction.customer.name}</p>
                     <p><strong>Jumlah:</strong> RM ${transaction.total.toFixed(2)}</p>
-                    <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
                 </div>
                 
                 ${emailStatus}
                 
-                <div style="margin:30px 0;">
-                    <button class="btn" onclick="printReceiptFromStorage()" style="margin:5px;">
+                <div class="success-actions">
+                    <button class="btn" onclick="printReceiptFromStorage()">
                         <i class="fas fa-print"></i> Cetak Resit
                     </button>
-                    <button class="btn btn-secondary" onclick="completeOrder()" style="margin:5px;">
+                    <button class="btn btn-secondary" onclick="completeOrder()">
                         <i class="fas fa-home"></i> Selesai
                     </button>
                 </div>
-                
-                <p style="color:#666;font-size:0.9rem;">
-                    <i class="fas fa-info-circle"></i> Sila simpan nombor rujukan untuk rujukan.
-                </p>
             </div>
         `;
+    }
+}
+
+function completeOrder() {
+    closeCheckout();
+    toggleCart();
+    showToast('Terima kasih! Transaksi selesai.', 'success');
+}
+
+// ============================================
+// PRINT FUNCTIONS
+// ============================================
+function printReceiptFromStorage() {
+    var transactionJSON = sessionStorage.getItem('lastTransaction');
+    if (!transactionJSON) {
+        showToast('Tiada data resit', 'error');
+        return;
+    }
+    
+    try {
+        var transaction = JSON.parse(transactionJSON);
+        
+        // Create print window
+        var printWindow = window.open('', '_blank', 'width=800,height=600');
+        
+        // Build HTML
+        var itemsHtml = transaction.items.map(function(item) {
+            return `<tr><td>${item.name}</td><td>RM ${item.price.toFixed(2)}</td></tr>`;
+        }).join('');
+        
+        var html = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Resit ${transaction.refNumber}</title>
+                <style>
+                    body { font-family: Arial; padding: 20px; }
+                    .header { text-align: center; margin-bottom: 20px; }
+                    .company { color: #88E788; font-size: 24px; font-weight: bold; }
+                    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                    th, td { padding: 8px; border: 1px solid #ddd; }
+                    .total { text-align: right; font-weight: bold; margin-top: 20px; }
+                    @media print {
+                        body { padding: 10px; }
+                        button { display: none; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="header">
+                    <div class="company">Baitul Jenazah</div>
+                    <div>Resit Pembayaran</div>
+                </div>
+                
+                <div>
+                    <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
+                    <p><strong>Tarikh:</strong> ${transaction.date}</p>
+                    <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                </div>
+                
+                <table>
+                    <tr><th>Item</th><th>Harga</th></tr>
+                    ${itemsHtml}
+                </table>
+                
+                <div class="total">
+                    JUMLAH: RM ${transaction.total.toFixed(2)}
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center;">
+                    <button onclick="window.print()">Cetak</button>
+                    <button onclick="window.close()" style="margin-left: 10px;">Tutup</button>
+                </div>
+                
+                <script>
+                    window.onload = function() {
+                        setTimeout(function() {
+                            window.print();
+                        }, 500);
+                    };
+                </script>
+            </body>
+            </html>
+        `;
+        
+        printWindow.document.write(html);
+        printWindow.document.close();
+        
+    } catch (error) {
+        showToast('Ralat membuat resit', 'error');
+    }
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+function setupMobileMenu() {
+    var menuBtn = document.getElementById('mobileMenuBtn');
+    var overlay = document.getElementById('mobileMenuOverlay');
+    var nav = document.getElementById('mainNav');
+    
+    if (!menuBtn || !overlay || !nav) return;
+    
+    menuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        nav.classList.toggle('active');
+        overlay.classList.toggle('active');
+        menuBtn.innerHTML = nav.classList.contains('active') ? 
+            '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+    });
+    
+    overlay.addEventListener('click', function() {
+        nav.classList.remove('active');
+        overlay.classList.remove('active');
+        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+    });
+}
+
+function setupBackToTop() {
+    var btn = document.getElementById('backToTop');
+    if (!btn) return;
+    
+    btn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 100) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    });
+}
+
+function setupImageModal() {
+    var modal = document.getElementById('imageModal');
+    if (!modal) return;
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeImageModal();
+    });
+    
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeImageModal();
+        }
+    });
+}
+
+function setupInputFormatting() {
+    // Card number formatting
+    var cardInput = document.getElementById('cardNumber');
+    if (cardInput) {
+        cardInput.addEventListener('input', function(e) {
+            var value = e.target.value.replace(/\D/g, '');
+            if (value.length > 16) value = value.substring(0, 16);
+            
+            var formatted = '';
+            for (var i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) formatted += ' ';
+                formatted += value[i];
+            }
+            
+            e.target.value = formatted;
+        });
+    }
+    
+    // Expiry date formatting
+    var expiryInput = document.getElementById('cardExpiry');
+    if (expiryInput) {
+        expiryInput.addEventListener('input', function(e) {
+            var value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) value = value.substring(0, 4);
+            
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            }
+            
+            e.target.value = value;
+        });
     }
 }
 
@@ -892,10 +804,10 @@ function showSuccessPage(transaction, emailSent, emailError) {
 // LOADING FUNCTIONS
 // ============================================
 function showLoading(message) {
-    hideLoading(); // Remove existing
+    hideLoading();
     
     var loading = document.createElement('div');
-    loading.id = 'customLoading';
+    loading.id = 'loadingOverlay';
     loading.style.cssText = `
         position: fixed;
         top: 0;
@@ -910,9 +822,9 @@ function showLoading(message) {
     `;
     
     loading.innerHTML = `
-        <div style="background:white;padding:30px;border-radius:10px;text-align:center;">
-            <i class="fas fa-spinner fa-spin fa-3x" style="color:#88E788"></i>
-            <p style="margin-top:20px;font-weight:bold;">${message}</p>
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center;">
+            <i class="fas fa-spinner fa-spin fa-3x" style="color: #88E788"></i>
+            <p style="margin-top: 20px; font-weight: bold;">${message || 'Memproses...'}</p>
         </div>
     `;
     
@@ -920,7 +832,7 @@ function showLoading(message) {
 }
 
 function updateLoading(message) {
-    var loading = document.getElementById('customLoading');
+    var loading = document.getElementById('loadingOverlay');
     if (loading) {
         var p = loading.querySelector('p');
         if (p) p.textContent = message;
@@ -928,122 +840,14 @@ function updateLoading(message) {
 }
 
 function hideLoading() {
-    var loading = document.getElementById('customLoading');
+    var loading = document.getElementById('loadingOverlay');
     if (loading && loading.parentNode) {
         loading.parentNode.removeChild(loading);
     }
 }
 
 // ============================================
-// PRINT FUNCTIONS
-// ============================================
-function printReceiptFromStorage() {
-    var transactionJSON = sessionStorage.getItem('lastTransaction');
-    if (!transactionJSON) {
-        showToast('Tiada data resit.', 'error');
-        return;
-    }
-    
-    try {
-        var transaction = JSON.parse(transactionJSON);
-        printReceipt(transaction);
-    } catch (error) {
-        showToast('Ralat data resit.', 'error');
-    }
-}
-
-function printReceipt(transaction) {
-    var printWindow = window.open('', '_blank', 'width=800,height=600');
-    
-    var itemsHtml = '';
-    transaction.items.forEach(function(item) {
-        itemsHtml += `
-            <tr>
-                <td>${item.name}</td>
-                <td>${item.category}</td>
-                <td>RM ${item.price.toFixed(2)}</td>
-            </tr>
-        `;
-    });
-    
-    var html = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>Resit ${transaction.refNumber}</title>
-            <style>
-                body { font-family: Arial, sans-serif; padding: 20px; }
-                .header { text-align: center; margin-bottom: 30px; }
-                .company { color: #88E788; font-size: 24px; font-weight: bold; }
-                .receipt-title { font-size: 20px; margin: 20px 0; }
-                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                th, td { padding: 10px; border: 1px solid #ddd; }
-                .total { text-align: right; font-weight: bold; font-size: 18px; }
-                .footer { margin-top: 40px; text-align: center; color: #666; }
-                @media print {
-                    .no-print { display: none; }
-                }
-            </style>
-        </head>
-        <body>
-            <div class="header">
-                <div class="company">Baitul Jenazah</div>
-                <div>No. 123, Jalan Kebajikan, 53100 Kuala Lumpur</div>
-            </div>
-            
-            <div class="receipt-title">RESIT PEMBAYARAN</div>
-            
-            <div>
-                <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
-                <p><strong>Tarikh:</strong> ${transaction.date}</p>
-                <p><strong>Nama:</strong> ${transaction.customer.name}</p>
-                <p><strong>Status:</strong> ${transaction.status}</p>
-            </div>
-            
-            <table>
-                <tr><th>Item</th><th>Kategori</th><th>Harga</th></tr>
-                ${itemsHtml}
-            </table>
-            
-            <div class="total">
-                JUMLAH: RM ${transaction.total.toFixed(2)}
-            </div>
-            
-            <div class="footer">
-                <p>Terima kasih atas kepercayaan anda</p>
-            </div>
-            
-            <div class="no-print" style="margin-top:20px;">
-                <button onclick="window.print()">Cetak</button>
-                <button onclick="window.close()" style="margin-left:10px;">Tutup</button>
-            </div>
-            
-            <script>
-                window.onload = function() {
-                    setTimeout(function() {
-                        window.print();
-                    }, 500);
-                };
-            </script>
-        </body>
-        </html>
-    `;
-    
-    printWindow.document.write(html);
-    printWindow.document.close();
-}
-
-// ============================================
-// COMPLETE ORDER
-// ============================================
-function completeOrder() {
-    closeCheckout();
-    toggleCart();
-    showToast('Terima kasih! Pesanan anda telah direkodkan.', 'success');
-}
-
-// ============================================
-// TOAST NOTIFICATION
+// TOAST NOTIFICATIONS
 // ============================================
 function showToast(message, type) {
     // Create container if needed
@@ -1069,33 +873,23 @@ function showToast(message, type) {
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         border-left: 4px solid #3498db;
-        animation: slideIn 0.3s ease;
         display: flex;
         align-items: center;
         gap: 10px;
+        animation: slideIn 0.3s ease;
     `;
     
-    // Set color based on type
-    var colors = {
-        success: '#27ae60',
-        error: '#e74c3c',
-        warning: '#f39c12',
-        info: '#3498db'
-    };
-    
+    // Set color
+    var colors = { success: '#27ae60', error: '#e74c3c', warning: '#f39c12', info: '#3498db' };
     toast.style.borderLeftColor = colors[type] || colors.info;
     
-    var icons = {
-        success: 'fa-check-circle',
-        error: 'fa-exclamation-circle',
-        warning: 'fa-exclamation-triangle',
-        info: 'fa-info-circle'
-    };
+    var icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', 
+                  warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
     
     toast.innerHTML = `
         <i class="fas ${icons[type] || icons.info}" style="color: ${colors[type] || colors.info}"></i>
         <span>${message}</span>
-        <button onclick="this.parentElement.remove()" style="margin-left:10px;background:none;border:none;color:#999;cursor:pointer;">&times;</button>
+        <button onclick="this.parentElement.remove()" style="margin-left:10px;background:none;border:none;color:#999;cursor:pointer;">×</button>
     `;
     
     container.appendChild(toast);
@@ -1133,7 +927,7 @@ function closeImageModal() {
 }
 
 // ============================================
-// MAKE FUNCTIONS GLOBALLY AVAILABLE
+// EXPORT FUNCTIONS TO GLOBAL SCOPE
 // ============================================
 window.openImageModal = openImageModal;
 window.closeImageModal = closeImageModal;
