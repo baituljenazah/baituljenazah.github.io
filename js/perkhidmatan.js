@@ -695,42 +695,49 @@ async function sendEmail(transaction) {
         throw new Error('Invalid email address: ' + transaction.customer.email);
     }
     
-    // Format items untuk email
-    const itemsList = transaction.items.map(item => 
-        `• ${item.name} (${item.category}) - RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}`
-    ).join('<br>');
+    // Format items untuk email (HTML format untuk table rows)
+    const itemsListHTML = transaction.items.map(item => 
+        `<tr>
+            <td>${item.name}</td>
+            <td>${item.category}</td>
+            <td style="text-align: right;">RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</td>
+        </tr>`
+    ).join('');
     
-    // Prepare email data - PASTIKAN INI SAMA DENGAN TEMPLATE EMAILJS ANDA
+    // Prepare email data - SESUAI DENGAN TEMPLATE BARU
     const templateParams = {
+        // Email recipient
         to_email: transaction.customer.email,
         to_name: transaction.customer.name,
-        from_name: 'Baitul Jenazah',
-        reply_to: 'info@baituljenazah.my',
         
-        // Data transaksi
+        // Transaction info
         ref_number: transaction.refNumber,
         date: transaction.date,
+        transaction_status: transaction.status,
+        
+        // Customer info
         customer_name: transaction.customer.name,
         customer_phone: transaction.customer.phone,
         customer_address: transaction.customer.address,
-        customer_notes: transaction.customer.notes || 'Tiada nota',
+        customer_notes: transaction.customer.notes || '',
         
-        // Data pembayaran
+        // Order items
+        items_list: itemsListHTML,
+        items_count: transaction.items.length,
         total_amount: `RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`,
+        
+        // Payment info
         payment_method: 'Kad Kredit/Debit',
         payment_last4: transaction.payment.cardLast4,
         payment_expiry: transaction.payment.cardExpiry,
         
-        // Items
-        items_list: itemsList,
-        items_count: transaction.items.length,
-        
-        // Status & company info
-        transaction_status: transaction.status,
+        // Company info
         company_name: 'Baitul Jenazah',
         company_phone: '03-1234 5678',
         company_email: 'info@baituljenazah.my',
-        website: 'https://baituljenazah.github.io/'
+        
+        // Optional: reply email
+        reply_to: 'info@baituljenazah.my'
     };
     
     console.log('📧 Sending email with templateParams:', templateParams);
@@ -743,25 +750,14 @@ async function sendEmail(transaction) {
             templateParams
         );
         
-        console.log('✅ EmailJS Response status:', response.status);
-        console.log('✅ EmailJS Response text:', response.text);
+        console.log('✅ Email sent successfully! Status:', response.status);
         return response;
     } catch (error) {
         console.error('❌ EmailJS Error:', {
             status: error.status,
             text: error.text,
-            message: error.message,
-            fullError: error
+            message: error.message
         });
-        
-        // Debug info
-        console.log('🔍 Debug info:', {
-            serviceId: EMAILJS_CONFIG.SERVICE_ID,
-            templateId: EMAILJS_CONFIG.TEMPLATE_ID,
-            toEmail: templateParams.to_email,
-            paramsSent: templateParams
-        });
-        
         throw error;
     }
 }
