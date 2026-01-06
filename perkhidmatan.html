@@ -2860,19 +2860,59 @@ function completePayment() {
     showSuccess(transaction);
     sendOrderConfirmationEmail(transaction); // This function can now access the email
 }
-        function saveTransaction(transaction) {
-            try {
-                const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
-                transactions.push(transaction);
-                localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
-                
-                // Clear cart
-                cart = [];
-                saveCart();
-            } catch (error) {
-                console.error('Error saving transaction:', error);
-            }
-        }
+        
+function saveTransaction(transaction) {
+    try {
+        const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+        
+        // Reformat transaction untuk keserasian dengan admin page
+        const formattedTransaction = {
+            // Gunakan kedua-dua ID untuk keserasian
+            refNumber: transaction.orderId,
+            orderId: transaction.orderId,
+            transactionId: transaction.transactionId,
+            
+            // Tambah timestamp untuk sorting
+            timestamp: new Date().toISOString(),
+            date: transaction.date,
+            time: transaction.time,
+            
+            // Customer info
+            customer: {
+                name: transaction.customer.name,
+                phone: transaction.customer.phone,
+                email: transaction.customer.email,
+                address: transaction.customer.address,
+                notes: transaction.customer.notes || ''
+            },
+            
+            // Payment info
+            payment: {
+                method: 'credit_card',
+                cardName: transaction.payment.cardName,
+                cardNumber: transaction.payment.cardNumber,
+                cardLast4: transaction.payment.cardLast4 || transaction.payment.cardNumber.slice(-4),
+                cardExpiry: transaction.payment.cardExpiry
+            },
+            
+            // Items
+            items: [...transaction.items],
+            
+            // Totals
+            total: transaction.total,
+            status: 'Selesai'  // Tambah status
+        };
+        
+        transactions.push(formattedTransaction);
+        localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
+        console.log('Transaction saved:', formattedTransaction);
+        
+        // Clear cart
+        cart = [];
+        saveCart();
+    } catch (error) {
+        console.error('Error saving transaction:', error);
+    }
 
 function sendOrderConfirmationEmail(transaction) {
     const emailStatus = document.getElementById('emailStatus');
