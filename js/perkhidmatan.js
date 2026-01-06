@@ -1,727 +1,724 @@
-// EmailJS Configuration
-const EMAILJS_SERVICE_ID = 'service_veo15lv';
-const EMAILJS_TEMPLATE_ID = 'template_h17hgd6';
-const EMAILJS_PUBLIC_KEY = '4xUs48J_OTaSCo8Ec';
-let EMAILJS_PRIVATE_KEY = 'W90p9mMe7SqfTf5U4F1xF'; // Hanya untuk backend, tidak digunakan di frontend
+        // Initialize variables
+        let cart = [];
+        let lastScrollTop = 0;
+        let isButtonVisible = false;
+        const scrollThreshold = 100;
 
-// Inisialisasi EmailJS
-(function() {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    console.log("EmailJS initialized");
-})();
-
-// Cart State
-let cart = [];
-let transactionId = null;
-
-// DOM Elements
-const cartCountEl = document.getElementById('cartCount');
-const cartItemsEl = document.getElementById('cartItems');
-const cartTotalEl = document.getElementById('cartTotal');
-const cartSidebar = document.getElementById('cartSidebar');
-const checkoutModal = document.getElementById('checkoutModal');
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-const mainNav = document.getElementById('mainNav');
-const backToTopBtn = document.getElementById('backToTop');
-const imageModal = document.getElementById('imageModal');
-const modalImage = document.getElementById('modalImage');
-const modalTitle = document.getElementById('modalTitle');
-
-// Mobile Menu Toggle
-mobileMenuBtn.addEventListener('click', () => {
-    mainNav.classList.toggle('active');
-    mobileMenuOverlay.classList.toggle('active');
-});
-
-mobileMenuOverlay.addEventListener('click', () => {
-    mainNav.classList.remove('active');
-    mobileMenuOverlay.classList.remove('active');
-});
-
-// Back to Top Button
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopBtn.classList.add('visible');
-    } else {
-        backToTopBtn.classList.remove('visible');
-    }
-});
-
-backToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// Image Modal Functions
-function openImageModal(src, title) {
-    modalImage.src = src;
-    modalTitle.textContent = title;
-    imageModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeImageModal() {
-    imageModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-imageModal.addEventListener('click', (e) => {
-    if (e.target === imageModal) {
-        closeImageModal();
-    }
-});
-
-// Cart Functions
-function addToCart(id, name, price, category) {
-    const existingItem = cart.find(item => item.id === id);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
-        showToast(`${name} ditambah lagi (${existingItem.quantity} unit)`, 'info');
-    } else {
-        cart.push({
-            id,
-            name,
-            price,
-            category,
-            quantity: 1
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
+            const imageModal = document.getElementById('imageModal');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mainNav.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking on overlay
+            mobileMenuOverlay.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
+                    // If click is not on nav or menu button
+                    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Set active state for current page
+            const currentPage = window.location.pathname;
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Highlight perkhidmatan page by default
+            const perkhidmatanLink = document.querySelector('nav a[href*="perkhidmatan"]');
+            if (perkhidmatanLink) {
+                perkhidmatanLink.classList.add('active');
+            }
+            
+            // Setup input formatting and validation
+            setupInputFormatting();
+            setupRealTimeValidation();
+            loadCart();
+            
+            // Back to top button functionality
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection with immediate response
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                // Show button immediately when user starts scrolling down
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                // Hide button when at the top
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
+            
+            // Close image modal when clicking anywhere
+            imageModal.addEventListener('click', function(e) {
+                // Only close if clicking on the modal background, not the image
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+            
+            // Close image modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            });
         });
-        showToast(`${name} ditambah ke troli`, 'success');
-    }
-    
-    updateCart();
-    saveCartToStorage();
-}
 
-function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
-    updateCart();
-    saveCartToStorage();
-    showToast('Item dikeluarkan dari troli', 'warning');
-}
+        // Image Modal Functions
+        function openImageModal(imageSrc, title) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modalImage.src = imageSrc;
+            modalTitle.textContent = title;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+        
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
 
-function updateCart() {
-    // Update cart count
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCountEl.textContent = totalItems;
-    
-    // Update cart items display
-    cartItemsEl.innerHTML = '';
-    
-    if (cart.length === 0) {
-        cartItemsEl.innerHTML = `
-            <div class="empty-cart">
-                <i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i>
-                <p>Troli anda kosong</p>
-            </div>
-        `;
-    } else {
-        cart.forEach(item => {
-            const itemEl = document.createElement('div');
-            itemEl.className = 'cart-item';
-            itemEl.innerHTML = `
-                <div class="cart-item-info">
-                    <h4>${item.name}</h4>
-                    <p>${item.category} • RM ${item.price.toFixed(2)} × ${item.quantity}</p>
-                </div>
-                <div>
-                    <div class="cart-item-price">RM ${(item.price * item.quantity).toFixed(2)}</div>
-                    <button class="remove-item" onclick="removeFromCart('${item.id}')">
-                        <i class="fas fa-times"></i>
-                    </button>
+        function loadCart() {
+            const saved = localStorage.getItem('baituljenazah_cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                updateCartDisplay();
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('baituljenazah_cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function addToCart(id, name, price, category) {
+            cart.push({id, name, price, category, quantity: 1});
+            saveCart();
+            alert(name + ' telah ditambah ke troli.');
+            toggleCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartCount.textContent = cart.length;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>';
+                cartTotal.textContent = 'RM 0.00';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.category}</p>
+                        </div>
+                        <div style="display:flex;align-items:center">
+                            <div class="cart-item-price">RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
+                            <button class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartTotal.textContent = 'RM ' + total.toLocaleString('en-MY', {minimumFractionDigits: 2});
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                alert('Sila tambah sekurang-kurangnya satu item ke troli.');
+                return;
+            }
+            document.getElementById('checkoutModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateOrderSummary();
+            nextStep(1);
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkoutModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+            
+            let total = 0;
+            orderItems.innerHTML = '';
+            
+            cart.forEach(item => {
+                total += item.price;
+                orderItems.innerHTML += `
+                    <div class="summary-item">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            orderTotal.innerHTML = `
+                <div class="summary-item summary-total">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
                 </div>
             `;
-            cartItemsEl.appendChild(itemEl);
-        });
-    }
-    
-    // Update total
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    cartTotalEl.textContent = `RM ${total.toFixed(2)}`;
-}
+        }
 
-function toggleCart() {
-    cartSidebar.classList.toggle('active');
-}
+        function nextStep(step) {
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('step' + step).classList.add('active');
+            document.getElementById('step' + step + 'Content').classList.add('active');
+            
+            if (step === 3) updateConfirmSections();
+        }
 
-// Checkout Functions
-function openCheckout() {
-    if (cart.length === 0) {
-        showToast('Troli anda kosong', 'warning');
-        return;
-    }
-    
-    // Update order summary
-    const orderItemsEl = document.getElementById('orderItems');
-    const orderTotalEl = document.getElementById('orderTotal');
-    const confirmItemsEl = document.getElementById('confirmItems');
-    
-    let itemsHTML = '';
-    let confirmHTML = '';
-    let total = 0;
-    
-    cart.forEach(item => {
-        const itemTotal = item.price * item.quantity;
-        total += itemTotal;
-        
-        itemsHTML += `
-            <div class="summary-item">
-                <span>${item.name} (${item.quantity})</span>
-                <span>RM ${itemTotal.toFixed(2)}</span>
-            </div>
-        `;
-        
-        confirmHTML += `
-            <div class="summary-item">
-                <span>${item.name} × ${item.quantity}</span>
-                <span>RM ${itemTotal.toFixed(2)}</span>
-            </div>
-        `;
-    });
-    
-    itemsHTML += `
-        <div class="summary-total">
-            <span>Jumlah</span>
-            <span>RM ${total.toFixed(2)}</span>
-        </div>
-    `;
-    
-    confirmHTML += `
-        <div class="summary-total">
-            <span>Jumlah</span>
-            <span>RM ${total.toFixed(2)}</span>
-        </div>
-    `;
-    
-    orderItemsEl.innerHTML = itemsHTML;
-    orderTotalEl.innerHTML = `
-        <div class="summary-total">
-            <span>Jumlah Keseluruhan</span>
-            <span>RM ${total.toFixed(2)}</span>
-        </div>
-    `;
-    confirmItemsEl.innerHTML = confirmHTML;
-    
-    // Reset form
-    document.getElementById('customerName').value = '';
-    document.getElementById('customerPhone').value = '';
-    document.getElementById('customerEmail').value = '';
-    document.getElementById('customerAddress').value = '';
-    document.getElementById('customerNotes').value = '';
-    document.getElementById('cardName').value = '';
-    document.getElementById('cardNumber').value = '';
-    document.getElementById('cardExpiry').value = '';
-    document.getElementById('cardCVV').value = '';
-    
-    // Show modal and go to step 1
-    checkoutModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    goToStep(1);
-}
+        function updateConfirmSections() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const customerAddress = document.getElementById('customerAddress').value.trim();
+            const customerNotes = document.getElementById('customerNotes').value.trim();
+            
+            const cardName = document.getElementById('cardName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
+            
+            document.getElementById('confirmCustomer').innerHTML = `
+                <div class="summary-item"><span>Nama:</span><span>${customerName}</span></div>
+                <div class="summary-item"><span>Telefon:</span><span>${customerPhone}</span></div>
+                <div class="summary-item"><span>Email:</span><span>${customerEmail || '-'}</span></div>
+                <div class="summary-item"><span>Alamat:</span><span>${customerAddress}</span></div>
+                ${customerNotes ? `<div class="summary-item"><span>Nota:</span><span>${customerNotes}</span></div>` : ''}
+            `;
+            
+            document.getElementById('confirmPayment').innerHTML = `
+                <div class="summary-item"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
+                <div class="summary-item"><span>Nama Kad:</span><span>${cardName}</span></div>
+                <div class="summary-item"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.replace(/\s/g, '').slice(-4)}</span></div>
+                <div class="summary-item"><span>Tarikh Luput:</span><span>${cardExpiry}</span></div>
+            `;
+            
+            let total = 0;
+            let itemsHTML = '';
+            cart.forEach(item => {
+                total += item.price;
+                itemsHTML += `
+                    <div class="summary-item">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            itemsHTML += `
+                <div class="summary-item summary-total">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                </div>
+            `;
+            
+            document.getElementById('confirmItems').innerHTML = itemsHTML;
+        }
 
-function closeCheckout() {
-    checkoutModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
+        function validateStep1() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            
+            // Validate required fields
+            if (!name || !phone || !address) {
+                alert('Sila isi semua maklumat yang diperlukan (nama, telefon, alamat).');
+                return false;
+            }
+            
+            // Validate phone number (10-11 digits)
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (!/^\d{10,11}$/.test(phoneDigits)) {
+                alert('Sila masukkan nombor telefon yang sah (10-11 digit).');
+                return false;
+            }
+            
+            // Validate email format if provided
+            if (email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Sila masukkan alamat email yang sah (contoh: nama@email.com).');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
-function goToStep(step) {
-    // Hide all steps
-    document.querySelectorAll('.checkout-step').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Remove active from all step indicators
-    document.querySelectorAll('.step').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Show selected step
-    document.getElementById(`step${step}Content`).classList.add('active');
-    document.getElementById(`step${step}`).classList.add('active');
-}
+        function validateStep2() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const expiry = document.getElementById('cardExpiry').value.trim();
+            const cvv = document.getElementById('cardCVV').value.trim();
+            const cardName = document.getElementById('cardName').value.trim();
+            
+            // Validate all required fields
+            if (!cardName || !cardNumber || !expiry || !cvv) {
+                alert('Sila isi semua maklumat kad pembayaran.');
+                return false;
+            }
+            
+            // Validate card number (16 digits)
+            if (!/^\d{16}$/.test(cardNumber)) {
+                alert('Sila masukkan nombor kad yang sah (16 digit).');
+                return false;
+            }
+            
+            // Validate CVV (3-4 digits)
+            if (!/^\d{3,4}$/.test(cvv)) {
+                alert('Sila masukkan CVV yang sah (3 atau 4 digit).');
+                return false;
+            }
+            
+            // Validate expiry date format
+            if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+                alert('Format tarikh luput tidak sah. Gunakan format MM/YY (contoh: 12/26).');
+                return false;
+            }
+            
+            // Extract month and year
+            const [monthStr, yearStr] = expiry.split('/');
+            const month = parseInt(monthStr, 10);
+            const year = parseInt(yearStr, 10);
+            
+            // Validate month (01-12)
+            if (month < 1 || month > 12) {
+                alert('Bulan mesti antara 01 hingga 12.');
+                return false;
+            }
+            
+            // Validate expiry date not in the past
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
+            const currentMonth = currentDate.getMonth() + 1; // Month is 0-indexed
+            
+            // Check if card is expired (specifically check for Jan 2026 or earlier)
+            const expiryYearFull = 2000 + year;
+            
+            // Create expiry date (last day of the month)
+            const expiryDate = new Date(expiryYearFull, month, 0);
+            
+            // Check if expired before Jan 2026
+            const jan2026 = new Date(2026, 0, 31); // 31 Jan 2026
+            
+            if (expiryDate < new Date()) {
+                alert('Kad kredit/debit telah tamat tempoh. Sila gunakan kad yang sah.');
+                return false;
+            }
+            
+            // Additional check: if expiry is Jan 2026 or earlier, show warning
+            if (expiryDate <= jan2026) {
+                const userConfirmed = confirm('Kad anda akan tamat tempoh pada ' + expiry + '. Adakah anda pasti mahu meneruskan?');
+                if (!userConfirmed) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
 
-function nextStep(step) {
-    // Validation for step 1
-    if (step === 2) {
-        const name = document.getElementById('customerName').value.trim();
-        const phone = document.getElementById('customerPhone').value.trim();
-        const email = document.getElementById('customerEmail').value.trim();
-        const address = document.getElementById('customerAddress').value.trim();
-        
-        let isValid = true;
-        
-        // Name validation
-        if (!name) {
-            document.getElementById('nameError').style.display = 'block';
-            document.getElementById('customerName').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('nameError').style.display = 'none';
-            document.getElementById('customerName').classList.remove('error');
+        function setupInputFormatting() {
+            // Format card number input (4-4-4-4)
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    // Remove all non-digits
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 16 digits
+                    if (value.length > 16) {
+                        value = value.substring(0, 16);
+                    }
+                    
+                    // Format as 4-4-4-4
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formatted += ' ';
+                        }
+                        formatted += value[i];
+                    }
+                    
+                    e.target.value = formatted;
+                    
+                    // Show error if not enough digits
+                    const errorElement = document.getElementById('cardError');
+                    if (value.length < 16 && value.length > 0) {
+                        errorElement.textContent = 'Nombor kad perlu 16 digit (masih kurang ' + (16 - value.length) + ' digit)';
+                        errorElement.style.display = 'block';
+                    } else {
+                        errorElement.style.display = 'none';
+                    }
+                });
+                
+                // Auto format on focus out
+                cardNumberInput.addEventListener('blur', function() {
+                    let value = this.value.replace(/\D/g, '');
+                    if (value.length === 16) {
+                        let formatted = '';
+                        for (let i = 0; i < value.length; i++) {
+                            if (i > 0 && i % 4 === 0) {
+                                formatted += ' ';
+                            }
+                            formatted += value[i];
+                        }
+                        this.value = formatted;
+                    }
+                });
+            }
+            
+            // Format expiry date input (MM/YY) - AUTO FORMAT
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                let isDeleting = false;
+                
+                expiryInput.addEventListener('keydown', function(e) {
+                    // Check if backspace or delete
+                    if (e.key === 'Backspace' || e.key === 'Delete') {
+                        isDeleting = true;
+                    } else {
+                        isDeleting = false;
+                    }
+                });
+                
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // If deleting, don't auto-format
+                    if (isDeleting) {
+                        return;
+                    }
+                    
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    // Auto-add slash after 2 digits
+                    if (value.length >= 2) {
+                        const month = value.substring(0, 2);
+                        let year = value.substring(2, 4);
+                        
+                        // Auto-correct month if invalid
+                        let monthNum = parseInt(month, 10);
+                        if (monthNum > 12) {
+                            monthNum = 12;
+                        }
+                        if (monthNum < 1) {
+                            monthNum = 1;
+                        }
+                        
+                        // Format with leading zero
+                        const formattedMonth = monthNum.toString().padStart(2, '0');
+                        
+                        // Auto-add slash
+                        value = formattedMonth + (value.length > 2 ? '/' + year : '');
+                    }
+                    
+                    e.target.value = value;
+                    
+                    // Auto-focus to CVV if expiry is complete
+                    if (value.length === 5) {
+                        document.getElementById('cardCVV').focus();
+                    }
+                });
+                
+                // Validate on blur
+                expiryInput.addEventListener('blur', function() {
+                    const value = this.value.trim();
+                    const errorElement = document.getElementById('expiryError');
+                    
+                    if (value && /^\d{2}\/\d{2}$/.test(value)) {
+                        const [monthStr, yearStr] = value.split('/');
+                        const month = parseInt(monthStr, 10);
+                        const year = parseInt(yearStr, 10);
+                        
+                        const currentDate = new Date();
+                        const currentYear = currentDate.getFullYear() % 100;
+                        const currentMonth = currentDate.getMonth() + 1;
+                        
+                        if (month < 1 || month > 12) {
+                            errorElement.textContent = 'Bulan mesti antara 01 hingga 12';
+                            errorElement.style.display = 'block';
+                            this.classList.add('error');
+                        } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                            errorElement.textContent = 'Kad telah tamat tempoh';
+                            errorElement.style.display = 'block';
+                            this.classList.add('error');
+                        } else {
+                            errorElement.style.display = 'none';
+                            this.classList.remove('error');
+                        }
+                    }
+                });
+            }
+            
+            // Format CVV input (3-4 digits)
+            const cvvInput = document.getElementById('cardCVV');
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    e.target.value = value;
+                    
+                    // Show error if invalid
+                    const errorElement = document.getElementById('cvvError');
+                    if (value.length < 3 && value.length > 0) {
+                        errorElement.textContent = 'CVV perlu 3-4 digit';
+                        errorElement.style.display = 'block';
+                    } else {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            }
         }
-        
-        // Phone validation (Malaysian phone number)
-        const phoneRegex = /^(01[0-9]{8,9})$/;
-        if (!phoneRegex.test(phone)) {
-            document.getElementById('phoneError').style.display = 'block';
-            document.getElementById('customerPhone').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('phoneError').style.display = 'none';
-            document.getElementById('customerPhone').classList.remove('error');
-        }
-        
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            document.getElementById('emailError').textContent = 'Sila isi email yang sah';
-            document.getElementById('emailError').style.display = 'block';
-            document.getElementById('customerEmail').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('emailError').style.display = 'none';
-            document.getElementById('customerEmail').classList.remove('error');
-        }
-        
-        // Address validation
-        if (!address) {
-            document.getElementById('addressError').style.display = 'block';
-            document.getElementById('customerAddress').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('addressError').style.display = 'none';
-            document.getElementById('customerAddress').classList.remove('error');
-        }
-        
-        if (!isValid) {
-            showToast('Sila lengkapkan semua maklumat yang diperlukan', 'error');
-            return;
-        }
-        
-        // Update confirmation step
-        document.getElementById('confirmCustomer').innerHTML = `
-            <p><strong>Nama:</strong> ${name}</p>
-            <p><strong>Telefon:</strong> ${phone}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Alamat:</strong> ${address}</p>
-            <p><strong>Nota:</strong> ${document.getElementById('customerNotes').value || 'Tiada'}</p>
-        `;
-    }
-    
-    // Validation for step 2
-    if (step === 3) {
-        const cardName = document.getElementById('cardName').value.trim();
-        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
-        const cardExpiry = document.getElementById('cardExpiry').value.trim();
-        const cardCVV = document.getElementById('cardCVV').value.trim();
-        
-        let isValid = true;
-        
-        // Card name validation
-        if (!cardName) {
-            document.getElementById('cardNameError').style.display = 'block';
-            document.getElementById('cardName').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('cardNameError').style.display = 'none';
-            document.getElementById('cardName').classList.remove('error');
-        }
-        
-        // Card number validation (16 digits)
-        const cardRegex = /^\d{16}$/;
-        if (!cardRegex.test(cardNumber)) {
-            document.getElementById('cardError').textContent = 'Sila isi 16 digit nombor kad yang sah';
-            document.getElementById('cardError').style.display = 'block';
-            document.getElementById('cardNumber').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('cardError').style.display = 'none';
-            document.getElementById('cardNumber').classList.remove('error');
-        }
-        
-        // Expiry date validation
-        const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
-        if (!expiryRegex.test(cardExpiry)) {
-            document.getElementById('expiryError').textContent = 'Format MM/YY (contoh: 12/25)';
-            document.getElementById('expiryError').style.display = 'block';
-            document.getElementById('cardExpiry').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('expiryError').style.display = 'none';
-            document.getElementById('cardExpiry').classList.remove('error');
-        }
-        
-        // CVV validation (3-4 digits)
-        const cvvRegex = /^\d{3,4}$/;
-        if (!cvvRegex.test(cardCVV)) {
-            document.getElementById('cvvError').style.display = 'block';
-            document.getElementById('cardCVV').classList.add('error');
-            isValid = false;
-        } else {
-            document.getElementById('cvvError').style.display = 'none';
-            document.getElementById('cardCVV').classList.remove('error');
-        }
-        
-        if (!isValid) {
-            showToast('Sila semak maklumat kad pembayaran', 'error');
-            return;
-        }
-        
-        // Mask card number for confirmation
-        const maskedCard = cardNumber.replace(/(\d{4})(\d{4})(\d{4})(\d{4})/, '$1 **** **** $4');
-        
-        document.getElementById('confirmPayment').innerHTML = `
-            <p><strong>Kaedah:</strong> Kad Kredit</p>
-            <p><strong>Nama pada Kad:</strong> ${cardName}</p>
-            <p><strong>Nombor Kad:</strong> ${maskedCard}</p>
-            <p><strong>Tarikh Luput:</strong> ${cardExpiry}</p>
-        `;
-    }
-    
-    goToStep(step);
-}
 
-function processPayment() {
-    const payBtn = document.getElementById('payBtn');
-    payBtn.disabled = true;
-    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-    
-    // Generate transaction ID
-    transactionId = 'TRX' + Date.now() + Math.floor(Math.random() * 1000);
-    
-    // Calculate total
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    // Prepare order data
-    const orderData = {
-        customerName: document.getElementById('customerName').value.trim(),
-        customerPhone: document.getElementById('customerPhone').value.trim(),
-        customerEmail: document.getElementById('customerEmail').value.trim(),
-        customerAddress: document.getElementById('customerAddress').value.trim(),
-        customerNotes: document.getElementById('customerNotes').value.trim() || 'Tiada nota',
-        orderItems: cart.map(item => ({
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            subtotal: item.price * item.quantity
-        })),
-        totalAmount: total,
-        transactionId: transactionId,
-        orderDate: new Date().toLocaleString('ms-MY'),
-        paymentMethod: 'Kad Kredit'
-    };
-    
-    // Show loading overlay
-    showLoadingOverlay();
-    
-    // Send email using EmailJS
-    sendOrderEmail(orderData)
-        .then(() => {
-            // Simulate payment processing delay
+        function setupRealTimeValidation() {
+            // Email validation
+            const emailInput = document.getElementById('customerEmail');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const email = this.value.trim();
+                    const errorElement = document.getElementById('emailError');
+                    
+                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        errorElement.textContent = 'Format email tidak sah (contoh: nama@email.com)';
+                        errorElement.style.display = 'block';
+                        this.classList.add('error');
+                    } else {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
+        }
+
+        function processPayment() {
+            const payBtn = document.getElementById('payBtn');
+            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            payBtn.disabled = true;
+
+            // Show loading overlay
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <i class="fas fa-spinner fa-spin fa-3x"></i>
+                    <p>Memproses pembayaran anda...</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+
             setTimeout(() => {
-                hideLoadingOverlay();
-                showSuccessPage(orderData);
-                saveOrderToStorage(orderData);
-                clearCart();
-                payBtn.disabled = false;
+                const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+                
+                const customer = {
+                    name: document.getElementById('customerName').value.trim(),
+                    phone: document.getElementById('customerPhone').value.trim(),
+                    email: document.getElementById('customerEmail').value.trim() || '',
+                    address: document.getElementById('customerAddress').value.trim(),
+                    notes: document.getElementById('customerNotes').value.trim() || ''
+                };
+                
+                const payment = {
+                    method: 'credit_card',
+                    cardName: document.getElementById('cardName').value.trim(),
+                    cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+                    cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
+                    cardExpiry: document.getElementById('cardExpiry').value.trim()
+                };
+                
+                const total = cart.reduce((sum, item) => sum + item.price, 0);
+                
+                const transaction = {
+                    refNumber: refNumber,
+                    date: new Date().toLocaleString('ms-MY'),
+                    timestamp: new Date().toISOString(),
+                    customer: customer,
+                    payment: payment,
+                    items: [...cart],
+                    total: total,
+                    status: 'Selesai'
+                };
+                
+                // Simulate email sending if email provided
+                if (customer.email) {
+                    console.log(`[SIMULASI EMAIL] ====================================`);
+                    console.log(`[SIMULASI EMAIL] Kepada: ${customer.email}`);
+                    console.log(`[SIMULASI EMAIL] Subjek: Resit Pembayaran Baitul Jenazah - ${refNumber}`);
+                    console.log(`[SIMULASI EMAIL] Isi:`);
+                    console.log(`[SIMULASI EMAIL] Terima kasih atas pembelian anda!`);
+                    console.log(`[SIMULASI EMAIL] No. Rujukan: ${refNumber}`);
+                    console.log(`[SIMULASI EMAIL] Jumlah: RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
+                    console.log(`[SIMULASI EMAIL] Tarikh: ${transaction.date}`);
+                    console.log(`[SIMULASI EMAIL] ====================================`);
+                    
+                    // Show message to user
+                    setTimeout(() => {
+                        alert(`📧 Resit telah dihantar ke: ${customer.email}\nSila semak folder spam jika tiada dalam inbox.`);
+                    }, 100);
+                }
+                
+                saveTransaction(transaction);
+                
+                // Remove loading overlay
+                if (loadingOverlay.parentNode) {
+                    loadingOverlay.parentNode.removeChild(loadingOverlay);
+                }
+                
+                showSuccess(transaction);
+                
                 payBtn.innerHTML = 'Selesaikan Pembayaran';
+                payBtn.disabled = false;
             }, 2000);
-        })
-        .catch(error => {
-            hideLoadingOverlay();
-            console.error('Email error:', error);
-            showToast('Pembayaran berjaya tetapi email tidak dihantar. Sila hubungi kami untuk resit.', 'warning');
-            
-            // Still show success but with warning
-            setTimeout(() => {
-                hideLoadingOverlay();
-                showSuccessPage(orderData, false);
-                saveOrderToStorage(orderData);
-                clearCart();
-                payBtn.disabled = false;
-                payBtn.innerHTML = 'Selesaikan Pembayaran';
-            }, 1000);
-        });
-}
-
-// EmailJS Function
-function sendOrderEmail(orderData) {
-    console.log("Preparing to send email...");
-    
-    // Format items for email
-    const itemsList = orderData.orderItems.map(item => 
-        `${item.name} (${item.quantity} × RM ${item.price.toFixed(2)}) = RM ${item.subtotal.toFixed(2)}`
-    ).join('<br>');
-    
-    // Prepare email parameters
-    const templateParams = {
-        to_email: orderData.customerEmail,
-        customer_name: orderData.customerName,
-        customer_phone: orderData.customerPhone,
-        customer_address: orderData.customerAddress,
-        transaction_id: orderData.transactionId,
-        order_date: orderData.orderDate,
-        items_list: itemsList,
-        total_amount: orderData.totalAmount.toFixed(2),
-        customer_notes: orderData.customerNotes,
-        company_name: 'Baitul Jenazah',
-        company_phone: '03-1234 5678',
-        company_email: 'info@baituljenazah.my'
-    };
-    
-    console.log("Sending email with params:", templateParams);
-    
-    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-        .then(response => {
-            console.log('Email sent successfully!', response.status, response.text);
-            return response;
-        })
-        .catch(error => {
-            console.error('Failed to send email:', error);
-            throw error;
-        });
-}
-
-function showSuccessPage(orderData, emailSent = true) {
-    // Go to step 4
-    goToStep(4);
-    
-    // Format items for display
-    const itemsList = orderData.orderItems.map(item => 
-        `${item.name} × ${item.quantity} = RM ${item.subtotal.toFixed(2)}`
-    ).join('<br>');
-    
-    const successContent = document.getElementById('successContent');
-    successContent.innerHTML = `
-        <div class="success-message">
-            <div class="success-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h3>Pembayaran Berjaya!</h3>
-            <p>Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
-            
-            ${emailSent ? `
-                <div class="email-success">
-                    <i class="fas fa-check-circle"></i>
-                    <div>
-                        <strong>Resit telah dihantar ke email:</strong>
-                        <p>${orderData.customerEmail}</p>
-                        <small>Jika tidak menerima email, sila semak folder spam.</small>
-                    </div>
-                </div>
-            ` : `
-                <div class="email-warning">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <div>
-                        <strong>Pesanan berjaya tetapi email gagal dihantar.</strong>
-                        <p>Sila hubungi kami di 03-1234 5678 untuk mendapatkan resit.</p>
-                        <small>Nombor transaksi: ${orderData.transactionId}</small>
-                    </div>
-                </div>
-            `}
-            
-            <div class="transaction-details">
-                <h4>Maklumat Transaksi</h4>
-                <p><strong>Nombor Transaksi:</strong> ${orderData.transactionId}</p>
-                <p><strong>Tarikh & Masa:</strong> ${orderData.orderDate}</p>
-                <p><strong>Nama Pelanggan:</strong> ${orderData.customerName}</p>
-                <p><strong>No. Telefon:</strong> ${orderData.customerPhone}</p>
-                <p><strong>Alamat:</strong> ${orderData.customerAddress}</p>
-                <p><strong>Nota:</strong> ${orderData.customerNotes}</p>
-                <p><strong>Status:</strong> <span class="status-success">Dibayar</span></p>
-            </div>
-            
-            <div class="transaction-details">
-                <h4>Ringkasan Pesanan</h4>
-                <div style="margin-bottom: 15px;">${itemsList}</div>
-                <div style="border-top: 2px solid #ddd; padding-top: 10px; margin-top: 10px;">
-                    <p><strong>Jumlah Keseluruhan:</strong> RM ${orderData.totalAmount.toFixed(2)}</p>
-                </div>
-            </div>
-            
-            <div class="success-actions">
-                <button class="btn btn-print" onclick="printReceipt()">
-                    <i class="fas fa-print"></i> Cetak Resit
-                </button>
-                <button class="btn btn-copy" onclick="copyTransactionDetails()">
-                    <i class="fas fa-copy"></i> Salin Maklumat
-                </button>
-                <button class="btn" onclick="goToHomepage()">
-                    <i class="fas fa-home"></i> Kembali ke Laman Utama
-                </button>
-            </div>
-            
-            <div class="success-note">
-                <i class="fas fa-info-circle"></i>
-                Pasukan kami akan menghubungi anda dalam masa 24 jam untuk pengesahan lanjut.
-            </div>
-        </div>
-    `;
-}
-
-function showLoadingOverlay() {
-    const loadingHTML = `
-        <div class="loading-overlay">
-            <div class="loading-content">
-                <div class="loading-spinner">
-                    <i class="fas fa-spinner fa-spin"></i>
-                </div>
-                <div class="loading-text">Memproses Pembayaran...</div>
-                <div class="loading-subtext">Sila tunggu sebentar</div>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', loadingHTML);
-}
-
-function hideLoadingOverlay() {
-    const overlay = document.querySelector('.loading-overlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
-
-function printReceipt() {
-    window.print();
-}
-
-function copyTransactionDetails() {
-    const details = `
-BAITUL JENAZAH - RESIT TRANSACTION
-=====================================
-No. Transaksi: ${transactionId}
-Tarikh: ${new Date().toLocaleString('ms-MY')}
-
-PESANAN:
-${cart.map(item => `• ${item.name} (${item.quantity}) - RM ${(item.price * item.quantity).toFixed(2)}`).join('\n')}
-
-JUMLAH: RM ${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
-
-Terima kasih atas pesanan anda.
-    `;
-    
-    navigator.clipboard.writeText(details)
-        .then(() => showToast('Maklumat transaksi disalin', 'success'))
-        .catch(() => showToast('Gagal menyalin', 'error'));
-}
-
-function goToHomepage() {
-    closeCheckout();
-    window.location.href = 'https://baituljenazah.github.io/';
-}
-
-function clearCart() {
-    cart = [];
-    updateCart();
-    saveCartToStorage();
-    toggleCart();
-}
-
-// Toast Notification System
-function showToast(message, type = 'info') {
-    // Create toast container if it doesn't exist
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        document.body.appendChild(container);
-    }
-    
-    // Create toast
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.innerHTML = `
-        <div class="toast-content">
-            <i class="fas ${getToastIcon(type)}"></i>
-            <span>${message}</span>
-            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-    
-    container.appendChild(toast);
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (toast.parentElement) {
-            toast.remove();
         }
-    }, 5000);
-}
 
-function getToastIcon(type) {
-    switch(type) {
-        case 'success': return 'fa-check-circle';
-        case 'error': return 'fa-exclamation-circle';
-        case 'warning': return 'fa-exclamation-triangle';
-        default: return 'fa-info-circle';
-    }
-}
+        function saveTransaction(transaction) {
+            try {
+                const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+                transactions.push(transaction);
+                localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
+                
+                cart = [];
+                saveCart();
+            } catch (error) {
+                console.error('Error saving transaction:', error);
+            }
+        }
 
-// Local Storage Functions
-function saveCartToStorage() {
-    localStorage.setItem('baituljenazah_cart', JSON.stringify(cart));
-}
+        function showSuccess(transaction) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            
+            document.getElementById('step4').style.display = 'block';
+            document.getElementById('step4').classList.add('active');
+            document.getElementById('step4Content').classList.add('active');
+            
+            document.getElementById('successContent').innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Pembayaran Berjaya!</h3>
+                    <p>Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
+                    
+                    <div class="transaction-details">
+                        <p><strong>No. Rujukan:</strong> ${transaction.refNumber}</p>
+                        <p><strong>Tarikh:</strong> ${transaction.date}</p>
+                        <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                        <p><strong>Telefon:</strong> ${transaction.customer.phone}</p>
+                        <p><strong>Jumlah Bayaran:</strong> RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</p>
+                        <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
+                    </div>
+                    
+                    ${transaction.customer.email ? `
+                        <p style="margin-top:20px;color:#27ae60;background:#e8f5e9;padding:15px;border-radius:4px;">
+                            <i class="fas fa-envelope"></i> Resit telah dihantar ke email: <strong>${transaction.customer.email}</strong>
+                            <br><small style="color:#666;">Sila semak folder spam jika tiada dalam inbox.</small>
+                        </p>
+                    ` : ''}
+                    
+                    <p style="margin-top:20px;font-size:0.9rem;color:#666">
+                        Sila simpan nombor rujukan untuk rujukan masa hadapan.
+                    </p>
+                    
+                    <div style="margin-top:30px">
+                        <button class="btn" onclick="window.print()" style="width:auto;padding:12px 30px">
+                            <i class="fas fa-print"></i> Cetak Resit
+                        </button>
+                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
+                            <i class="fas fa-home"></i> Selesai
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
 
-function loadCartFromStorage() {
-    const savedCart = localStorage.getItem('baituljenazah_cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-        updateCart();
-    }
-}
-
-function saveOrderToStorage(orderData) {
-    const orders = JSON.parse(localStorage.getItem('baituljenazah_orders') || '[]');
-    orders.push(orderData);
-    localStorage.setItem('baituljenazah_orders', JSON.stringify(orders));
-}
-
-// Form input formatting
-document.getElementById('cardNumber').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
-    value = value.replace(/(\d{4})/g, '$1 ').trim();
-    e.target.value = value.substring(0, 19);
-});
-
-document.getElementById('cardExpiry').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length >= 2) {
-        value = value.substring(0, 2) + '/' + value.substring(2, 4);
-    }
-    e.target.value = value.substring(0, 5);
-});
-
-// Prevent modal close on click inside
-document.querySelector('.modal-content').addEventListener('click', (e) => {
-    e.stopPropagation();
-});
-
-// Close modal on overlay click
-checkoutModal.addEventListener('click', (e) => {
-    if (e.target === checkoutModal) {
-        closeCheckout();
-    }
-});
-
-// Prevent scrolling when modal is open
-function preventScroll(e) {
-    if (checkoutModal.classList.contains('active') || imageModal.classList.contains('active')) {
-        e.preventDefault();
-    }
-}
-
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    loadCartFromStorage();
-    updateCart();
-    
-    // EmailJS ready check
-    if (typeof emailjs !== 'undefined') {
-        console.log("EmailJS is ready");
-    } else {
-        console.error("EmailJS not loaded");
-    }
-});
+        function completeOrder() {
+            closeCheckout();
+            toggleCart();
+            alert('Terima kasih! Pesanan anda telah direkodkan.');
+        }
