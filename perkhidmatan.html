@@ -593,6 +593,17 @@
         </div>
     </footer>
 
+    <!-- EmailJS SDK - MUATKAN SEBELUM perkhidmatan.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
+    <!-- Initialize EmailJS sebelum kod lain -->
+    <script type="text/javascript">
+        // Initialize EmailJS dengan Public Key
+        emailjs.init('4xUs48J_OTaSCo8Ec');
+        console.log('📧 EmailJS initialized successfully');
+    </script>
+    
+    <!-- Kemudian baru muatkan script perkhidmatan.js -->
     <script src="js/perkhidmatan.js"></script>
 
 </body>
