@@ -7,17 +7,1495 @@
     <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="media/Logo BaitulJenazah.png" type="image/png">
-    <link rel="stylesheet" href="css/perkhidmatan.css">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --primary: #88E788;
+            --secondary: #FFF;
+            --dark: #333;
+            --light: #666;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6; 
+            color: var(--dark); 
+            background: #f9f9f9; 
+        }
+        
+        h1, h2, h3, h4, h5, h6 { 
+            font-family: 'Lora', serif; 
+            font-weight: 600; 
+        }
+        
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        /* ============================================
+           FIXED TOAST NOTIFICATION
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: var(--dark);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            font-weight: 500;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90%;
+            text-align: center;
+            border-left: 4px solid #78d178;
+            transition: var(--transition);
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            animation: toastSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .toast.hide {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+        
+        @keyframes toastSlideUp {
+            0% {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============================================
+           BACK TO TOP BUTTON
+           ============================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            color: var(--dark);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.8);
+            transition: var(--transition);
+            z-index: 99;
+            box-shadow: var(--shadow);
+            border: none;
+            animation: pulse 2s infinite;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            animation: fadeInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                     pulse 2s infinite 0.5s;
+        }
+        
+        .back-to-top:hover {
+            background-color: #78d178;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: none;
+        }
+        
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(136, 231, 136, 0.3);
+            }
+            100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* ============================================
+           SMOOTH ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+        
+        .slide-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(20px); opacity: 0; }
+        }
+
+        /* ============================================
+           IMAGE MODAL STYLES - IMPROVED
+           ============================================ */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .image-modal.active {
+            display: flex;
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .image-modal-content img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: modalZoom 0.3s ease-out;
+        }
+        
+        @keyframes modalZoom {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .image-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
+        .image-modal-title {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            animation: slideUp 0.3s ease 0.2s both;
+        }
+        
+        .image-modal-hint {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            animation: fadeInOut 3s infinite;
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ============================================
+           HEADER STYLES
+           ============================================ */
+        header { 
+            background: var(--secondary); 
+            box-shadow: var(--shadow); 
+            position: sticky; 
+            top: 0; 
+            z-index: 100; 
+            transition: var(--transition);
+        }
+        
+        .header-container { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px; 
+        }
+        
+        .logo { 
+            font-family: 'Lora', serif; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+            text-decoration: none;
+        }
+        
+        .logo span { 
+            color: var(--dark); 
+        }
+        
+        .logo:hover {
+            opacity: 0.8;
+        }
+        
+        nav ul { 
+            display: flex; 
+            gap: 30px; 
+            list-style: none; 
+        }
+        
+        nav a { 
+            text-decoration: none; 
+            color: var(--dark); 
+            font-weight: 500; 
+            transition: var(--transition); 
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav a:hover, 
+        nav a.active { 
+            color: var(--primary); 
+        }
+        
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+        
+        .cart-icon { 
+            position: relative; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            color: var(--dark); 
+            transition: var(--transition);
+        }
+        
+        .cart-icon:hover {
+            transform: scale(1.1);
+            color: var(--primary);
+        }
+        
+        .cart-count { 
+            position: absolute; 
+            top: -8px; 
+            right: -8px; 
+            background: var(--danger); 
+            color: white; 
+            border-radius: 50%; 
+            width: 20px; 
+            height: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 0.7rem; 
+            font-weight: bold; 
+            transition: var(--transition);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--dark);
+            cursor: pointer;
+            z-index: 101;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .mobile-menu-overlay.active {
+            display: block;
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero { 
+            background: linear-gradient(rgba(136,231,136,0.9), rgba(136,231,136,0.8)); 
+            padding: 80px 0; 
+            text-align: center; 
+            animation: fadeIn 1s ease;
+        }
+        
+        .hero h1 { 
+            font-size: 3rem; 
+            margin-bottom: 20px; 
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+        
+        .hero p { 
+            font-size: 1.2rem; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            animation: slideUp 0.8s ease 0.4s both;
+        }
+
+        /* ============================================
+           SERVICES SECTION
+           ============================================ */
+        #services { 
+            padding: 80px 0; 
+            background: var(--secondary); 
+        }
+        
+        .section-title { 
+            text-align: center; 
+            font-size: 2.5rem; 
+            margin-bottom: 10px; 
+        }
+        
+        .section-subtitle { 
+            text-align: center; 
+            color: var(--light); 
+            font-size: 1.1rem; 
+            margin-bottom: 50px; 
+        }
+
+        /* Category Section */
+        .category-section { 
+            margin-bottom: 60px; 
+            animation: fadeIn 0.6s ease both;
+        }
+        
+        .category-title { 
+            font-size: 1.8rem; 
+            color: var(--primary); 
+            margin-bottom: 10px; 
+            border-left: 5px solid var(--primary); 
+            padding-left: 15px; 
+        }
+        
+        .category-desc { 
+            color: var(--light); 
+            margin-bottom: 30px; 
+            padding-left: 20px; 
+        }
+
+        /* Service Cards Grid */
+        .services-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            margin-bottom: 30px; 
+        }
+        
+        .service-card { 
+            background: #f9f9f9; 
+            padding: 0;
+            border-radius: 8px; 
+            box-shadow: var(--shadow); 
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.5s ease both;
+        }
+
+        .service-card .service-content:first-child {
+            padding: 30px;
+        }
+        
+        .service-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Product image size */
+        .service-image {
+            width: 100%;
+            height: 300px;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .service-image:hover {
+            background: #eaeaea;
+        }
+        
+        .service-image:hover .click-hint {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .service-image img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .service-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .click-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 2;
+        }
+        
+        .click-hint i {
+            margin-right: 5px;
+        }
+
+        .service-content {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .service-card h3 { 
+            font-size: 1.5rem; 
+            margin-bottom: 15px; 
+        }
+        
+        .price { 
+            font-size: 2rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin-bottom: 20px; 
+        }
+        
+        .service-card ul { 
+            list-style: none; 
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+        
+        .service-card ul li { 
+            padding: 8px 0; 
+            padding-left: 25px; 
+            position: relative; 
+        }
+        
+        .service-card ul li:before { 
+            content: "✓"; 
+            position: absolute; 
+            left: 0; 
+            color: var(--primary); 
+            font-weight: bold; 
+        }
+
+        /* Emergency Card */
+        .emergency-card { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: var(--shadow); 
+            text-align: center; 
+            animation: slideUp 0.6s ease 0.2s both;
+        }
+        
+        .emergency-card h3, 
+        .emergency-card .price { 
+            color: white; 
+        }
+        
+        .emergency-card .btn { 
+            background: white; 
+            color: #667eea; 
+        }
+
+        .emergency-card ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        /* ============================================
+           BUTTONS
+           ============================================ */
+        .btn { 
+            display: inline-block; 
+            background: var(--primary); 
+            color: var(--dark); 
+            padding: 12px 28px; 
+            border-radius: 4px; 
+            font-weight: 500; 
+            border: none; 
+            cursor: pointer; 
+            transition: var(--transition); 
+            font-size: 1rem; 
+            width: 100%; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover { 
+            background: #78d178; 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow); 
+        }
+        
+        .btn:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+            transform: none; 
+        }
+        
+        .btn-secondary { 
+            background: #6c757d; 
+            color: white; 
+        }
+        
+        .btn-secondary:hover { 
+            background: #5a6268; 
+        }
+        
+        .btn-group { 
+            display: flex; 
+            gap: 10px; 
+            margin-top: 20px; 
+        }
+
+        /* Payment Processing Animation */
+        .btn-processing {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-processing:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: var(--dark);
+            border-radius: 50%;
+            animation: button-spinner 0.8s linear infinite;
+        }
+        
+        @keyframes button-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+
+        /* Note Box */
+        .note-box { 
+            background: #fff3cd; 
+            border-left: 4px solid #ffc107; 
+            padding: 20px; 
+            margin-top: 40px; 
+            border-radius: 4px; 
+            animation: fadeIn 0.6s ease 0.3s both;
+        }
+
+        /* ============================================
+           CART SIDEBAR
+           ============================================ */
+        .cart-sidebar { 
+            position: fixed; 
+            right: -400px; 
+            top: 0; 
+            width: 400px; 
+            height: 100vh; 
+            background: white; 
+            box-shadow: -2px 0 10px rgba(0,0,0,0.1); 
+            transition: var(--transition); 
+            z-index: 1000; 
+            display: flex; 
+            flex-direction: column; 
+            transform: translateX(100%);
+        }
+        
+        .cart-sidebar.active { 
+            right: 0; 
+            transform: translateX(0);
+        }
+        
+        .cart-header { 
+            padding: 20px; 
+            background: var(--primary); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .cart-header h3 { 
+            margin: 0; 
+        }
+        
+        .close-cart { 
+            background: none; 
+            border: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            transition: var(--transition);
+        }
+        
+        .close-cart:hover {
+            transform: rotate(90deg);
+        }
+        
+        .cart-items { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px; 
+        }
+        
+        .cart-item { 
+            padding: 15px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: start; 
+            animation: slideUp 0.3s ease both;
+        }
+        
+        .cart-item-info h4 { 
+            font-size: 1rem; 
+            margin-bottom: 5px; 
+        }
+        
+        .cart-item-info p { 
+            color: var(--light); 
+            font-size: 0.9rem; 
+            margin: 0; 
+        }
+        
+        .cart-item-price { 
+            font-weight: 700; 
+            color: var(--primary); 
+        }
+        
+        .remove-item { 
+            background: none; 
+            border: none; 
+            color: var(--danger); 
+            cursor: pointer; 
+            margin-left: 10px; 
+            transition: var(--transition);
+        }
+        
+        .remove-item:hover {
+            transform: scale(1.2);
+        }
+        
+        .cart-footer { 
+            padding: 20px; 
+            border-top: 2px solid #eee; 
+        }
+        
+        .cart-total { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 1.3rem; 
+            font-weight: 700; 
+            margin-bottom: 15px; 
+        }
+        
+        .empty-cart { 
+            text-align: center; 
+            padding: 40px 20px; 
+            color: var(--light); 
+        }
+
+        /* ============================================
+           MODAL STYLES
+           ============================================ */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.5); 
+            z-index: 2000; 
+            overflow-y: auto; 
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .modal.active { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content { 
+            background: white; 
+            width: 90%; 
+            max-width: 600px; 
+            border-radius: 8px; 
+            margin: 20px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+            animation: slideUp 0.4s ease 0.1s both;
+        }
+        
+        .modal-header { 
+            padding: 20px; 
+            background: var(--primary); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .modal-header h3 { 
+            margin: 0; 
+        }
+        
+        .close-modal { 
+            background: none; 
+            border: none; 
+            font-size: 1.5rem; 
+            cursor: pointer; 
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .modal-body { 
+            padding: 30px; 
+        }
+
+        /* ============================================
+           CHECKOUT STEPS
+           ============================================ */
+        .checkout-steps { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 30px; 
+        }
+        
+        .step { 
+            flex: 1; 
+            text-align: center; 
+            padding: 10px; 
+            background: #f9f9f9; 
+            margin: 0 5px; 
+            border-radius: 4px; 
+            font-size: 0.9rem; 
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.6s ease;
+        }
+        
+        .step.active { 
+            background: var(--primary); 
+            font-weight: 600; 
+        }
+        
+        .step.active:after {
+            width: 100%;
+        }
+        
+        .step.completed {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+        
+        .checkout-step { 
+            display: none; 
+            opacity: 0;
+            transform: translateX(20px);
+            transition: var(--transition);
+        }
+        
+        .checkout-step.active { 
+            display: block; 
+            opacity: 1;
+            transform: translateX(0);
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* ============================================
+           FORM STYLES
+           ============================================ */
+        .form-group { 
+            margin-bottom: 20px; 
+            animation: slideUp 0.3s ease both;
+        }
+        
+        .form-group label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 500; 
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 1rem; 
+            font-family: 'Inter', sans-serif; 
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(136, 231, 136, 0.2);
+            outline: none;
+        }
+        
+        .form-group input.error, 
+        .form-group textarea.error { 
+            border-color: var(--danger); 
+            animation: shake 0.3s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .form-group textarea { 
+            resize: vertical; 
+            min-height: 80px; 
+        }
+
+        /* ============================================
+           ORDER SUMMARY
+           ============================================ */
+        .order-summary { 
+            background: #f9f9f9; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .summary-item { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 10px; 
+            animation: slideUp 0.3s ease both;
+        }
+        
+        .summary-total { 
+            border-top: 2px solid #ddd; 
+            padding-top: 10px; 
+            font-weight: 700; 
+            font-size: 1.2rem; 
+        }
+
+        /* ============================================
+           SUCCESS MESSAGE
+           ============================================ */
+        .success-message { 
+            text-align: center; 
+            padding: 40px; 
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .success-icon { 
+            font-size: 4rem; 
+            color: var(--success); 
+            margin-bottom: 20px; 
+            animation: bounce 1s ease infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .success-message h3 { 
+            color: var(--success); 
+            margin-bottom: 15px; 
+            animation: slideUp 0.5s ease 0.2s both;
+        }
+        
+        .transaction-details { 
+            background: #f9f9f9; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            text-align: left; 
+            animation: slideUp 0.5s ease 0.3s both;
+        }
+        
+        .transaction-details p { 
+            margin: 10px 0; 
+        }
+
+        /* ============================================
+           CONFETTI EFFECT
+           ============================================ */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            top: 0;
+            opacity: 0;
+            z-index: 9999;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer { 
+            background: #333; 
+            color: var(--secondary); 
+            padding: 60px 0 30px; 
+            margin-top: 80px; 
+        }
+        
+        .footer-content { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; 
+            margin-bottom: 40px; 
+        }
+        
+        .footer-logo { 
+            font-family: 'Lora', serif; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            color: var(--primary); 
+            margin-bottom: 20px; 
+        }
+        
+        .footer-links h3, 
+        .footer-contact h3 { 
+            font-size: 1.3rem; 
+            margin-bottom: 20px; 
+            color: var(--primary); 
+        }
+        
+        .footer-links ul { 
+            list-style: none; 
+        }
+        
+        .footer-links ul li { 
+            margin-bottom: 12px; 
+        }
+        
+        .footer-links ul li a { 
+            color: var(--secondary); 
+            text-decoration: none; 
+            transition: var(--transition); 
+        }
+        
+        .footer-links ul li a:hover { 
+            color: var(--primary); 
+        }
+        
+        .footer-contact p { 
+            display: flex; 
+            align-items: flex-start; 
+            gap: 10px; 
+            margin-bottom: 15px; 
+        }
+        
+        .footer-contact i { 
+            color: var(--primary); 
+            margin-top: 5px; 
+        }
+        
+        .copyright { 
+            text-align: center; 
+            padding-top: 30px; 
+            border-top: 1px solid #444; 
+            font-size: 0.9rem; 
+            color: #aaa; 
+        }
+
+        /* ============================================
+           LOADING OVERLAY
+           ============================================ */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        .loading-content {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            animation: scaleIn 0.3s ease 0.1s forwards;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE - MOBILE COMPATIBILITY
+           ============================================ */
+        @media (max-width: 768px) {
+            nav { 
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--secondary);
+                box-shadow: var(--shadow);
+                padding: 20px;
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: var(--transition);
+                z-index: 100;
+            }
+            
+            nav.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+                animation: slideDown 0.3s ease;
+            }
+            
+            nav ul { 
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .header-container > div {
+                gap: 15px;
+            }
+            
+            .cart-sidebar { 
+                width: 100%; 
+                right: -100%; 
+            }
+            
+            .services-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .hero h1 { 
+                font-size: 2rem; 
+            }
+            
+            .footer-content { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            /* Toast for mobile */
+            .toast {
+                bottom: 15px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                width: 90%;
+                max-width: 300px;
+            }
+            
+            /* Mobile image adjustments */
+            .service-image {
+                height: 250px;
+                padding: 15px;
+            }
+            
+            /* Hide click hint on mobile */
+            .click-hint {
+                display: none;
+            }
+            
+            /* Mobile modal adjustments */
+            .image-modal-content img {
+                max-height: 70vh;
+            }
+            
+            .image-modal-hint {
+                font-size: 0.8rem;
+                top: 10px;
+            }
+            
+            /* Mobile form adjustments */
+            .checkout-steps {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            
+            .step {
+                flex: 1 0 calc(33.333% - 10px);
+                font-size: 0.8rem;
+                padding: 8px 5px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn-group .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .header-container {
+                padding: 15px;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 0.9rem;
+            }
+            
+            #services {
+                padding: 60px 0;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .category-title {
+                font-size: 1.4rem;
+            }
+            
+            .service-card h3 {
+                font-size: 1.2rem;
+            }
+            
+            .price {
+                font-size: 1.6rem;
+            }
+            
+            /* Smaller mobile image adjustments */
+            .service-image {
+                height: 200px;
+            }
+            
+            /* Mobile modal adjustments */
+            .image-modal-content img {
+                max-height: 60vh;
+            }
+            
+            .image-modal-title {
+                font-size: 1rem;
+                bottom: -40px;
+            }
+            
+            /* Touch-friendly mobile buttons */
+            .btn, 
+            .service-image {
+                min-height: 44px;
+            }
+            
+            /* Mobile-friendly form inputs */
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+
+        /* ============================================
+           EMAIL INTEGRATION STATUS
+           ============================================ */
+        .email-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #88E788;
+            display: none;
+        }
+        
+        .email-status.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .email-status.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .email-status i {
+            margin-right: 10px;
+        }
+
+        /* ============================================
+           RECEIPT/PRINT STYLES
+           ============================================ */
+        @media print {
+            body * {
+                visibility: hidden;
+                margin: 0;
+                padding: 0;
+            }
+            
+            #printContent, 
+            #printContent * {
+                visibility: visible;
+            }
+            
+            #printContent {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                background: white;
+                color: #333;
+                font-family: 'Inter', sans-serif;
+                font-size: 11pt;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            @page {
+                margin: 15mm;
+                size: A4 portrait;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .service-card:hover {
+                transform: none;
+            }
+            
+            .btn:hover {
+                transform: none;
+            }
+            
+            .service-image:hover {
+                background: #f5f5f5;
+            }
+            
+            .service-image:hover img {
+                transform: none;
+            }
+            
+            .cart-icon:hover,
+            .close-cart:hover,
+            .close-modal:hover,
+            .remove-item:hover {
+                transform: none;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Image Modal -->
     <div class="image-modal" id="imageModal">
         <div class="image-modal-hint">Klik di mana-mana untuk tutup</div>
         <div class="image-modal-content">
+            <button class="image-modal-close" onclick="closeImageModal()">
+                <i class="fas fa-times"></i>
+            </button>
             <img id="modalImage" src="" alt="">
             <div class="image-modal-title" id="modalTitle"></div>
         </div>
     </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
 
     <!-- Back to Top Button -->
     <button class="back-to-top" id="backToTop">
@@ -27,10 +1505,9 @@
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
 
-    <!-- Header dari homepage -->
+    <!-- Header -->
     <header>
         <div class="container header-container">
-            <!-- Updated Logo with link to homepage -->
             <a href="https://baituljenazah.github.io/" class="logo">Baitul<span>Jenazah</span></a>
             <button class="mobile-menu-btn" id="mobileMenuBtn">
                 <i class="fas fa-bars"></i>
@@ -470,8 +1947,8 @@
                         <div class="validation-error" id="phoneError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi nombor telefon yang sah (10-11 digit)</div>
                     </div>
                     <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="customerEmail" placeholder="nama@email.com">
+                        <label>Email *</label>
+                        <input type="email" id="customerEmail" placeholder="nama@email.com" required>
                         <div class="validation-error" id="emailError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi email yang sah</div>
                     </div>
                     <div class="form-group">
@@ -520,8 +1997,8 @@
                             </div>
                             <div>
                                 <label>CVV *</label>
-                                <input type="password" id="cardCVV" placeholder="123" maxlength="4" required>
-                                <div class="validation-error" id="cvvError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi CVV (3-4 digit)</div>
+                                <input type="password" id="cardCVV" placeholder="123" maxlength="3" required>
+                                <div class="validation-error" id="cvvError" style="color: var(--danger); font-size: 0.9rem; margin-top: 5px; display: none;">Sila isi CVV (3 digit)</div>
                             </div>
                         </div>
                     </div>
@@ -550,12 +2027,13 @@
 
                 <div id="step4Content" class="checkout-step">
                     <div id="successContent"></div>
+                    <div id="emailStatus" class="email-status"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer dari homepage -->
+    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <div class="footer-content">
@@ -590,8 +2068,1118 @@
             </div>
         </div>
     </footer>
-<!-- Tambah script EmailJS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script src="js/perkhidmatan.js"></script>
+
+    <script>
+        // Initialize variables
+        let cart = [];
+        let lastScrollTop = 0;
+        let isButtonVisible = false;
+        const scrollThreshold = 100;
+        
+        // EmailJS configuration
+        const EMAILJS_CONFIG = {
+            serviceId: 'service_veo15lv',
+            templateId: 'template_h17hgd6',
+            publicKey: '4xUs48J_OTaSCo8Ec',
+            privateKey: 'W90p9mMe7SqfTf5U4F1xF'
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            const mainNav = document.getElementById('mainNav');
+            const backToTopBtn = document.getElementById('backToTop');
+            const imageModal = document.getElementById('imageModal');
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mainNav.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                mobileMenuBtn.innerHTML = mainNav.classList.contains('active') 
+                    ? '<i class="fas fa-times"></i>' 
+                    : '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking on overlay
+            mobileMenuOverlay.addEventListener('click', function() {
+                mainNav.classList.remove('active');
+                mobileMenuOverlay.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+            
+            // Close mobile menu when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 768 && mainNav.classList.contains('active')) {
+                    // If click is not on nav or menu button
+                    if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                        mainNav.classList.remove('active');
+                        mobileMenuOverlay.classList.remove('active');
+                        mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                }
+            });
+            
+            // Close mobile menu when clicking on a link
+            const navLinks = document.querySelectorAll('nav a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    mainNav.classList.remove('active');
+                    mobileMenuOverlay.classList.remove('active');
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                });
+            });
+            
+            // Set active state for current page
+            const currentPage = window.location.pathname;
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Highlight perkhidmatan page by default
+            const perkhidmatanLink = document.querySelector('nav a[href*="perkhidmatan"]');
+            if (perkhidmatanLink) {
+                perkhidmatanLink.classList.add('active');
+            }
+            
+            // Setup input formatting and validation
+            setupInputFormatting();
+            setupRealTimeValidation();
+            loadCart();
+            
+            // Back to top button functionality
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // Smooth scroll detection with immediate response
+            window.addEventListener('scroll', function() {
+                const currentScroll = window.scrollY;
+                
+                // Show button immediately when user starts scrolling down
+                if (currentScroll > scrollThreshold && !isButtonVisible) {
+                    isButtonVisible = true;
+                    backToTopBtn.classList.add('visible');
+                } 
+                // Hide button when at the top
+                else if (currentScroll <= scrollThreshold && isButtonVisible) {
+                    isButtonVisible = false;
+                    backToTopBtn.classList.remove('visible');
+                }
+                
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, false);
+            
+            // Close image modal when clicking anywhere
+            imageModal.addEventListener('click', function(e) {
+                // Only close if clicking on the modal background, not the image or close button
+                if (e.target === imageModal) {
+                    closeImageModal();
+                }
+            });
+            
+            // Close image modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && imageModal.classList.contains('active')) {
+                    closeImageModal();
+                }
+            });
+            
+            // Touch device detection and optimization
+            detectTouchDevice();
+        });
+
+        // Image Modal Functions
+        function openImageModal(imageSrc, title) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modalImage.src = imageSrc;
+            modalImage.alt = title;
+            modalTitle.textContent = title;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        function detectTouchDevice() {
+            if ('ontouchstart' in window || navigator.maxTouchPoints) {
+                document.body.classList.add('touch-device');
+                
+                // Add touch-specific optimizations
+                const serviceCards = document.querySelectorAll('.service-card');
+                serviceCards.forEach(card => {
+                    card.style.cursor = 'pointer';
+                });
+            }
+        }
+
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            toast.classList.remove('hide');
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+            }, duration);
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('baituljenazah_cart');
+            if (saved) {
+                try {
+                    cart = JSON.parse(saved);
+                    updateCartDisplay();
+                } catch (e) {
+                    console.error('Error loading cart:', e);
+                    cart = [];
+                }
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('baituljenazah_cart', JSON.stringify(cart));
+            updateCartDisplay();
+        }
+
+        function addToCart(id, name, price, category) {
+            cart.push({id, name, price, category, quantity: 1});
+            saveCart();
+            
+            // Show toast notification
+            showToast(name + ' ditambah ke troli', 2000);
+            
+            // Animate cart icon
+            const cartCount = document.getElementById('cartCount');
+            cartCount.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+                cartCount.style.transform = 'scale(1)';
+            }, 300);
+            
+            // Auto open cart on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => toggleCart(), 300);
+            }
+        }
+
+        function removeFromCart(index) {
+            // Animate removal
+            const cartItem = document.querySelectorAll('.cart-item')[index];
+            if (cartItem) {
+                cartItem.style.transform = 'translateX(100%)';
+                cartItem.style.opacity = '0';
+                setTimeout(() => {
+                    cart.splice(index, 1);
+                    saveCart();
+                }, 300);
+            } else {
+                cart.splice(index, 1);
+                saveCart();
+            }
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartCount.textContent = cart.length;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart"><i class="fas fa-shopping-cart" style="font-size:3rem;color:#ddd;margin-bottom:15px"></i><p>Troli anda kosong</p></div>';
+                cartTotal.textContent = 'RM 0.00';
+                return;
+            }
+            
+            let total = 0;
+            cartItems.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItems.innerHTML += `
+                    <div class="cart-item" style="animation-delay: ${index * 0.05}s">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.category}</p>
+                        </div>
+                        <div style="display:flex;align-items:center">
+                            <div class="cart-item-price">RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</div>
+                            <button class="remove-item" onclick="removeFromCart(${index})"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            cartTotal.textContent = 'RM ' + total.toLocaleString('en-MY', {minimumFractionDigits: 2});
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function openCheckout() {
+            if (cart.length === 0) {
+                showToast('Sila tambah item ke troli dahulu', 2000);
+                return;
+            }
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            updateOrderSummary();
+            nextStep(1);
+        }
+
+        function closeCheckout() {
+            const modal = document.getElementById('checkoutModal');
+            modal.classList.remove('active');
+            setTimeout(() => {
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function updateOrderSummary() {
+            const orderItems = document.getElementById('orderItems');
+            const orderTotal = document.getElementById('orderTotal');
+            
+            let total = 0;
+            orderItems.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                orderItems.innerHTML += `
+                    <div class="summary-item" style="animation-delay: ${index * 0.05}s">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            orderTotal.innerHTML = `
+                <div class="summary-item summary-total" style="animation-delay: ${cart.length * 0.05}s">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                </div>
+            `;
+        }
+
+        function nextStep(step) {
+            // Animate step transitions
+            const steps = document.querySelectorAll('.step');
+            const currentActive = document.querySelector('.step.active');
+            
+            // Mark previous step as completed
+            if (currentActive && step > parseInt(currentActive.id.replace('step', ''))) {
+                currentActive.classList.remove('active');
+                currentActive.classList.add('completed');
+            } else if (currentActive) {
+                currentActive.classList.remove('active');
+                currentActive.classList.remove('completed');
+            }
+            
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            
+            document.querySelectorAll('.checkout-step').forEach(s => {
+                s.classList.remove('active');
+            });
+            
+            // Animate step indicator
+            const targetStep = document.getElementById('step' + step);
+            if (targetStep) {
+                setTimeout(() => {
+                    targetStep.classList.add('active');
+                }, 150);
+            }
+            
+            // Animate content transition
+            const targetContent = document.getElementById('step' + step + 'Content');
+            if (targetContent) {
+                setTimeout(() => {
+                    targetContent.classList.add('active');
+                }, 200);
+            }
+            
+            if (step === 3) updateConfirmSections();
+        }
+
+        function updateConfirmSections() {
+            const customerName = document.getElementById('customerName').value.trim();
+            const customerPhone = document.getElementById('customerPhone').value.trim();
+            const customerEmail = document.getElementById('customerEmail').value.trim();
+            const customerAddress = document.getElementById('customerAddress').value.trim();
+            const customerNotes = document.getElementById('customerNotes').value.trim();
+            
+            const cardName = document.getElementById('cardName').value.trim();
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardExpiry = document.getElementById('cardExpiry').value.trim();
+            
+            document.getElementById('confirmCustomer').innerHTML = `
+                <div class="summary-item" style="animation-delay: 0s"><span>Nama:</span><span>${customerName}</span></div>
+                <div class="summary-item" style="animation-delay: 0.05s"><span>Telefon:</span><span>${customerPhone}</span></div>
+                <div class="summary-item" style="animation-delay: 0.1s"><span>Email:</span><span>${customerEmail}</span></div>
+                <div class="summary-item" style="animation-delay: 0.15s"><span>Alamat:</span><span>${customerAddress}</span></div>
+                ${customerNotes ? `<div class="summary-item" style="animation-delay: 0.2s"><span>Nota:</span><span>${customerNotes}</span></div>` : ''}
+            `;
+            
+            document.getElementById('confirmPayment').innerHTML = `
+                <div class="summary-item" style="animation-delay: 0.25s"><span>Kaedah:</span><span>Kad Kredit/Debit</span></div>
+                <div class="summary-item" style="animation-delay: 0.3s"><span>Nama Kad:</span><span>${cardName}</span></div>
+                <div class="summary-item" style="animation-delay: 0.35s"><span>Nombor Kad:</span><span>**** **** **** ${cardNumber.replace(/\s/g, '').slice(-4)}</span></div>
+                <div class="summary-item" style="animation-delay: 0.4s"><span>Tarikh Luput:</span><span>${cardExpiry}</span></div>
+            `;
+            
+            let total = 0;
+            let itemsHTML = '';
+            cart.forEach((item, index) => {
+                total += item.price;
+                itemsHTML += `
+                    <div class="summary-item" style="animation-delay: ${0.45 + index * 0.05}s">
+                        <span>${item.name}</span>
+                        <span>RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                    </div>
+                `;
+            });
+            
+            itemsHTML += `
+                <div class="summary-item summary-total" style="animation-delay: ${0.45 + cart.length * 0.05}s">
+                    <span>JUMLAH KESELURUHAN</span>
+                    <span>RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</span>
+                </div>
+            `;
+            
+            document.getElementById('confirmItems').innerHTML = itemsHTML;
+        }
+
+        function validateStep1() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
+            const email = document.getElementById('customerEmail').value.trim();
+            
+            let isValid = true;
+            
+            // Validate required fields
+            if (!name) {
+                document.getElementById('nameError').style.display = 'block';
+                document.getElementById('customerName').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').style.display = 'none';
+                document.getElementById('customerName').classList.remove('error');
+            }
+            
+            // Validate phone number
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (!phone || !/^\d{10,11}$/.test(phoneDigits)) {
+                document.getElementById('phoneError').style.display = 'block';
+                document.getElementById('customerPhone').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('phoneError').style.display = 'none';
+                document.getElementById('customerPhone').classList.remove('error');
+            }
+            
+            // Validate email format
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                document.getElementById('emailError').textContent = 'Sila isi email yang sah (contoh: nama@email.com)';
+                document.getElementById('customerEmail').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').style.display = 'none';
+                document.getElementById('customerEmail').classList.remove('error');
+            }
+            
+            // Validate address
+            if (!address) {
+                document.getElementById('addressError').style.display = 'block';
+                document.getElementById('customerAddress').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('addressError').style.display = 'none';
+                document.getElementById('customerAddress').classList.remove('error');
+            }
+            
+            if (!isValid) {
+                // Scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateStep2() {
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const expiry = document.getElementById('cardExpiry').value.trim();
+            const cvv = document.getElementById('cardCVV').value.trim();
+            const cardName = document.getElementById('cardName').value.trim();
+            
+            let isValid = true;
+            
+            // Validate all required fields
+            if (!cardName) {
+                document.getElementById('cardNameError').style.display = 'block';
+                document.getElementById('cardName').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('cardNameError').style.display = 'none';
+                document.getElementById('cardName').classList.remove('error');
+            }
+            
+            // Validate card number
+            if (!cardNumber || !/^\d{16}$/.test(cardNumber)) {
+                document.getElementById('cardError').style.display = 'block';
+                document.getElementById('cardError').textContent = 'Nombor kad perlu 16 digit';
+                document.getElementById('cardNumber').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('cardError').style.display = 'none';
+                document.getElementById('cardNumber').classList.remove('error');
+            }
+            
+            // Validate CVV - only 3 digits
+            if (!cvv || !/^\d{3}$/.test(cvv)) {
+                document.getElementById('cvvError').style.display = 'block';
+                document.getElementById('cvvError').textContent = 'CVV perlu 3 digit';
+                document.getElementById('cardCVV').classList.add('error');
+                isValid = false;
+            } else {
+                document.getElementById('cvvError').style.display = 'none';
+                document.getElementById('cardCVV').classList.remove('error');
+            }
+            
+            // Validate expiry date
+            if (!expiry || !/^\d{2}\/\d{2}$/.test(expiry)) {
+                document.getElementById('expiryError').style.display = 'block';
+                document.getElementById('expiryError').textContent = 'Format tidak sah (MM/YY)';
+                document.getElementById('cardExpiry').classList.add('error');
+                isValid = false;
+            } else {
+                const [monthStr, yearStr] = expiry.split('/');
+                const month = parseInt(monthStr, 10);
+                const year = parseInt(yearStr, 10);
+                
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear() % 100;
+                const currentMonth = currentDate.getMonth() + 1;
+                
+                if (month < 1 || month > 12) {
+                    document.getElementById('expiryError').style.display = 'block';
+                    document.getElementById('expiryError').textContent = 'Bulan mesti 01-12';
+                    document.getElementById('cardExpiry').classList.add('error');
+                    isValid = false;
+                } else if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                    document.getElementById('expiryError').style.display = 'block';
+                    document.getElementById('expiryError').textContent = 'Kad telah tamat tempoh';
+                    document.getElementById('cardExpiry').classList.add('error');
+                    isValid = false;
+                } else {
+                    document.getElementById('expiryError').style.display = 'none';
+                    document.getElementById('cardExpiry').classList.remove('error');
+                }
+            }
+            
+            if (!isValid) {
+                // Scroll to first error
+                const firstError = document.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return false;
+            }
+            
+            return true;
+        }
+
+        function setupInputFormatting() {
+            // Format card number input (4-4-4-4)
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    // Remove all non-digits
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 16 digits
+                    if (value.length > 16) {
+                        value = value.substring(0, 16);
+                    }
+                    
+                    // Format as 4-4-4-4
+                    let formatted = '';
+                    for (let i = 0; i < value.length; i++) {
+                        if (i > 0 && i % 4 === 0) {
+                            formatted += ' ';
+                        }
+                        formatted += value[i];
+                    }
+                    
+                    e.target.value = formatted;
+                    
+                    // Show error if not enough digits
+                    const errorElement = document.getElementById('cardError');
+                    if (value.length < 16 && value.length > 0) {
+                        errorElement.textContent = 'Nombor kad perlu 16 digit (masih kurang ' + (16 - value.length) + ' digit)';
+                        errorElement.style.display = 'block';
+                    } else {
+                        errorElement.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Format expiry date input (MM/YY) - AUTO FORMAT
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 4 digits
+                    if (value.length > 4) {
+                        value = value.substring(0, 4);
+                    }
+                    
+                    // Auto-add slash after 2 digits
+                    if (value.length >= 2) {
+                        const month = value.substring(0, 2);
+                        let year = value.substring(2, 4);
+                        
+                        // Auto-correct month if invalid
+                        let monthNum = parseInt(month, 10);
+                        if (monthNum > 12) {
+                            monthNum = 12;
+                        }
+                        if (monthNum < 1) {
+                            monthNum = 1;
+                        }
+                        
+                        // Format with leading zero
+                        const formattedMonth = monthNum.toString().padStart(2, '0');
+                        
+                        // Auto-add slash
+                        value = formattedMonth + (value.length > 2 ? '/' + year : '');
+                    }
+                    
+                    e.target.value = value;
+                    
+                    // Auto-focus to CVV if expiry is complete
+                    if (value.length === 5) {
+                        setTimeout(() => {
+                            document.getElementById('cardCVV').focus();
+                        }, 100);
+                    }
+                });
+            }
+            
+            // Format CVV input - only 3 digits
+            const cvvInput = document.getElementById('cardCVV');
+            if (cvvInput) {
+                cvvInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    
+                    // Limit to 3 digits
+                    if (value.length > 3) {
+                        value = value.substring(0, 3);
+                    }
+                    
+                    e.target.value = value;
+                });
+            }
+        }
+
+        function setupRealTimeValidation() {
+            // Real-time email validation
+            const emailInput = document.getElementById('customerEmail');
+            if (emailInput) {
+                emailInput.addEventListener('blur', function() {
+                    const email = this.value.trim();
+                    const errorElement = document.getElementById('emailError');
+                    
+                    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        errorElement.textContent = 'Format email tidak sah (contoh: nama@email.com)';
+                        errorElement.style.display = 'block';
+                        this.classList.add('error');
+                    } else {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
+            
+            // Real-time phone validation
+            const phoneInput = document.getElementById('customerPhone');
+            if (phoneInput) {
+                phoneInput.addEventListener('blur', function() {
+                    const phone = this.value.trim();
+                    const phoneDigits = phone.replace(/\D/g, '');
+                    const errorElement = document.getElementById('phoneError');
+                    
+                    if (!phone || !/^\d{10,11}$/.test(phoneDigits)) {
+                        errorElement.textContent = 'Sila isi nombor telefon yang sah (10-11 digit)';
+                        errorElement.style.display = 'block';
+                        this.classList.add('error');
+                    } else {
+                        errorElement.style.display = 'none';
+                        this.classList.remove('error');
+                    }
+                });
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#88E788', '#78d178', '#68c168', '#98f798'];
+            const confettiCount = 50;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.opacity = Math.random() + 0.5;
+                
+                document.body.appendChild(confetti);
+                
+                // Animate
+                const animation = confetti.animate([
+                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 1000,
+                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+
+        function processPayment() {
+            const payBtn = document.getElementById('payBtn');
+            const originalText = payBtn.innerHTML;
+            
+            // Show processing state
+            payBtn.classList.add('btn-processing');
+            payBtn.disabled = true;
+
+            // Show loading overlay with smooth animation
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.className = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div style="margin-bottom: 20px;">
+                        <i class="fas fa-spinner fa-spin fa-3x" style="color: var(--primary);"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px;">Memproses Pembayaran</h3>
+                    <p>Sila tunggu sebentar...</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+
+            // Simulate payment processing with progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Remove loading overlay
+                    loadingOverlay.style.animation = 'fadeOut 0.3s ease forwards';
+                    setTimeout(() => {
+                        if (loadingOverlay.parentNode) {
+                            loadingOverlay.parentNode.removeChild(loadingOverlay);
+                        }
+                    }, 300);
+                    
+                    // Process payment
+                    completePayment();
+                    
+                    // Reset button
+                    setTimeout(() => {
+                        payBtn.classList.remove('btn-processing');
+                        payBtn.disabled = false;
+                        payBtn.innerHTML = originalText;
+                    }, 500);
+                }
+            }, 200);
+        }
+
+        function completePayment() {
+            const refNumber = 'BJ-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            
+            const customer = {
+                name: document.getElementById('customerName').value.trim(),
+                phone: document.getElementById('customerPhone').value.trim(),
+                email: document.getElementById('customerEmail').value.trim(),
+                address: document.getElementById('customerAddress').value.trim(),
+                notes: document.getElementById('customerNotes').value.trim() || ''
+            };
+            
+            const payment = {
+                method: 'credit_card',
+                cardName: document.getElementById('cardName').value.trim(),
+                cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+                cardLast4: document.getElementById('cardNumber').value.replace(/\s/g, '').slice(-4),
+                cardExpiry: document.getElementById('cardExpiry').value.trim()
+            };
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            const transaction = {
+                orderId: refNumber,
+                transactionId: 'TXN-' + Date.now(),
+                customer: customer,
+                payment: payment,
+                items: [...cart],
+                total: total,
+                status: 'Selesai',
+                date: new Date().toLocaleDateString('ms-MY'),
+                time: new Date().toLocaleTimeString('ms-MY')
+            };
+            
+            saveTransaction(transaction);
+            
+            // Create confetti celebration
+            createConfetti();
+            
+            // Show success message
+            showSuccess(transaction);
+            
+            // Send email notification
+            sendOrderConfirmationEmail(transaction);
+        }
+
+        function saveTransaction(transaction) {
+            try {
+                const transactions = JSON.parse(localStorage.getItem('baituljenazah_transactions') || '[]');
+                transactions.push(transaction);
+                localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
+                
+                // Clear cart
+                cart = [];
+                saveCart();
+            } catch (error) {
+                console.error('Error saving transaction:', error);
+            }
+        }
+
+        function sendOrderConfirmationEmail(transaction) {
+            const emailStatus = document.getElementById('emailStatus');
+            emailStatus.style.display = 'block';
+            emailStatus.className = 'email-status';
+            emailStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menghantar email pengesahan...';
+            
+            try {
+                // Format items list for email
+                const itemsList = transaction.items.map(item => 
+                    `• ${item.name} - RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})} (${item.category})`
+                ).join('\n');
+                
+                // Prepare email template parameters
+                const templateParams = {
+                    to_name: transaction.customer.name,
+                    order_id: transaction.orderId,
+                    transaction_id: transaction.transactionId,
+                    order_date: transaction.date,
+                    order_time: transaction.time,
+                    customer_name: transaction.customer.name,
+                    customer_phone: transaction.customer.phone,
+                    customer_address: transaction.customer.address,
+                    customer_notes: transaction.customer.notes || 'Tiada nota',
+                    items_list: itemsList,
+                    total_amount: 'RM ' + transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2}),
+                    payment_method: 'Kad Kredit/Debit'
+                };
+                
+                // Send email using EmailJS
+                emailjs.send(
+                    EMAILJS_CONFIG.serviceId,
+                    EMAILJS_CONFIG.templateId,
+                    templateParams,
+                    EMAILJS_CONFIG.publicKey
+                )
+                .then(function(response) {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    emailStatus.className = 'email-status success';
+                    emailStatus.innerHTML = '<i class="fas fa-check-circle"></i> Email pengesahan pesanan telah dihantar ke ' + transaction.customer.email;
+                })
+                .catch(function(error) {
+                    console.error('Failed to send email:', error);
+                    emailStatus.className = 'email-status error';
+                    emailStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Email tidak dapat dihantar. Sila simpan resit untuk rujukan.';
+                });
+            } catch (error) {
+                console.error('Error preparing email:', error);
+                emailStatus.className = 'email-status error';
+                emailStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Ralat menghantar email. Sila hubungi kami untuk pengesahan.';
+            }
+        }
+
+        function showSuccess(transaction) {
+            // Mark step 3 as completed
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('step3').classList.add('completed');
+            
+            // Show step 4
+            document.getElementById('step4').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('step4').classList.add('active');
+            }, 200);
+            
+            // Hide step 3 content
+            document.getElementById('step3Content').classList.remove('active');
+            
+            // Show step 4 content
+            setTimeout(() => {
+                document.getElementById('step4Content').classList.add('active');
+            }, 400);
+            
+            // Store transaction for printing
+            window.currentTransaction = transaction;
+            
+            // Update success content with animations
+            document.getElementById('successContent').innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h3>Pembayaran Berjaya!</h3>
+                    <p style="animation-delay: 0.1s">Terima kasih atas pesanan anda. Transaksi telah berjaya diproses.</p>
+                    
+                    <div class="transaction-details">
+                        <p><strong>No. Rujukan:</strong> ${transaction.orderId}</p>
+                        <p><strong>No. Transaksi:</strong> ${transaction.transactionId}</p>
+                        <p><strong>Tarikh:</strong> ${transaction.date}</p>
+                        <p><strong>Masa:</strong> ${transaction.time}</p>
+                        <p><strong>Nama:</strong> ${transaction.customer.name}</p>
+                        <p><strong>Email:</strong> ${transaction.customer.email}</p>
+                        <p><strong>Telefon:</strong> ${transaction.customer.phone}</p>
+                        <p><strong>Jumlah Bayaran:</strong> RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}</p>
+                        <p><strong>Status:</strong> <span style="color:#27ae60">${transaction.status}</span></p>
+                    </div>
+                    
+                    <p style="margin-top:20px;font-size:0.9rem;color:#666; animation-delay: 0.4s">
+                        Email pengesahan akan dihantar ke ${transaction.customer.email} dalam beberapa minit.
+                    </p>
+                    
+                    <div style="margin-top:30px; animation-delay: 0.5s">
+                        <button class="btn" onclick="printReceipt()" style="width:auto;padding:12px 30px">
+                            <i class="fas fa-print"></i> Cetak Resit
+                        </button>
+                        <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
+                            <i class="fas fa-home"></i> Selesai
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Scroll to top of modal
+            document.querySelector('.modal-body').scrollTop = 0;
+        }
+
+        function printReceipt() {
+            const transaction = window.currentTransaction;
+            if (!transaction) {
+                showToast('Tiada transaksi untuk dicetak', 2000);
+                return;
+            }
+            
+            // Format items list
+            const itemsList = transaction.items.map(item => 
+                `• ${item.name} - RM ${item.price.toLocaleString('en-MY', {minimumFractionDigits: 2})} (${item.category})`
+            ).join('\n');
+            
+            // Create printable receipt
+            const printContent = `
+                <div id="printContent">
+                    <div style="max-width:210mm; margin:0 auto; padding:20mm; font-family:'Inter', sans-serif; font-size:11pt; color:#333;">
+                        <!-- Header -->
+                        <div style="text-align:center; padding-bottom:20px; margin-bottom:30px; border-bottom:3px solid #88E788;">
+                            <div style="font-family:'Lora', serif; font-size:28px; font-weight:700; color:#88E788; margin-bottom:10px;">
+                                Baitul<span style="color:#333;">Jenazah</span>
+                            </div>
+                            <div style="font-size:22px; font-weight:700; margin:15px 0; color:#333; text-transform:uppercase;">
+                                Resit Pembayaran
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin:20px 0; font-size:10pt; color:#666;">
+                                <div>
+                                    <strong>No. Rujukan:</strong> ${transaction.orderId}<br>
+                                    <strong>Tarikh:</strong> ${transaction.date}<br>
+                                    <strong>Masa:</strong> ${transaction.time}
+                                </div>
+                                <div style="text-align:right;">
+                                    No. 123, Jalan Kebajikan<br>
+                                    53100 Kuala Lumpur<br>
+                                    03-1234 5678
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Body -->
+                        <div style="margin-bottom:40px;">
+                            <!-- Customer Information -->
+                            <div style="margin-bottom:30px;">
+                                <div style="font-size:13pt; font-weight:600; color:#333; margin-bottom:15px; padding-bottom:8px; border-bottom:2px solid #88E788;">
+                                    MAKLUMAT PELANGGAN
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; font-size:10pt;">
+                                    <div>
+                                        <div style="margin-bottom:10px;">
+                                            <strong>Nama:</strong> ${transaction.customer.name}
+                                        </div>
+                                        <div style="margin-bottom:10px;">
+                                            <strong>Telefon:</strong> ${transaction.customer.phone}
+                                        </div>
+                                        <div style="margin-bottom:10px;">
+                                            <strong>Email:</strong> ${transaction.customer.email}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="margin-bottom:10px;">
+                                            <strong>Alamat:</strong> ${transaction.customer.address}
+                                        </div>
+                                        ${transaction.customer.notes ? `
+                                        <div style="margin-bottom:10px;">
+                                            <strong>Nota:</strong> ${transaction.customer.notes}
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Items List -->
+                            <div style="margin-bottom:30px;">
+                                <div style="font-size:13pt; font-weight:600; color:#333; margin-bottom:15px; padding-bottom:8px; border-bottom:2px solid #88E788;">
+                                    BUTIRAN PESANAN
+                                </div>
+                                <pre style="background:#f9f9f9; padding:15px; border-radius:6px; font-family:monospace; white-space:pre-line; line-height:1.8; border:1px solid #eee;">${itemsList}</pre>
+                            </div>
+                            
+                            <!-- Payment Information -->
+                            <div style="margin-bottom:30px;">
+                                <div style="font-size:13pt; font-weight:600; color:#333; margin-bottom:15px; padding-bottom:8px; border-bottom:2px solid #88E788;">
+                                    MAKLUMAT PEMBAYARAN
+                                </div>
+                                <div style="background:#f0fff0; border:2px solid #88E788; padding:25px; text-align:center; border-radius:8px;">
+                                    <div>Jumlah Keseluruhan</div>
+                                    <div style="font-size:32px; font-weight:bold; color:#2C3E50; margin-top:10px;">
+                                        RM ${transaction.total.toLocaleString('en-MY', {minimumFractionDigits: 2})}
+                                    </div>
+                                    <div style="margin-top:10px; font-size:14px; color:#666;">
+                                        Kaedah Pembayaran: Kad Kredit/Debit
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div style="text-align:center; padding-top:20px; border-top:1px solid #ddd; font-size:9pt; color:#666; line-height:1.5;">
+                            <div style="font-size:12pt; color:#88E788; font-weight:600; margin-bottom:15px;">
+                                TERIMA KASIH ATAS PEMBELIAN ANDA
+                            </div>
+                            <p>Resit ini adalah bukti pembayaran sah. Sila simpan untuk rujukan.</p>
+                            <p>Perkhidmatan mengikut syariat Islam.</p>
+                            <p style="margin-top:15px; font-size:10px; color:#999;">
+                                www.baituljenazah.github.io | Dicetak pada: ${new Date().toLocaleString('ms-MY')}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Open print window
+            const printWindow = window.open('', '_blank', 'width=800,height=600');
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Resit Baitul Jenazah - ${transaction.orderId}</title>
+                    <meta charset="UTF-8">
+                    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+                    <style>
+                        @page {
+                            margin: 15mm;
+                            size: A4 portrait;
+                        }
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            font-family: 'Inter', sans-serif;
+                            background: white;
+                            color: black;
+                            font-size: 12pt;
+                        }
+                        @media print {
+                            body {
+                                margin: 0;
+                                padding: 0;
+                                width: 210mm;
+                                height: 297mm;
+                            }
+                            .no-print {
+                                display: none !important;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${printContent}
+                    <script>
+                        window.onload = function() {
+                            // Auto print
+                            setTimeout(function() {
+                                window.print();
+                            }, 500);
+                            
+                            // Auto close after print
+                            window.onafterprint = function() {
+                                setTimeout(function() {
+                                    window.close();
+                                }, 500);
+                            };
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        function completeOrder() {
+            // Close checkout modal
+            closeCheckout();
+            
+            // Close cart sidebar
+            const cartSidebar = document.getElementById('cartSidebar');
+            if (cartSidebar.classList.contains('active')) {
+                cartSidebar.classList.remove('active');
+            }
+            
+            // Show success toast
+            showToast('Terima kasih! Pesanan anda telah direkodkan.', 3000);
+        }
+
+        // Initialize EmailJS
+        (function() {
+            emailjs.init(EMAILJS_CONFIG.publicKey);
+        })();
+    </script>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 </body>
 </html>
