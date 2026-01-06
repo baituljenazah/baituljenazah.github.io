@@ -120,13 +120,13 @@ function openImageModal(imageSrc, title) {
     modalImage.src = imageSrc;
     modalTitle.textContent = title;
     modal.classList.add('active');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    document.body.style.overflow = 'hidden';
 }
 
 function closeImageModal() {
     const modal = document.getElementById('imageModal');
     modal.classList.remove('active');
-    document.body.style.overflow = 'auto'; // Restore scrolling
+    document.body.style.overflow = 'auto';
 }
 
 function loadCart() {
@@ -344,7 +344,7 @@ function validateStep2() {
         return false;
     }
     
-    // Validate CVV (3 digits sahaja - betulkan dari 3-4 digits ke 3 digits sahaja)
+    // Validate CVV (3 digits)
     if (!/^\d{3}$/.test(cvv)) {
         alert('Sila masukkan CVV yang sah (3 digit tepat).');
         return false;
@@ -369,29 +369,13 @@ function validateStep2() {
     
     // Validate expiry date not in the past
     const currentDate = new Date();
-    const currentYear = currentDate.getFullYear() % 100; // Get last 2 digits
-    const currentMonth = currentDate.getMonth() + 1; // Month is 0-indexed
+    const currentYear = currentDate.getFullYear() % 100;
+    const currentMonth = currentDate.getMonth() + 1;
     
-    // Check if card is expired (specifically check for Jan 2026 or earlier)
-    const expiryYearFull = 2000 + year;
-    
-    // Create expiry date (last day of the month)
-    const expiryDate = new Date(expiryYearFull, month, 0);
-    
-    // Check if expired before Jan 2026
-    const jan2026 = new Date(2026, 0, 31); // 31 Jan 2026
-    
-    if (expiryDate < new Date()) {
+    // Check if card is expired
+    if (year < currentYear || (year === currentYear && month < currentMonth)) {
         alert('Kad kredit/debit telah tamat tempoh. Sila gunakan kad yang sah.');
         return false;
-    }
-    
-    // Additional check: if expiry is Jan 2026 or earlier, show warning
-    if (expiryDate <= jan2026) {
-        const userConfirmed = confirm('Kad anda akan tamat tempoh pada ' + expiry + '. Adakah anda pasti mahu meneruskan?');
-        if (!userConfirmed) {
-            return false;
-        }
     }
     
     return true;
@@ -402,15 +386,12 @@ function setupInputFormatting() {
     const cardNumberInput = document.getElementById('cardNumber');
     if (cardNumberInput) {
         cardNumberInput.addEventListener('input', function(e) {
-            // Remove all non-digits
             let value = e.target.value.replace(/\D/g, '');
             
-            // Limit to 16 digits
             if (value.length > 16) {
                 value = value.substring(0, 16);
             }
             
-            // Format as 4-4-4-4
             let formatted = '';
             for (let i = 0; i < value.length; i++) {
                 if (i > 0 && i % 4 === 0) {
@@ -447,34 +428,16 @@ function setupInputFormatting() {
         });
     }
     
-    // Format expiry date input (MM/YY) - AUTO FORMAT
+    // Format expiry date input (MM/YY)
     const expiryInput = document.getElementById('cardExpiry');
     if (expiryInput) {
-        let isDeleting = false;
-        
-        expiryInput.addEventListener('keydown', function(e) {
-            // Check if backspace or delete
-            if (e.key === 'Backspace' || e.key === 'Delete') {
-                isDeleting = true;
-            } else {
-                isDeleting = false;
-            }
-        });
-        
         expiryInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             
-            // If deleting, don't auto-format
-            if (isDeleting) {
-                return;
-            }
-            
-            // Limit to 4 digits
             if (value.length > 4) {
                 value = value.substring(0, 4);
             }
             
-            // Auto-add slash after 2 digits
             if (value.length >= 2) {
                 const month = value.substring(0, 2);
                 let year = value.substring(2, 4);
@@ -488,10 +451,7 @@ function setupInputFormatting() {
                     monthNum = 1;
                 }
                 
-                // Format with leading zero
                 const formattedMonth = monthNum.toString().padStart(2, '0');
-                
-                // Auto-add slash
                 value = formattedMonth + (value.length > 2 ? '/' + year : '');
             }
             
@@ -533,13 +493,12 @@ function setupInputFormatting() {
         });
     }
     
-    // Format CVV input (3 digits sahaja - bukan 4)
+    // Format CVV input (3 digits)
     const cvvInput = document.getElementById('cardCVV');
     if (cvvInput) {
         cvvInput.addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             
-            // Limit to 3 digits sahaja (bukan 4)
             if (value.length > 3) {
                 value = value.substring(0, 3);
             }
@@ -626,25 +585,16 @@ function processPayment() {
             status: 'Selesai'
         };
         
-        // Simulate email sending if email provided
+        // Save transaction to localStorage
+        saveTransaction(transaction);
+        
+        // Simulate email sending
         if (customer.email) {
-            console.log(`[SIMULASI EMAIL] ====================================`);
-            console.log(`[SIMULASI EMAIL] Kepada: ${customer.email}`);
-            console.log(`[SIMULASI EMAIL] Subjek: Resit Pembayaran Baitul Jenazah - ${refNumber}`);
-            console.log(`[SIMULASI EMAIL] Isi:`);
-            console.log(`[SIMULASI EMAIL] Terima kasih atas pembelian anda!`);
-            console.log(`[SIMULASI EMAIL] No. Rujukan: ${refNumber}`);
-            console.log(`[SIMULASI EMAIL] Jumlah: RM ${total.toLocaleString('en-MY', {minimumFractionDigits: 2})}`);
-            console.log(`[SIMULASI EMAIL] Tarikh: ${transaction.date}`);
-            console.log(`[SIMULASI EMAIL] ====================================`);
-            
-            // Show message to user
+            console.log(`Email resit dihantar ke: ${customer.email}`);
             setTimeout(() => {
                 alert(`📧 Resit telah dihantar ke: ${customer.email}\nSila semak folder spam jika tiada dalam inbox.`);
             }, 100);
         }
-        
-        saveTransaction(transaction);
         
         // Remove loading overlay
         if (loadingOverlay.parentNode) {
@@ -664,6 +614,10 @@ function saveTransaction(transaction) {
         transactions.push(transaction);
         localStorage.setItem('baituljenazah_transactions', JSON.stringify(transactions));
         
+        // Save to sessionStorage for printing
+        sessionStorage.setItem('lastTransaction', JSON.stringify(transaction));
+        
+        // Clear cart
         cart = [];
         saveCart();
     } catch (error) {
@@ -678,9 +632,6 @@ function showSuccess(transaction) {
     document.getElementById('step4').style.display = 'block';
     document.getElementById('step4').classList.add('active');
     document.getElementById('step4Content').classList.add('active');
-    
-    // Escape single quotes properly untuk transaction object
-    const transactionJSON = JSON.stringify(transaction).replace(/'/g, "\\'");
     
     document.getElementById('successContent').innerHTML = `
         <div class="success-message">
@@ -709,7 +660,7 @@ function showSuccess(transaction) {
             </p>
             
             <div style="margin-top:30px">
-                <button class="btn" onclick="printReceipt(${transactionJSON})" style="width:auto;padding:12px 30px">
+                <button class="btn" onclick="printReceiptFromStorage()" style="width:auto;padding:12px 30px">
                     <i class="fas fa-print"></i> Cetak Resit
                 </button>
                 <button class="btn btn-secondary" onclick="completeOrder()" style="width:auto;padding:12px 30px;margin-left:10px">
@@ -726,8 +677,23 @@ function completeOrder() {
     alert('Terima kasih! Pesanan anda telah direkodkan.');
 }
 
+function printReceiptFromStorage() {
+    const transactionJSON = sessionStorage.getItem('lastTransaction');
+    if (!transactionJSON) {
+        alert('Data resit tidak ditemui. Sila hubungi admin.');
+        return;
+    }
+    
+    try {
+        const transaction = JSON.parse(transactionJSON);
+        printReceipt(transaction);
+    } catch (error) {
+        console.error('Error parsing transaction:', error);
+        alert('Ralat: Data resit tidak sah.');
+    }
+}
+
 function printReceipt(transaction) {
-    // Create a printable receipt
     const printContent = `
         <!DOCTYPE html>
         <html lang="ms">
@@ -954,7 +920,6 @@ function printReceipt(transaction) {
             
             <script>
                 window.onload = function() {
-                    // Auto print and close
                     setTimeout(function() {
                         window.print();
                         setTimeout(function() {
@@ -967,9 +932,26 @@ function printReceipt(transaction) {
         </html>
     `;
     
-    // Open print window
     const printWindow = window.open('', '_blank', 'width=900,height=600');
+    if (!printWindow) {
+        alert('Pop-up telah disekat. Sila benarkan pop-up untuk mencetak resit.');
+        return;
+    }
+    
     printWindow.document.open();
     printWindow.document.write(printContent);
     printWindow.document.close();
 }
+
+// Export functions to global scope
+window.openImageModal = openImageModal;
+window.closeImageModal = closeImageModal;
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.toggleCart = toggleCart;
+window.openCheckout = openCheckout;
+window.closeCheckout = closeCheckout;
+window.nextStep = nextStep;
+window.processPayment = processPayment;
+window.completeOrder = completeOrder;
+window.printReceiptFromStorage = printReceiptFromStorage;
