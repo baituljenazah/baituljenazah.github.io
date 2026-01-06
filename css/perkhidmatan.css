@@ -829,6 +829,96 @@ nav a.active::after {
     margin: 10px 0; 
 }
 
+/* Loading Overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.loading-content {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+/* Print Styles */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    
+    #successContent,
+    #successContent * {
+        visibility: visible;
+    }
+    
+    #successContent {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+        box-shadow: none;
+    }
+    
+    .success-message {
+        max-width: 100%;
+        padding: 20px;
+        margin: 0;
+    }
+    
+    .transaction-details {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+    
+    .btn,
+    .back-to-top,
+    header,
+    footer,
+    nav,
+    .cart-sidebar,
+    .modal {
+        display: none !important;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+    
+    @page {
+        margin: 0.5cm;
+        size: auto;
+    }
+}
+
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+}
+
 /* Footer */
 footer { 
     background: #333; 
@@ -895,28 +985,6 @@ footer {
     border-top: 1px solid #444; 
     font-size: 0.9rem; 
     color: #aaa; 
-}
-
-/* Loading Overlay */
-.loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 3000;
-}
-
-.loading-content {
-    background: white;
-    padding: 40px;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
 }
 
 /* Responsive */
@@ -1070,75 +1138,5 @@ footer {
     .image-modal-title {
         font-size: 1rem;
         bottom: -40px;
-    }
-
-    /* Tambah di akhir file css/style.css */
-
-/* Print Styles */
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    
-    #successContent,
-    #successContent * {
-        visibility: visible;
-    }
-    
-    #successContent {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        background: white;
-        box-shadow: none;
-    }
-    
-    .success-message {
-        max-width: 100%;
-        padding: 20px;
-        margin: 0;
-    }
-    
-    .transaction-details {
-        page-break-inside: avoid;
-        break-inside: avoid;
-    }
-    
-    .btn,
-    .back-to-top,
-    header,
-    footer,
-    nav,
-    .cart-sidebar,
-    .modal {
-        display: none !important;
-    }
-    
-    body {
-        font-size: 12pt;
-        line-height: 1.4;
-    }
-    
-    @page {
-        margin: 0.5cm;
-        size: auto;
-    }
-}
-
-/* Tambah class untuk styling print */
-.print-only {
-    display: none;
-}
-
-@media print {
-    .print-only {
-        display: block;
-    }
-    
-    .no-print {
-        display: none !important;
     }
 }
