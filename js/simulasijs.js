@@ -1,4 +1,4 @@
-// Quiz Data - 3 Stages dengan soalan bahasa santai (10 soalan setiap stage)
+// Quiz Data - 3 Stages dengan soalan bahasa santai (5 soalan setiap stage)
 const quizData = {
     stage1: [
         {
@@ -26,52 +26,16 @@ const quizData = {
             hadith: "Hadis Riwayat Abu Daud: Nabi SAW bersabda: \"Orang yang paling berhak memandikan mayat ialah walinya (waris terdekat).\""
         },
         {
-            question: "Berapa kali kita kena mandikan jenazah mengikut syarak?",
+            question: "Berapa kali basuhan kita kena mandikan jenazah mengikut syarak?",
             options: [
                 "Sekali je cukup",
                 "2 kali",
-                "Minimum 3 kali, bilangan ganjil",
+                "Minimum 3 kali basuhan, bilangan ganjil",
                 "Ikut suka hati"
             ],
             correct: 2,
-            explanation: "Tepat! Kena mandikan minimum 3 kali (atau 5, 7 kali - bilangan ganjil). Ini wajib mengikut hukum syarak untuk bersihkan jenazah dengan sempurna.",
+            explanation: "Tepat! Kena mandikan minimum 3 kali basuhan (atau 5, 7 kali - bilangan ganjil). Ini wajib mengikut hukum syarak untuk bersihkan jenazah dengan sempurna.",
             hadith: "Hadis Riwayat Bukhari & Muslim: Umm 'Atiyyah meriwayatkan Nabi SAW bersabda ketika memandikan puterinya: \"Mandikanlah dia tiga kali, atau lima kali, atau lebih dari itu jika kamu anggap perlu, dengan air dan daun bidara.\""
-        },
-        {
-            question: "Air apa yang kena guna untuk mandikan jenazah?",
-            options: [
-                "Air biasa je",
-                "Air mutlak yang suci dan menyucikan (air paip, air hujan, air telaga)",
-                "Air mawar je",
-                "Air mineral dalam botol"
-            ],
-            correct: 1,
-            explanation: "Betul! Kena guna air mutlak - air yang suci dan boleh menyucikan macam air paip, air hujan atau air telaga. Air ni takde campuran benda lain yang ubah sifat dia.",
-            hadith: "Hadis Riwayat Tirmizi: Nabi SAW bersabda: \"Air itu suci, tidak dinajiskan oleh sesuatu (selagi sifat asalnya tidak berubah).\""
-        },
-        {
-            question: "Mandikan jenazah tu, mana bahagian yang kena basuh dulu?",
-            options: [
-                "Kaki dulu sebab paling kotor",
-                "Kepala dulu",
-                "Bahagian yang ada najis dulu, lepas tu bahagian kanan badan",
-                "Ikut suka hati je"
-            ],
-            correct: 2,
-            explanation: "Correct! Mula-mula bersihkan bahagian yang ada najis, lepas tu cuci bahagian kanan badan dulu ikut sunnah. Sama macam kita berwuduk - utamakan sebelah kanan.",
-            hadith: "Hadis Riwayat Bukhari & Muslim: Aisyah r.a berkata: \"Rasulullah SAW suka mendahulukan sebelah kanan dalam segala urusannya, ketika memakai kasut, bersikat, dan bersuci.\""
-        },
-        {
-            question: "Boleh ke isteri mandikan suami yang dah meninggal?",
-            options: [
-                "Tak boleh langsung",
-                "Boleh, sebab ikatan perkahwinan masih sah",
-                "Boleh tapi kena tutup aurat",
-                "Kena tunggu cerai dulu baru boleh"
-            ],
-            correct: 1,
-            explanation: "Betul tu! Isteri boleh mandikan suami yang meninggal sebab ikatan perkahwinan masih sah. Tapi suami tak boleh mandikan isteri yang meninggal kecuali tak ada perempuan lain langsung.",
-            hadith: "Hadis Riwayat Ibn Majah: Aisyah r.a berkata: \"Sekiranya aku mengetahui apa yang aku ketahui sekarang, tidak ada yang memandikan Rasulullah melainkan isteri-isterinya.\" (Ini menunjukkan isteri boleh mandikan suami)"
         },
         {
             question: "Apa benda yang sesuai campurkan dengan air semasa mandikan jenazah?",
@@ -86,18 +50,6 @@ const quizData = {
             hadith: "Hadis Riwayat Bukhari & Muslim: Nabi SAW bersabda kepada perempuan yang memandikan puterinya: \"Mandikanlah dia dengan air dan daun bidara, dan pada basuhan terakhir bubuhkan kapur barus (kafur).\""
         },
         {
-            question: "Kalau jenazah tu pregnant, macam mana nak mandikan?",
-            options: [
-                "Mandikan macam biasa je",
-                "Kena extra careful, mandikan dengan lembut dari atas kain penutup",
-                "Tak payah mandikan langsung",
-                "Tunggu baby keluar dulu"
-            ],
-            correct: 1,
-            explanation: "Betul! Jenazah pregnant kena mandikan extra berhati-hati. Biasanya mandikan dari atas kain penutup dengan lembut untuk jaga maruah dan keselamatan janin dalam kandungan.",
-            hadith: "Prinsip Fiqh: \"Menjaga maruah dan kehormatan jenazah adalah wajib.\" Ini berdasarkan sabda Nabi SAW (Riwayat Abu Daud): \"Memecahkan tulang mayat adalah seperti memecahkannya ketika hidup (dari segi dosanya).\""
-        },
-        {
             question: "Bila mandikan jenazah, siapa yang patut ada dalam bilik mandi tu?",
             options: [
                 "Ramai orang lagi bagus",
@@ -108,18 +60,6 @@ const quizData = {
             correct: 1,
             explanation: "Tepat! Yang patut ada hanya orang yang terlibat dalam proses mandikan je. Ini untuk jaga maruah si mati dan bagi ruang berkhidmat dengan tenang. Bukan majlis tontonan.",
             hadith: "Hadis Riwayat Ibn Majah: Nabi SAW bersabda: \"Barangsiapa memandikan mayat lalu dia menutup (rahsia)nya, Allah akan mengampuninya 40 kali.\" (Maksudnya jaga aib dan maruah si mati)"
-        },
-        {
-            question: "Kalau jenazah tu mati syahid (mati dalam kemalangan atau bencana dengan darah mengalir), kena mandikan ke?",
-            options: [
-                "Kena mandikan jugak macam biasa",
-                "Tak payah mandikan, terus kafan dan sembahyang",
-                "Basuh sikit je",
-                "Lap dengan kain je"
-            ],
-            correct: 1,
-            explanation: "Betul tu! Syuhada' (yang mati dengan darah mengalir dalam kejadian mengejut) tak perlu dimandikan. Terus kafankan dengan pakaian yang dipakai dan sembahyangkan. Darah mereka tu adalah syahadah.",
-            hadith: "Hadis Riwayat Bukhari: Jabir r.a berkata tentang syuhada Uhud: \"Nabi SAW menyuruh supaya mereka dikebumikan dengan darah mereka, dan tidak dimandikan.\""
         }
     ],
     stage2: [
@@ -132,7 +72,8 @@ const quizData = {
                 "Banyak mana pun boleh"
             ],
             correct: 2,
-            explanation: "Correct! Lelaki pakai 3 helai kain kafan - kain untuk lilit seluruh badan. Perempuan pulak 5 helai. Ini ikut sunnah Nabi Muhammad SAW."
+            explanation: "Correct! Lelaki pakai 3 helai kain kafan - kain untuk lilit seluruh badan. Perempuan pulak 5 helai. Ini ikut sunnah Nabi Muhammad SAW.",
+            hadith: "Hadis Riwayat Bukhari & Muslim: Dari Aisyah r.a berkata: 'Rasulullah SAW dikafani dengan tiga helai kain putih dari Yaman yang tidak ada baju dan tidak ada serban di dalamnya.'"
         },
         {
             question: "Kain kafan tu kena warna apa yang paling sesuai?",
@@ -143,18 +84,8 @@ const quizData = {
                 "Warna apa pun boleh asalkan cantik"
             ],
             correct: 1,
-            explanation: "Betul! Kain kafan yang paling baik adalah warna putih. Nabi SAW bersabda pakaian yang paling baik untuk orang hidup dan mati adalah yang berwarna putih. Putih melambangkan kesucian."
-        },
-        {
-            question: "Kafan perempuan ada berapa helai dan apa nama setiap helai tu?",
-            options: [
-                "3 helai je sama macam lelaki",
-                "5 helai - Qamis (baju), Izar (sarung), Khimar (tudung kepala), Rida (penutup dada), Lifafah (lilit luar)",
-                "Sehelai je tapi besar",
-                "2 helai je - dalam dan luar"
-            ],
-            correct: 1,
-            explanation: "Tepat sekali! Perempuan pakai 5 helai kafan dengan nama khas - Qamis (baju), Izar (sarung), Khimar (tudung), Rida (penutuh dada) dan Lifafah (lilit luar). Ini untuk tutup aurat dengan sempurna."
+            explanation: "Betul! Kain kafan yang paling baik adalah warna putih. Nabi SAW bersabda pakaian yang paling baik untuk orang hidup dan mati adalah yang berwarna putih. Putih melambangkan kesucian.",
+            hadith: "Hadis Riwayat Abu Daud & Tirmizi: Nabi SAW bersabda: 'Pakailah pakaian putih, kerana ia adalah pakaian yang paling baik, dan kafankanlah mayat kamu dengannya.'"
         },
         {
             question: "Boleh ke pakai kain kafan yang ada tulisan ayat Quran atau hiasan?",
@@ -165,18 +96,8 @@ const quizData = {
                 "Kena ada nama si mati"
             ],
             correct: 1,
-            explanation: "Betul! Kafan sepatutnya plain dan simple je tanpa tulisan atau hiasan. Tak perlu ayat Quran atau design fancy. Islam ajar kesederhanaan, fokus pada nilai bukan penampilan luaran."
-        },
-        {
-            question: "Sebelum kafankan jenazah, apa yang sesuai buat pada kain kafan?",
-            options: [
-                "Terus pakai je",
-                "Wangikan dengan minyak wangi atau kapur barus (pewangi syar'i)",
-                "Basahkan dengan air sejuk",
-                "Iron sampai licin"
-            ],
-            correct: 1,
-            explanation: "Spot on! Sunnah wangikan kain kafan dengan minyak wangi atau kapur barus sebelum pakaikan. Ini ikut sunnah untuk harumkan jenazah dan tanda penghormatan terakhir."
+            explanation: "Betul! Kafan sepatutnya plain dan simple je tanpa tulisan atau hiasan. Tak perlu ayat Quran atau design fancy. Islam ajar kesederhanaan, fokus pada nilai bukan penampilan luaran.",
+            hadith: "Hadis Riwayat Bukhari & Muslim: Dari Aisyah r.a: 'Rasulullah SAW dikafani dengan tiga helai kain putih yang tidak ada baju dan tidak ada serban.' Ini menunjukkan kesederhanaan tanpa hiasan."
         },
         {
             question: "Macam mana cara ikat kain kafan yang betul?",
@@ -187,18 +108,8 @@ const quizData = {
                 "Guna getah"
             ],
             correct: 1,
-            explanation: "Betul! Kain kafan diikat longgar dengan simpulan sementara di bahagian kepala dan kaki. Nanti masa nak tanam dalam liang lahad, simpulan ni akan dibuka supaya kain terbuka sikit."
-        },
-        {
-            question: "Kalau jenazah budak kecil atau bayi, macam mana cara kafan dia?",
-            options: [
-                "Sama je macam orang dewasa",
-                "Boleh guna sehelai kain je untuk lilit, tak perlu 3 atau 5 helai",
-                "Pakaikan baju biasa je",
-                "Tak payah kafan"
-            ],
-            correct: 1,
-            explanation: "Tepat! Untuk budak kecil atau bayi, boleh guna sehelai kain kafan je untuk lilit. Tak semestinya perlu 3 atau 5 helai. Yang penting aurat tertutup dan jenazah terbalut dengan baik."
+            explanation: "Betul! Kain kafan diikat longgar dengan simpulan sementara di bahagian kepala dan kaki. Nanti masa nak tanam dalam liang lahad, simpulan ni akan dibuka supaya kain terbuka sikit.",
+            hadith: "Hadis Riwayat Abu Daud & Ibnu Majah: Dari Ibnu Abbas r.a: 'Apabila mayat diletakkan ke dalam kubur, bukalah ikatan kafannya.' Ini menunjukkan kafan diikat sementara sahaja."
         },
         {
             question: "Boleh ke guna kain sutera untuk kafan?",
@@ -209,29 +120,8 @@ const quizData = {
                 "Sutera je yang sah"
             ],
             correct: 1,
-            explanation: "Correct! Kain sutera tidak boleh untuk kafan lelaki sebab haram untuk lelaki dalam Islam. Tapi boleh untuk perempuan. Lebih baik guna kain cotton atau kain putih biasa yang halal dan bersih."
-        },
-        {
-            question: "Selepas kafan siap, apa lagi yang sesuai buat sebelum bawa ke masjid?",
-            options: [
-                "Terus bawa ke masjid",
-                "Letakkan wangi-wangian (minyak kasturi atau atar) pada jenazah terutama di dahi, hidung, tangan dan lutut",
-                "Snap gambar dulu",
-                "Tunggu sejam dulu"
-            ],
-            correct: 1,
-            explanation: "Betul! Selepas kafan, sunnah sapukan wangi-wangian seperti minyak kasturi atau atar pada bahagian sujud jenazah (dahi, hidung, tangan, lutut, kaki). Ini muliakan si mati dan sunnah Nabi."
-        },
-        {
-            question: "Kalau tak mampu beli kain kafan yang baru, boleh ke guna kain lain?",
-            options: [
-                "Tak boleh, kena beli baru jugak",
-                "Boleh guna kain yang ada asalkan suci, bersih dan menutup aurat - Islam tak membebankan",
-                "Kena pinjam je",
-                "Mesti branded"
-            ],
-            correct: 1,
-            explanation: "Tepat sekali! Islam tak membebankan. Kalau tak mampu, boleh guna kain yang ada asalkan suci dan bersih. Bahkan kain pakaian si mati pun boleh jadi kafan kalau perlu. Yang penting jenazah terbalut dengan menutup aurat."
+            explanation: "Correct! Kain sutera tidak boleh untuk kafan lelaki sebab haram untuk lelaki dalam Islam. Tapi boleh untuk perempuan. Lebih baik guna kain cotton atau kain putih biasa yang halal dan bersih.",
+            hadith: "Hadis Riwayat Ahmad & Abu Daud: Nabi SAW bersabda: 'Janganlah kamu kafankan dengan sutera, kerana sesungguhnya ia tidak memberi manfaat (di akhirat) untuk mayat.' Ini khusus untuk lelaki."
         }
     ],
     stage3: [
@@ -246,18 +136,6 @@ const quizData = {
             correct: 1,
             explanation: "Spot on! Solat jenazah ada 4 takbir. Tak ada rukuk dan sujud, tapi kena baca doa-doa yang khusus untuk si mati.",
             hadith: "Hadis Riwayat Muslim: Dari Abu Hurairah r.a bahawa Nabi SAW mengkhabarkan tentang kematian An-Najasyi pada hari beliau meninggal, dan baginda keluar ke tempat solat (musolla), lalu bertakbir empat kali."
-        },
-        {
-            question: "Apa yang dibaca selepas takbir pertama dalam solat jenazah?",
-            options: [
-                "Al-Fatihah je",
-                "Al-Fatihah dan surah pendek",
-                "Ayat Kursi",
-                "Doa je"
-            ],
-            correct: 0,
-            explanation: "Betul! Selepas takbir pertama, kita baca surah Al-Fatihah. Ini rukun dalam solat jenazah yang wajib dibaca.",
-            hadith: "Hadis Riwayat Syafie: Dalam solat jenazah, selepas takbir pertama dibaca Al-Fatihah, takbir kedua selawat ke atas Nabi, takbir ketiga doa untuk si mati, takbir keempat salam."
         },
         {
             question: "Bila tanam jenazah, kepala kena menghadap ke mana?",
@@ -284,30 +162,6 @@ const quizData = {
             hadith: "Hadis Riwayat Tirmizi: Hisyam bin Amir berkata: \"Kami mengadu kepada Rasulullah SAW tentang beratnya menggali (kubur) di Uhud, lalu baginda bersabda: Galilah, dalamkan dan perbaikilah.\""
         },
         {
-            question: "Berapa lama tempoh untuk selesaikan pengurusan jenazah?",
-            options: [
-                "Tak ada had masa",
-                "Dalam masa 1 minggu",
-                "Secepat mungkin, elakkan tangguh - kalau boleh dalam 24 jam",
-                "Tunggu semua saudara mara sampai dulu"
-            ],
-            correct: 2,
-            explanation: "Memang betul! Pengurusan jenazah kena dibuat secepat mungkin. Nabi SAW bersabda cepat uruskan jenazah, jangan tangguh-tangguh. Kalau boleh dalam masa 24 jam kecuali ada uzur syar'i.",
-            hadith: "Hadis Riwayat Bukhari: Nabi SAW bersabda: \"Segerakanlah jenazah (untuk dikebumikan). Jika ia orang baik, maka kamu mendekatkannya kepada kebaikan. Jika ia selain itu, maka ia adalah keburukan yang kamu jauhkan dari tengkuk kamu.\""
-        },
-        {
-            question: "Macam mana cara letak jenazah dalam liang lahad yang betul?",
-            options: [
-                "Kepala dulu masuk",
-                "Kaki dulu masuk",
-                "Dari arah kepala, jenazah dimasukkan dengan dimiringkan ke kanan menghadap kiblat",
-                "Terus campak je"
-            ],
-            correct: 2,
-            explanation: "Correct! Jenazah dimasukkan dari arah kepala, dimiringkan sebelah kanan menghadap kiblat. Buat dengan lembut dan penuh hormat. Ini cara yang paling mudah dan terhormat.",
-            hadith: "Dari praktik sahabat: Jenazah dimasukkan ke lahad dari arah kepala sambil dibaca doa: \"Bismillahi wa 'ala millati Rasulillah\" (Dengan nama Allah dan di atas agama Rasulullah)."
-        },
-        {
             question: "Apa yang sesuai dibaca masa turunkan jenazah ke dalam kubur?",
             options: [
                 "Takbir je",
@@ -318,30 +172,6 @@ const quizData = {
             correct: 1,
             explanation: "Betul! Masa turunkan jenazah, baca 'Bismillahi wa 'ala millati Rasulillah'. Ni doa sunnah yang bermaksud kita serahkan jenazah dengan nama Allah dan atas agama Rasulullah.",
             hadith: "Hadis Riwayat Tirmizi & Ibn Majah: Ibnu Umar r.a berkata: \"Apabila mayat diletakkan di dalam liang lahadnya, maka hendaklah diucapkan: Bismillahi wa 'ala millati Rasulillah.\""
-        },
-        {
-            question: "Boleh ke tanam jenazah dalam keranda atau peti sebelum masuk tanah?",
-            options: [
-                "Wajib guna keranda",
-                "Tak perlu dan tak digalakkan - jenazah patut sentuh tanah terus",
-                "Keranda lagi cantik",
-                "Mesti ada peti"
-            ],
-            correct: 1,
-            explanation: "Tepat! Dalam Islam, jenazah sepatutnya sentuh tanah terus tanpa keranda atau peti. Kita dari tanah, kembali ke tanah. Guna keranda hanya bila perlu (tanah keras, tanah lembik) atau undang-undang tempatan.",
-            hadith: "Prinsip dari Al-Quran (Taha: 55): \"Darinya (tanah) Kami menciptakan kamu, dan kepadanya Kami akan mengembalikan kamu.\" Ini menunjukkan jenazah sepatutnya kembali ke tanah secara langsung."
-        },
-        {
-            question: "Bila dah tanam jenazah, apa yang sesuai buat lepas tu?",
-            options: [
-                "Terus balik",
-                "Ratakan tanah, tinggikan sedikit, baca doa untuk si mati, talqin kalau ikut mazhab yang amalkan",
-                "Buat jamuan",
-                "Tanam pokok terus"
-            ],
-            correct: 1,
-            explanation: "Betul! Selepas tanam, ratakan tanah kubur dan tinggikan sedikit (lebih kurang sejengkal). Pastu baca doa untuk si mati. Ada mazhab yang amalkan talqin (mengajar jenazah), ada yang tak - kedua-duanya okay.",
-            hadith: "Hadis Riwayat Abu Daud: Nabi SAW apabila selesai mengebumikan mayat, baginda berdiri di sisinya dan bersabda: \"Mohonkanlah ampun untuk saudara kamu dan mohonkanlah keteguhan untuknya, kerana sekarang dia sedang ditanya.\""
         },
         {
             question: "Boleh ke letak batu nisan atau hiasan mewah atas kubur?",
@@ -469,7 +299,7 @@ function checkAnswer() {
         setTimeout(() => {
             alert('Tak pe, cuba lagi! Kena betul baru boleh proceed.');
             loadQuestion();
-        }, 4000); // Increased delay to 4 seconds to allow reading hadith
+        }, 4000);
     }
 }
 
@@ -647,4 +477,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
