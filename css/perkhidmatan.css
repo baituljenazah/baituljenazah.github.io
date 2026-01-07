@@ -12,6 +12,7 @@
             --shadow: 0 4px 12px rgba(0,0,0,0.08);
             --danger: #e74c3c;
             --success: #27ae60;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         body { 
@@ -33,7 +34,54 @@
         }
 
         /* ============================================
-           BACK TO TOP BUTTON (From Homepage)
+           FIXED TOAST NOTIFICATION
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--primary);
+            color: var(--dark);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            z-index: 9999;
+            font-weight: 500;
+            opacity: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90%;
+            text-align: center;
+            border-left: 4px solid #78d178;
+            transition: var(--transition);
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+            animation: toastSlideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .toast.hide {
+            transform: translateX(-50%) translateY(100px);
+            opacity: 0;
+        }
+        
+        @keyframes toastSlideUp {
+            0% {
+                transform: translateX(-50%) translateY(100px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ============================================
+           BACK TO TOP BUTTON
            ============================================ */
         .back-to-top {
             position: fixed;
@@ -52,7 +100,7 @@
             opacity: 0;
             visibility: hidden;
             transform: translateY(20px) scale(0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: var(--transition);
             z-index: 99;
             box-shadow: var(--shadow);
             border: none;
@@ -71,7 +119,7 @@
             background-color: #78d178;
             transform: translateY(-5px) scale(1.05);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            animation: none; /* Stop pulse animation on hover */
+            animation: none;
         }
         
         @keyframes fadeInUp {
@@ -102,7 +150,37 @@
         }
 
         /* ============================================
-           IMAGE MODAL STYLES
+           SMOOTH ANIMATIONS
+           ============================================ */
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .slide-up {
+            animation: slideUp 0.5s ease forwards;
+        }
+        
+        .slide-down {
+            animation: slideDown 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(20px); opacity: 0; }
+        }
+
+        /* ============================================
+           IMAGE MODAL STYLES - IMPROVED
            ============================================ */
         .image-modal {
             position: fixed;
@@ -115,21 +193,20 @@
             justify-content: center;
             align-items: center;
             z-index: 2000;
-            cursor: pointer; /* Click anywhere to close */
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: var(--transition);
         }
         
         .image-modal.active {
             display: flex;
             opacity: 1;
+            animation: fadeIn 0.3s ease;
         }
         
         .image-modal-content {
             max-width: 90%;
             max-height: 90%;
             position: relative;
-            cursor: default; /* Don't trigger close on image */
         }
         
         .image-modal-content img {
@@ -154,6 +231,29 @@
             }
         }
         
+        .image-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        
         .image-modal-title {
             position: absolute;
             bottom: -50px;
@@ -166,9 +266,9 @@
             padding: 10px;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 4px;
+            animation: slideUp 0.3s ease 0.2s both;
         }
         
-        /* Close hint */
         .image-modal-hint {
             position: absolute;
             top: 20px;
@@ -184,14 +284,16 @@
             50% { opacity: 1; }
         }
 
-        /* Header Styles */
+        /* ============================================
+           HEADER STYLES
+           ============================================ */
         header { 
             background: var(--secondary); 
             box-shadow: var(--shadow); 
             position: sticky; 
             top: 0; 
             z-index: 100; 
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
         
         .header-container { 
@@ -227,7 +329,7 @@
             text-decoration: none; 
             color: var(--dark); 
             font-weight: 500; 
-            transition: color 0.3s; 
+            transition: var(--transition); 
             position: relative;
             padding: 5px 0;
         }
@@ -262,6 +364,12 @@
             font-size: 1.5rem; 
             cursor: pointer; 
             color: var(--dark); 
+            transition: var(--transition);
+        }
+        
+        .cart-icon:hover {
+            transform: scale(1.1);
+            color: var(--primary);
         }
         
         .cart-count { 
@@ -278,6 +386,7 @@
             justify-content: center; 
             font-size: 0.7rem; 
             font-weight: bold; 
+            transition: var(--transition);
         }
         
         .mobile-menu-btn {
@@ -288,9 +397,9 @@
             color: var(--dark);
             cursor: pointer;
             z-index: 101;
+            transition: var(--transition);
         }
         
-        /* Mobile menu overlay */
         .mobile-menu-overlay {
             display: none;
             position: fixed;
@@ -300,31 +409,39 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 99;
+            animation: fadeIn 0.3s ease;
         }
         
         .mobile-menu-overlay.active {
             display: block;
         }
 
-        /* Hero Section */
+        /* ============================================
+           HERO SECTION
+           ============================================ */
         .hero { 
             background: linear-gradient(rgba(136,231,136,0.9), rgba(136,231,136,0.8)); 
             padding: 80px 0; 
             text-align: center; 
+            animation: fadeIn 1s ease;
         }
         
         .hero h1 { 
             font-size: 3rem; 
             margin-bottom: 20px; 
+            animation: slideUp 0.8s ease 0.2s both;
         }
         
         .hero p { 
             font-size: 1.2rem; 
             max-width: 800px; 
             margin: 0 auto; 
+            animation: slideUp 0.8s ease 0.4s both;
         }
 
-        /* Services Section */
+        /* ============================================
+           SERVICES SECTION
+           ============================================ */
         #services { 
             padding: 80px 0; 
             background: var(--secondary); 
@@ -346,6 +463,7 @@
         /* Category Section */
         .category-section { 
             margin-bottom: 60px; 
+            animation: fadeIn 0.6s ease both;
         }
         
         .category-title { 
@@ -375,38 +493,39 @@
             padding: 0;
             border-radius: 8px; 
             box-shadow: var(--shadow); 
-            transition: transform 0.3s;
+            transition: var(--transition);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            animation: slideUp 0.5s ease both;
         }
 
-        /* Card tanpa gambar (untuk Kategori 2) */
         .service-card .service-content:first-child {
             padding: 30px;
         }
         
         .service-card:hover { 
-            transform: translateY(-5px); 
+            transform: translateY(-10px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        /* FIXED IMAGE SECTION - Shows full image */
+        /* Product image size */
         .service-image {
             width: 100%;
-            min-height: 250px; /* Increased minimum height */
-            background: #f5f5f5; /* Light gray background */
+            height: 300px;
+            background: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
-            padding: 15px; /* Added padding */
-            cursor: pointer; /* Make clickable */
-            transition: all 0.3s ease;
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition);
         }
         
         .service-image:hover {
-            background: #eaeaea; /* Slightly darker on hover */
+            background: #eaeaea;
         }
         
         .service-image:hover .click-hint {
@@ -415,18 +534,18 @@
         }
         
         .service-image img {
-            width: auto; /* Changed from 100% to auto */
-            height: auto; /* Changed from 100% to auto */
-            max-width: 100%; /* Ensure it doesn't overflow */
-            max-height: 250px; /* Maximum height constraint */
-            object-fit: contain; /* Changed from cover to contain to show full image */
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
             object-position: center;
             display: block;
-            transition: transform 0.3s ease;
+            transition: var(--transition);
         }
         
         .service-image:hover img {
-            transform: scale(1.03); /* Slight zoom on hover */
+            transform: scale(1.05);
         }
         
         .click-hint {
@@ -440,18 +559,12 @@
             font-size: 0.8rem;
             opacity: 0;
             transform: translateY(10px);
-            transition: all 0.3s ease;
+            transition: var(--transition);
             z-index: 2;
         }
         
         .click-hint i {
             margin-right: 5px;
-        }
-
-        .service-image-placeholder {
-            font-size: 4rem;
-            color: rgba(255,255,255,0.5);
-            animation: pulse 2s infinite;
         }
 
         .service-content {
@@ -501,6 +614,7 @@
             border-radius: 8px; 
             box-shadow: var(--shadow); 
             text-align: center; 
+            animation: slideUp 0.6s ease 0.2s both;
         }
         
         .emergency-card h3, 
@@ -519,7 +633,9 @@
             margin-bottom: 20px;
         }
 
-        /* Buttons */
+        /* ============================================
+           BUTTONS
+           ============================================ */
         .btn { 
             display: inline-block; 
             background: var(--primary); 
@@ -529,9 +645,11 @@
             font-weight: 500; 
             border: none; 
             cursor: pointer; 
-            transition: all 0.3s; 
+            transition: var(--transition); 
             font-size: 1rem; 
             width: 100%; 
+            position: relative;
+            overflow: hidden;
         }
         
         .btn:hover { 
@@ -561,6 +679,37 @@
             margin-top: 20px; 
         }
 
+        /* Payment Processing Animation */
+        .btn-processing {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-processing:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid transparent;
+            border-top-color: var(--dark);
+            border-radius: 50%;
+            animation: button-spinner 0.8s linear infinite;
+        }
+        
+        @keyframes button-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+
         /* Note Box */
         .note-box { 
             background: #fff3cd; 
@@ -568,9 +717,12 @@
             padding: 20px; 
             margin-top: 40px; 
             border-radius: 4px; 
+            animation: fadeIn 0.6s ease 0.3s both;
         }
 
-        /* Cart Sidebar */
+        /* ============================================
+           CART SIDEBAR
+           ============================================ */
         .cart-sidebar { 
             position: fixed; 
             right: -400px; 
@@ -579,14 +731,16 @@
             height: 100vh; 
             background: white; 
             box-shadow: -2px 0 10px rgba(0,0,0,0.1); 
-            transition: right 0.3s; 
+            transition: var(--transition); 
             z-index: 1000; 
             display: flex; 
             flex-direction: column; 
+            transform: translateX(100%);
         }
         
         .cart-sidebar.active { 
             right: 0; 
+            transform: translateX(0);
         }
         
         .cart-header { 
@@ -606,6 +760,11 @@
             border: none; 
             font-size: 1.5rem; 
             cursor: pointer; 
+            transition: var(--transition);
+        }
+        
+        .close-cart:hover {
+            transform: rotate(90deg);
         }
         
         .cart-items { 
@@ -620,6 +779,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: start; 
+            animation: slideUp 0.3s ease both;
         }
         
         .cart-item-info h4 { 
@@ -644,6 +804,11 @@
             color: var(--danger); 
             cursor: pointer; 
             margin-left: 10px; 
+            transition: var(--transition);
+        }
+        
+        .remove-item:hover {
+            transform: scale(1.2);
         }
         
         .cart-footer { 
@@ -665,7 +830,9 @@
             color: var(--light); 
         }
 
-        /* Modal */
+        /* ============================================
+           MODAL STYLES
+           ============================================ */
         .modal { 
             display: none; 
             position: fixed; 
@@ -676,12 +843,16 @@
             background: rgba(0,0,0,0.5); 
             z-index: 2000; 
             overflow-y: auto; 
+            opacity: 0;
+            transition: var(--transition);
         }
         
         .modal.active { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
+            opacity: 1;
+            animation: fadeIn 0.3s ease;
         }
         
         .modal-content { 
@@ -692,6 +863,15 @@
             margin: 20px; 
             max-height: 90vh; 
             overflow-y: auto; 
+            transform: translateY(20px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+            animation: slideUp 0.4s ease 0.1s both;
         }
         
         .modal-header { 
@@ -711,13 +891,20 @@
             border: none; 
             font-size: 1.5rem; 
             cursor: pointer; 
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
         }
         
         .modal-body { 
             padding: 30px; 
         }
 
-        /* Checkout Steps */
+        /* ============================================
+           CHECKOUT STEPS
+           ============================================ */
         .checkout-steps { 
             display: flex; 
             justify-content: space-between; 
@@ -732,6 +919,20 @@
             margin: 0 5px; 
             border-radius: 4px; 
             font-size: 0.9rem; 
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--primary);
+            transition: width 0.6s ease;
         }
         
         .step.active { 
@@ -739,17 +940,35 @@
             font-weight: 600; 
         }
         
+        .step.active:after {
+            width: 100%;
+        }
+        
+        .step.completed {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+        
         .checkout-step { 
             display: none; 
+            opacity: 0;
+            transform: translateX(20px);
+            transition: var(--transition);
         }
         
         .checkout-step.active { 
             display: block; 
+            opacity: 1;
+            transform: translateX(0);
+            animation: fadeIn 0.5s ease;
         }
 
-        /* Form Styles */
+        /* ============================================
+           FORM STYLES
+           ============================================ */
         .form-group { 
             margin-bottom: 20px; 
+            animation: slideUp 0.3s ease both;
         }
         
         .form-group label { 
@@ -767,12 +986,27 @@
             border-radius: 4px; 
             font-size: 1rem; 
             font-family: 'Inter', sans-serif; 
-            transition: border-color 0.3s;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(136, 231, 136, 0.2);
+            outline: none;
         }
         
         .form-group input.error, 
         .form-group textarea.error { 
             border-color: var(--danger); 
+            animation: shake 0.3s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
         
         .form-group textarea { 
@@ -780,18 +1014,22 @@
             min-height: 80px; 
         }
 
-        /* Order Summary */
+        /* ============================================
+           ORDER SUMMARY
+           ============================================ */
         .order-summary { 
             background: #f9f9f9; 
             padding: 20px; 
             border-radius: 8px; 
             margin-bottom: 20px; 
+            animation: fadeIn 0.6s ease;
         }
         
         .summary-item { 
             display: flex; 
             justify-content: space-between; 
             margin-bottom: 10px; 
+            animation: slideUp 0.3s ease both;
         }
         
         .summary-total { 
@@ -801,21 +1039,31 @@
             font-size: 1.2rem; 
         }
 
-        /* Success Message */
+        /* ============================================
+           SUCCESS MESSAGE
+           ============================================ */
         .success-message { 
             text-align: center; 
             padding: 40px; 
+            animation: fadeIn 0.6s ease;
         }
         
         .success-icon { 
             font-size: 4rem; 
             color: var(--success); 
             margin-bottom: 20px; 
+            animation: bounce 1s ease infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         
         .success-message h3 { 
             color: var(--success); 
             margin-bottom: 15px; 
+            animation: slideUp 0.5s ease 0.2s both;
         }
         
         .transaction-details { 
@@ -824,13 +1072,29 @@
             border-radius: 8px; 
             margin: 20px 0; 
             text-align: left; 
+            animation: slideUp 0.5s ease 0.3s both;
         }
         
         .transaction-details p { 
             margin: 10px 0; 
         }
 
-        /* Footer */
+        /* ============================================
+           CONFETTI EFFECT
+           ============================================ */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            top: 0;
+            opacity: 0;
+            z-index: 9999;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
         footer { 
             background: #333; 
             color: var(--secondary); 
@@ -871,7 +1135,7 @@
         .footer-links ul li a { 
             color: var(--secondary); 
             text-decoration: none; 
-            transition: color 0.3s; 
+            transition: var(--transition); 
         }
         
         .footer-links ul li a:hover { 
@@ -898,18 +1162,22 @@
             color: #aaa; 
         }
 
-        /* Loading Overlay */
+        /* ============================================
+           LOADING OVERLAY
+           ============================================ */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 3000;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
         }
 
         .loading-content {
@@ -917,10 +1185,20 @@
             padding: 40px;
             border-radius: 8px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            animation: scaleIn 0.3s ease 0.1s forwards;
+        }
+        
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+            }
         }
 
-        /* Responsive */
+        /* ============================================
+           RESPONSIVE - MOBILE COMPATIBILITY
+           ============================================ */
         @media (max-width: 768px) {
             nav { 
                 position: fixed;
@@ -933,7 +1211,7 @@
                 transform: translateY(-100%);
                 opacity: 0;
                 visibility: hidden;
-                transition: all 0.3s ease;
+                transition: var(--transition);
                 z-index: 100;
             }
             
@@ -941,6 +1219,7 @@
                 transform: translateY(0);
                 opacity: 1;
                 visibility: visible;
+                animation: slideDown 0.3s ease;
             }
             
             nav ul { 
@@ -952,7 +1231,6 @@
                 display: block;
             }
             
-            /* DEKATKAN JARAK MENU DENGAN CART */
             .header-container > div {
                 gap: 15px;
             }
@@ -982,22 +1260,19 @@
                 font-size: 2rem;
             }
             
-            /* Back to top button for mobile */
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+            /* Toast for mobile */
+            .toast {
+                bottom: 15px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                width: 90%;
+                max-width: 300px;
             }
             
             /* Mobile image adjustments */
             .service-image {
-                min-height: 200px; /* Slightly smaller on mobile */
-            }
-            
-            .service-image img {
-                max-height: 200px; /* Slightly smaller on mobile */
+                height: 250px;
+                padding: 15px;
             }
             
             /* Hide click hint on mobile */
@@ -1013,6 +1288,26 @@
             .image-modal-hint {
                 font-size: 0.8rem;
                 top: 10px;
+            }
+            
+            /* Mobile form adjustments */
+            .checkout-steps {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+            
+            .step {
+                flex: 1 0 calc(33.333% - 10px);
+                font-size: 0.8rem;
+                padding: 8px 5px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .btn-group .btn {
+                width: 100%;
             }
         }
         
@@ -1053,22 +1348,9 @@
                 font-size: 1.6rem;
             }
             
-            /* Back to top button for small screens */
-            .back-to-top {
-                bottom: 15px;
-                right: 15px;
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-            
             /* Smaller mobile image adjustments */
             .service-image {
-                min-height: 180px;
-            }
-            
-            .service-image img {
-                max-height: 180px;
+                height: 200px;
             }
             
             /* Mobile modal adjustments */
@@ -1079,5 +1361,111 @@
             .image-modal-title {
                 font-size: 1rem;
                 bottom: -40px;
+            }
+            
+            /* Touch-friendly mobile buttons */
+            .btn, 
+            .service-image {
+                min-height: 44px;
+            }
+            
+            /* Mobile-friendly form inputs */
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px;
+                padding: 15px;
+            }
+        }
+
+        /* ============================================
+           EMAIL INTEGRATION STATUS
+           ============================================ */
+        .email-status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid #88E788;
+            display: none;
+        }
+        
+        .email-status.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .email-status.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .email-status i {
+            margin-right: 10px;
+        }
+
+        /* ============================================
+           RECEIPT/PRINT STYLES
+           ============================================ */
+        @media print {
+            body * {
+                visibility: hidden;
+                margin: 0;
+                padding: 0;
+            }
+            
+            #printContent, 
+            #printContent * {
+                visibility: visible;
+            }
+            
+            #printContent {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                background: white;
+                color: #333;
+                font-family: 'Inter', sans-serif;
+                font-size: 11pt;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            @page {
+                margin: 15mm;
+                size: A4 portrait;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .service-card:hover {
+                transform: none;
+            }
+            
+            .btn:hover {
+                transform: none;
+            }
+            
+            .service-image:hover {
+                background: #f5f5f5;
+            }
+            
+            .service-image:hover img {
+                transform: none;
+            }
+            
+            .cart-icon:hover,
+            .close-cart:hover,
+            .close-modal:hover,
+            .remove-item:hover {
+                transform: none;
             }
         }
