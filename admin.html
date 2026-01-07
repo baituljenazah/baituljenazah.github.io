@@ -169,84 +169,36 @@
         let allTransactions = [];
         let filteredTransactions = [];
 
-function loadTransactions() {
-    try {
-        document.getElementById('loadingState').style.display = 'block';
-        document.getElementById('tableContent').style.display = 'none';
-        document.getElementById('emptyState').style.display = 'none';
+        function loadTransactions() {
+            try {
+                document.getElementById('loadingState').style.display = 'block';
+                document.getElementById('tableContent').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'none';
 
-        const transactionsStr = localStorage.getItem('baituljenazah_transactions');
-        console.log('Loading transactions from localStorage:', transactionsStr);
-        
-        if (!transactionsStr || transactionsStr === '[]') {
-            console.log('No transactions found');
-            showEmptyState();
-            return;
+                const transactionsStr = localStorage.getItem('baituljenazah_transactions');
+                console.log('Loading transactions from localStorage:', transactionsStr);
+                
+                if (!transactionsStr || transactionsStr === '[]') {
+                    console.log('No transactions found');
+                    showEmptyState();
+                    return;
+                }
+
+                allTransactions = JSON.parse(transactionsStr);
+                console.log('Transactions loaded:', allTransactions);
+                allTransactions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                
+                filteredTransactions = [...allTransactions];
+                displayTransactions();
+                updateStats();
+
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                showEmptyState();
+            } finally {
+                document.getElementById('loadingState').style.display = 'none';
+            }
         }
-
-        allTransactions = JSON.parse(transactionsStr);
-        console.log('Raw transactions loaded:', allTransactions);
-        
-        // Normalize transactions to ensure consistent format
-        allTransactions = allTransactions.map((trans, index) => {
-            // Jika transaction tiada refNumber, buat dari orderId atau index
-            if (!trans.refNumber) {
-                trans.refNumber = trans.orderId || `TRANS-${Date.now()}-${index}`;
-            }
-            
-            // Jika tiada timestamp, buat dari date
-            if (!trans.timestamp) {
-                const dateStr = trans.date || new Date().toLocaleDateString('ms-MY');
-                trans.timestamp = new Date(dateStr).toISOString();
-            }
-            
-            // Jika tiada status, set default
-            if (!trans.status) {
-                trans.status = 'Selesai';
-            }
-            
-            // Pastikan ada payment info
-            if (!trans.payment && trans.cardDetails) {
-                trans.payment = {
-                    cardName: trans.cardDetails.cardName,
-                    cardNumber: trans.cardDetails.cardNumber,
-                    cardLast4: trans.cardDetails.cardLast4 || '****',
-                    cardExpiry: trans.cardDetails.cardExpiry
-                };
-            }
-            
-            // Pastikan ada customer info dalam format yang betul
-            if (trans.customerName && !trans.customer) {
-                trans.customer = {
-                    name: trans.customerName,
-                    phone: trans.customerPhone,
-                    email: trans.customerEmail,
-                    address: trans.customerAddress,
-                    notes: trans.customerNotes || ''
-                };
-            }
-            
-            return trans;
-        });
-        
-        // Sort by timestamp (newest first)
-        allTransactions.sort((a, b) => {
-            const dateA = new Date(a.timestamp || a.date || 0);
-            const dateB = new Date(b.timestamp || b.date || 0);
-            return dateB - dateA;
-        });
-        
-        filteredTransactions = [...allTransactions];
-        displayTransactions();
-        updateStats();
-
-    } catch (error) {
-        console.error('Error loading transactions:', error);
-        showEmptyState();
-    } finally {
-        document.getElementById('loadingState').style.display = 'none';
-    }
-}
 
         function displayTransactions() {
             const tbody = document.getElementById('transactionsBody');
